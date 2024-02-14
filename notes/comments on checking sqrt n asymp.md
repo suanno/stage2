@@ -3,8 +3,8 @@
 ### Pre-asymptotic behavior
 Analytically, we anticipate that 
 $$\frac{1}{u^2(nT)} = \frac{1}{u_0^2} + 2nI_0(T)$$
-where $I_0(T)=\int_0^T dt e^{2\sin{\frac{2\pi t}{T}}}$, and numerically evaluating the integral suggests linearity in $T$ 
-$$I_0(T)\simeq 2.28T\text{,\quad if }C(t) = A\sin(2\pi t/T)\text{, with } A=1$$
+where $I_0(T)=\int_0^T dt e^{2(1-\cos{\frac{2\pi t}{T}})}$, and numerically evaluating the integral suggests linearity in $T$ 
+$$I_0(T)\simeq 16.84T\text{,\quad if }C(t) = A\sin(2\pi t/T)\text{, with } A=1$$
 
 As $n$ becomes large, the term with $n$ dominates the right-hand side, yielding the **asymptotic behavior**
 $$u(nT)\simeq \frac{1}{2I_0(T)}n^{-\frac12}$$
@@ -12,10 +12,10 @@ Quantitatively, this behavior holds true when $2nI_0(T) >> \frac{1}{u_0^2}$, whi
 
 The pre-asymptotic behavior can be eliminated **by increasing $T$ or $u_0$**. However, significantly increasing $u_0$ could render the term $\frac{1}{u_0^2}$ negligible even at low times $t$, leading the analytical solution to suggest $u(nT)$ as the reciprocal of $2nI_0(T)$, which, for low $n$ (and thus $t$), approaches zero. Consequently, computational overflow errors are expected due to division by numbers close to zero.
 
-Here we can see the pre-asymptotic behavior with $u_0 = 0.2$ ![here](../Plots/at%20long%20times%20becames%20constant%202%20u0=0.2.png?raw=true)
+Here we can see the pre-asymptotic behavior with $u_0 = 0.2$ ![here](../Plots/at%20long%20times%20becames%20constant%20sine%20u0=0.2.png?raw=true)
 
 ### Asymptotic behavior
-The asymptotic behavior is observable in the numerical solutions ![here](..Plots/at%20long%20times%20becames%20constant%202%20u0=10%20with%20analytical.png?raw=true), where we adopted a large $u_0=10$ in order to get rid of the pre-asymptotic behaviour
+The asymptotic behavior is observable in the numerical solutions ![here](../Plots/at%20long%20times%20becames%20constant%20sine%20u0=10%20with%20analytical.png?raw=true), where we adopted a large $u_0=10$ in order to get rid of the pre-asymptotic behaviour
 
 **However:**
 - The asymptotic behavior persists **until** a certain $n_{max}$, which decreases with the time step.
@@ -40,3 +40,11 @@ You see that, because the _curves are overlapping_.
 
 We see that the error on the encoding of $C(t)$ increases with $n$ (and so with $t$) but even at $n=10^4$ (so $n\sim n_{max}$) the error is little ($\sim 10^{-12}$) as you can see 
 ![here](../Plots/error%20on%20C(nT)%20is%20low.png?raw=true)
+
+### There is no saturation if C is costant
+If C>0 or C=0 we do not see any saturation
+![here](../Plots/u(t)%20if%20C%20is%20cost%20decays%20without%20saturating.png?raw=true)
+
+Even if we control $C(t)$ as a **cosine** instead of a sine we have saturation and $n_{max}$ decreases by increasing T.
+![here](../Plots/cosine%20changing%20T.png?raw=true)
+Notice that $n_{max}$ lowers but even the saturation value, in fact if $C=0$ cost, you can see a very rapid decay to zero (the saturation value tends to zero if $T$ tends to infinity).

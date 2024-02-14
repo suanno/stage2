@@ -115,7 +115,7 @@ double uAve[nloop];
 for (loop=0;loop<nloop;loop++){
 ttime = tmin + (loop+1)*dt;
 if(Thalf > 0){
-	C[loop]=Ampl*sin(pi*ttime/Thalf);
+	C[loop]=Ampl*cos(pi*ttime/Thalf);
 	//C(t_{k+1})
 	/*
 	if (sin(pi*ttime/Thalf)>=0) 
