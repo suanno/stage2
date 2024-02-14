@@ -3,11 +3,11 @@
 ### Pre-asymptotic behavior
 Analytically, we anticipate that 
 $$\frac{1}{u^2(nT)} = \frac{1}{u_0^2} + 2nI_0(T)$$
-where $I_0(T)=\int_0^T dt e^{2(1-\cos{\frac{2\pi t}{T}})}$, and numerically evaluating the integral suggests linearity in $T$ 
+where $$I_0(T)=\int_0^T dt e^{2(1-\cos{\frac{2\pi t}{T}})} = T \int_0^1 du e^{2(1-\cos 2\pi u)}$$ so it's linear in $T$ and numerically we can find the proportionality coefficient 
 $$I_0(T)\simeq 16.84T\text{,\quad if }C(t) = A\sin(2\pi t/T)\text{, with } A=1$$
 
 As $n$ becomes large, the term with $n$ dominates the right-hand side, yielding the **asymptotic behavior**
-$$u(nT)\simeq \frac{1}{2I_0(T)}n^{-\frac12}$$
+$$u(nT)\simeq \frac{1}{\sqrt{2I_0(T)}}n^{-\frac12}$$
 Quantitatively, this behavior holds true when $2nI_0(T) >> \frac{1}{u_0^2}$, which occurs when $n>>\tilde{n}$ with $`\tilde{n} = \frac{1}{2*2.28*T*u_0^2}`$.
 
 The pre-asymptotic behavior can be eliminated **by increasing $T$ or $u_0$**. However, significantly increasing $u_0$ could render the term $\frac{1}{u_0^2}$ negligible even at low times $t$, leading the analytical solution to suggest $u(nT)$ as the reciprocal of $2nI_0(T)$, which, for low $n$ (and thus $t$), approaches zero. Consequently, computational overflow errors are expected due to division by numbers close to zero.

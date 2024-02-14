@@ -5,6 +5,7 @@
 #include <math.h>
 #include <fftw3.h>
 
+#define vector_size 10000
 #define pi 4*atan(1.0)
 
 int main(int argc, char  *argv [ ]){
@@ -52,17 +53,17 @@ if (argc > 3){
 */
 tmax = tmin + Deltat;
 
-double x[10000];
-double u[10000];
-double ufr[10000];
-double ufi[10000];
-double udt[10000];
-double udtfr[10000];
-double udtfi[10000];
+double x[vector_size];
+double u[vector_size];
+double ufr[vector_size];
+double ufi[vector_size];
+double udt[vector_size];
+double udtfr[vector_size];
+double udtfi[vector_size];
 
-double NL[10000];
-double NLfr[10000];
-double NLfi[10000];
+double NL[vector_size];
+double NLfr[vector_size];
+double NLfi[vector_size];
 
 int i;
 double decainx=0;
@@ -75,10 +76,10 @@ double decaoutq2mean=0;
 double decainC=0;
 double decatime=0;
 
-double ffr[10000];
-double qfr[10000];
-double d2coef[10000];
-double integ_coef[10000];
+double ffr[vector_size];
+double qfr[vector_size];
+double d2coef[vector_size];
+double integ_coef[vector_size];
 double q2meannum=0.0;
 double q2meandenum=0.0;
 
