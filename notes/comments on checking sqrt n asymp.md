@@ -18,7 +18,7 @@ Here we can see the pre-asymptotic behavior with $u_0 = 0.2$ ![here](../Plots/at
 The asymptotic behavior is observable in the numerical solutions ![here](../Plots/at%20long%20times%20becames%20constant%20sine%20u0=10%20with%20analytical.png?raw=true), where we adopted a large $u_0=10$ in order to get rid of the pre-asymptotic behaviour
 
 **However:**
-- The asymptotic behavior persists **until** a certain $n_{max}$, which decreases with the time step.
+- The asymptotic behavior persists **until** a certain $n_{max}$, which decreases with the time step $dt$.
 - In the region where the asymptotic behavior is visible, it is **up-shifted** in _log-log_ scale compared to the analytically expected curve.
 
 ### Post-asymptotic behavior
@@ -27,11 +27,28 @@ While $u(nT)$ stabilizes, the curve $u(t)$ evaluated at times different from $nT
 
 Increasing the period $T$ with fixed $dt$ (and so increasing the accuracy with which the control function $C(t)$ is encoded numerically) lowers the $n_{max}$ when the _saturation behaviour_ begins. ![here](../Plots/varying%20T%20fixed%20dt.png?raw=true) (where $u_0=10$).
 
+So the _saturation step_ $n_{max}$ depends both on $T$ and $dt$
+- It decreases by increasing $dt$
+- It decreases by increasing $T$
+
 It's worth noting that increasing the period $T$ makes $u(t)$ go faster to zero, as $u(t)\sim\frac{1}{I_0{T}}\sim\frac{1}{T}$ is the asymptotic behaviour expected.
 So it's not strange that increasing $T$ anticipates the pre-asymptotic behaviour.
 
+The fact that $n_{max}$ decreases by increasing $dt$ or $T$ could be because it is determined by the ratio $T/dt$, but we can see it isn't so
+![here](../Plots/saturation%20step%20is%20not%20only%20T%20over%20dt.png?raw=true)
+
 The _lenght_ of the _saturation tail_ seems to be infinite as shows this $tspan = 10^4$ evolution ($u_0 = 10$)
 ![here](../Plots/long%20tail.png?raw=true)
+
+
+### There is no saturation if C is costant
+If C>0 or C=0 we do not see any saturation
+![here](../Plots/u(t)%20if%20C%20is%20cost%20decays%20without%20saturating.png?raw=true)
+![hereC = 0](../Plots/u(t)%20if%20C%20=%200%20cost%20decays%20without%20saturating.png?raw=true)
+-----------------------------
+---------------------------
+-----------------------------
+
 
 ### Resolution of $C(t)$ encoding
 Keeping $T/dt = 1000$ **fixed** you can see that the deviation of $C(nT)$ from the expected value (zero) is _the same_ independently on the couple ($T, dt$) you choose.
@@ -41,10 +58,9 @@ You see that, because the _curves are overlapping_.
 We see that the error on the encoding of $C(t)$ increases with $n$ (and so with $t$) but even at $n=10^4$ (so $n\sim n_{max}$) the error is little ($\sim 10^{-12}$) as you can see 
 ![here](../Plots/error%20on%20C(nT)%20is%20low.png?raw=true)
 
-### There is no saturation if C is costant
-If C>0 or C=0 we do not see any saturation
-![here](../Plots/u(t)%20if%20C%20is%20cost%20decays%20without%20saturating.png?raw=true)
-
+## C(t) as a cosine instead of sine
 Even if we control $C(t)$ as a **cosine** instead of a sine we have saturation and $n_{max}$ decreases by increasing T.
 ![here](../Plots/cosine%20changing%20T.png?raw=true)
-Notice that $n_{max}$ lowers but even the saturation value, in fact if $C=0$ cost, you can see a very rapid decay to zero (the saturation value tends to zero if $T$ tends to infinity).
+Notice that $n_{max}$ lowers, but even the saturation value.
+In fact if $C=0$ cost, you can see a very rapid decay to zero (the saturation value tends to zero if $T$ tends to infinity).
+And if $T\rightarrow \infty$ then the co
