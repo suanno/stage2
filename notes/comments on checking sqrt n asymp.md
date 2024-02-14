@@ -45,6 +45,11 @@ The _lenght_ of the _saturation tail_ seems to be infinite as shows this $tspan 
 If C>0 or C=0 we do not see any saturation
 ![here](../Plots/u(t)%20if%20C%20is%20cost%20decays%20without%20saturating.png?raw=true)
 ![hereC = 0](../Plots/u(t)%20if%20C%20=%200%20cost%20decays%20without%20saturating.png?raw=true)
+
+**Pay attention** when you think to the limits where $T$ is infinite and you compare the plots, because all the plots above have $n$ on the x-axis, but the last has $t$ and $t = nT$.
+
+Then, if you make the $T\rightarrow \infty$ limit for $C(t)=\cos(2\pi t/T)$, the analytical solution will give you a power decay, while you expect the behaviour of $C=1$ costant, that is an exponential decay.
+
 -----------------------------
 ---------------------------
 -----------------------------
@@ -61,6 +66,3 @@ We see that the error on the encoding of $C(t)$ increases with $n$ (and so with 
 ## C(t) as a cosine instead of sine
 Even if we control $C(t)$ as a **cosine** instead of a sine we have saturation and $n_{max}$ decreases by increasing T.
 ![here](../Plots/cosine%20changing%20T.png?raw=true)
-Notice that $n_{max}$ lowers, but even the saturation value.
-In fact if $C=0$ cost, you can see a very rapid decay to zero (the saturation value tends to zero if $T$ tends to infinity).
-And if $T\rightarrow \infty$ then the co
