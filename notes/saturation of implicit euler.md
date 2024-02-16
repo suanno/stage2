@@ -1,11 +1,11 @@
 # Saturation
 The Implicit Euler scheme we adopt works like this to solve the TDGL equation in Fourier space ($x\rightarrow q$)
 
-$$U(q,t+h)=\frac{U(q,t) - hF[u^3](q,t)}{1+h(q^2-C(t+h))}$$
+$$`U(q,t+h)=\frac{U(q,t) - hF[u^3](q,t)}{1+h(q^2-C(t+h))}`$$
 
 If then the profile is flat, it remains flat and there is only one mode, that is $q = 0$.
 So we have a formula in the real space
-$$u(t+h)=\frac{u(t) - hF[u^3](t)}{1-hC(t+h)}$$
+$$`u(t+h)=\frac{u(t) - hF[u^3](t)}{1-hC(t+h)}`$$
 You can even find the above result by considering the TDGL equation without the space derivative and appy the Implicit Euler scheme in real space.
 [You have then to evaluate the Fourier transform of $u^3$ at time $t$ and not $t+h$ in order to get an usable formula].
 
