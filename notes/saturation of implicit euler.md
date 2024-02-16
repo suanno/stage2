@@ -17,9 +17,24 @@ The same behaviour we see in the "_tdgl.c_" code, that implements the method, bu
 
 ![Plot saturation evidence](../Plots/saturation%20plots/fixed%20point%20evidence.png?raw=true)
 
+Notice that we decided to plot the **absolute value** of $u(t)$ in order to show that a saturation occurs even if the initial value $u_0 < 0$, and the saturation value is **the same but with negative sign**.
+
 Here we see that the saturation value does not depend on the initial condition AND **even if you start very close to zero, you do not converge in zero as expected**.
 
 As we see this behaviour even in the code "_implicit euler map.c_", that **implements the discrete time map and nothing more**, it is not related to FFT and other features of the code "_tdgl.c_", **but just to the integration scheme adopted (Implicit Euler)**.
+
+### Oscillation at long times
+We see that $u(t)$ evaluated at times $t=nT$ reaches the same fixed point for every initial value $u_0$.
+
+But even the oscillations, at long times, become the same, independently on $u_0$.
+Here we show that the curves $u(t)$ obtained from different initial values overlap at long times.
+
+![longtimes](../Plots/saturation%20plots/overlap%20of%20oscillations%20at%20long%20time.png?raw=true)
+
+Here is, instead, the behaviour at short times, oscillations included
+![shorttimes](../Plots/saturation%20plots/oscillations%20at%20short%20times.png?raw=true)
+
+
 ### Explicit Euler doesn't saturate!
 
 ![explicitvsimplicit](../Plots/saturation%20plots/Explicit%20do%20not%20saturate.png?raw=true)
