@@ -7,13 +7,14 @@ $$\partial_t U(t) \simeq (U(t)-U(t-h))/h$$
 or equivalently
 $$U(t) \simeq U'(t)h + U(t-h)$$
 Then, using the TDGL equation to explicitly write $U'(t) = \partial_t U(t)$
-$$U(t) = -q^2U(t) + CU(t) - F[u^3](t) + U(t-h)$$
+$$U(t) = -q^2U(t)h + C(t)U(t)h - F[u^3](t)h + U(t-h)$$
 So bringing all terms $U(t)$ to the left side
-$$U(t)(1+q^2-C) = U(t-h) - hF[u^3]$$
+$$U(t)(1+h(q^2-C(t))) = U(t-h) - hF[u^3]$$
 And we get the **Implicit Euler equation**
-$$U(t)=\frac{U(t-h) - hF[u^3](t)}{1+q^2-C}$$
+$$U(t)=\frac{U(t-h) - hF[u^3](t)}{1+h(q^2-C(t))}$$
 
-[WHY!!!]In the TUNG algorithm, $F[u^3](t)$ is changed with $F[u^3](t-h)$
+**Note**:
+In the TUNG algorithm, $F[u^3](t)$ is changed with $F[u^3](t-h)$ because otherwise you cannot use the formula.
 
 ## Explicit / Implicit Euler
 The explicit algorithm is simply $\partial_t u(t) \simeq (u(t+h)-u(t))/h$ from which you get
@@ -69,7 +70,7 @@ so we have the dynamical system with discrete time
 $$U_{n+1} = MU_n$$
 where $M = (1+hL[iq])$.
 
-Now you know that the eigenvalues of the matrix $L[iq]$ are negative, but this is not sufficient to tell that the eigenvalues of $M$ have magnitude less than 1. It is so only if you choose $h>-\frac{2}{\lambda_{min}}$ where $\lambda_{min}$ is the smallest eigenvalue of $L[iq]$ and remember that its eigenvalues are negative (so the $-$ sign gets the fraction positive).
+Now you know that the eigenvalues of the matrix $L[iq]$ are negative, but this is not sufficient to tell that the eigenvalues of $M$ have magnitude less than 1. It is so only if you choose $h<-\frac{2}{\lambda_{min}}$ where $\lambda_{min}$ is the smallest (in magnitude) eigenvalue of $L[iq]$ and remember that its eigenvalues are negative (so the $-$ sign gets the fraction positive).
 
 This means that, for sufficiently large values of $h$, there are some modes of the discrete time dynamical system that explode!
 **"This means that, if you use Explicit Euler with a large step $h$, the numerical solution you get will contain some modes that explode (as time goes on)."**

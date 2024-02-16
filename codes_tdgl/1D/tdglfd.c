@@ -74,6 +74,7 @@ double area;
 int nloop=(tmax-tmin)/dt;
 
 double C[nloop];
+double Ave[nloop];
 
 /*Recreate fileCout of values of C(t) and fileAve of Space Averages [Progressive
 executions of the dynamics will APPEND info]*/
@@ -114,6 +115,7 @@ for (loop = 0; loop < nloop; loop++){
 FILE *filerandominit;
 FILE *filetdglinit;
 FILE *fileCout;
+FILE *fileAveout;
 int seed;
 
 filerandominit = fopen("fileinit.dat", "r");
@@ -158,9 +160,13 @@ for(loop=0;loop<nloop;loop++) {
     for(i=0;i<N;i++) {
     u[i] = udt[i];
     }
-
-    /*Save only state at specific times separated by dt_plot*/
-
+    
+    /*Compute space average*/
+    Ave[loop] = 0;
+    for (i = 0; i<N; i++){
+      Ave[loop] = Ave[loop] + u[i];
+    }
+    Ave[loop] = Ave[loop]/N;
 }
 
 /*Save values of C(t) in different times*/
@@ -171,6 +177,15 @@ decaoutC = C[loop];
 fprintf(fileCout, "%.5f %.20f\n", ttime, decaoutC);
 }
 fclose(fileCout);
+
+/*Save values of Space average in different times*/
+fileAveout = fopen("fileAveout.dat", "a");
+for (loop=0; loop<nloop; loop++){
+ttime = tmin + (loop+1)*dt;
+decaoutC = Ave[loop];
+fprintf(fileAveout, "%.5f %.20f\n", ttime, decaoutC);
+}
+fclose(fileAveout);
 
 /*Save the final state*/
 //filetdglinit = fopen("tdgl_init.dat", "w");

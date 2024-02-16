@@ -113,8 +113,12 @@ double uAve[nloop];
 	BUT defining C(t) like this, we have the property that C(t)
 	is varying SMOOTHLY during the WHOLE (total serie of consecutive evolutions) experiment.
 */
+/*NOTE: As to calculate u(t+dt) we need C(t+dt), we adopt the following convention
+	C[loop] = C(dt*loop + dt)
+	So C[0] = C(0 + dt) and so on
+*/
 for (loop=0;loop<nloop;loop++){
-ttime = tmin + (loop+1)*dt;
+ttime = tmin + (loop + 1)*dt;		/*C[loop] = C(t+dt), so it's NOT C(t)*/
 if(Thalf > 0){
 	C[loop]=Ampl*sin(pi*ttime/Thalf);
 	//C(t_{k+1})
@@ -171,90 +175,92 @@ fclose(fileinit);
 
 //------------------------------------
 
-// coefficients for spectral derivatives (-q^2) array
+// coefficients for spectral derivatives (-q^2) array (with already the minus sign!)
 for (i=0; i<N; i++){
 d2coef[i]=-(qfr[i]/dx)*(qfr[i]/dx);
 }
 
-/*setvbuf(stdout, NULL, _IOLBF, 0);*/
+/* EVOLUTION CODE */
 for (loop=0; loop < nloop; loop++){
-ttime = tmin + (loop+1)*dt;
+	ttime = tmin + (loop+1)*dt;	/*We calculate u(t+dt) in this loop, so the first time we calculate u(tmin + dt)*/
 
-/*Compute space average*/
-uAve[loop] = 0;
-for (i = 0; i<N; i++){
-	uAve[loop] = uAve[loop] + u[i];
-}
-uAve[loop] = uAve[loop]/N;
-/*printf("uAve(%d) = %lf\n", loop, uAve[loop]);*/
-//printf("Ave(%lf) = %lf", ttime, uAve[loop]);
-/*Denominator of implicit euler [As equation is non-linear, the numerator will be unusual, but the denominator no]*/
-for (i=0; i<N; i++){
-integ_coef[i]=1-dt*C[loop]-dt*d2coef[i]; //Note that d2coeff = -q^2 (already contains a minus sign)
-}
+	/*printf("uAve(%d) = %lf\n", loop, uAve[loop]);*/
+	//printf("Ave(%lf) = %lf", ttime, uAve[loop]);
 
-/*Compute FFT of u(x)->u(q)*/
-// transform h
-for(i=0; i<N; i++) {
-in[i][0]=u[i];
-in[i][1]=0.0;
-}
-fftw_execute(pf); // repeat as needed
-for(i=0; i<N; i++) {
-ufr[i]=out[i][0];
-ufi[i]=out[i][1];
-}
+	/*Denominator of implicit euler [As equation is non-linear, the numerator will be unusual, but the denominator no]*/
+	for (i=0; i<N; i++){
+	integ_coef[i]=1-dt*C[loop]-dt*d2coef[i]; //Note that d2coeff = -q^2 (already contains a minus sign)
+											 //And that C[loop] is C(t+dt), NOT C(t)
+	}
 
-/*???*/
-q2meannum=0.0;
-q2meandenum=0.0;
-for(i=0; i<N; i++) {
-q2meannum = q2meannum + (qfr[i]/dx)*(qfr[i]/dx)*(ufr[i]*ufr[i]+ufi[i]*ufi[i]);
-q2meandenum = q2meandenum + (ufr[i]*ufr[i]+ufi[i]*ufi[i]);
-}
-q2mean[loop] = q2meannum/q2meandenum;
+	/*Compute FFT of u(x)->u(q)*/
+	// transform h
+	for(i=0; i<N; i++) {
+	in[i][0]=u[i];
+	in[i][1]=0.0;
+	}
+	fftw_execute(pf); // repeat as needed
+	for(i=0; i<N; i++) {
+	ufr[i]=out[i][0];
+	ufi[i]=out[i][1];
+	}
 
-// ********** begin of main algorithm **********
+	/*???*/
+	q2meannum=0.0;
+	q2meandenum=0.0;
+	for(i=0; i<N; i++) {
+	q2meannum = q2meannum + (qfr[i]/dx)*(qfr[i]/dx)*(ufr[i]*ufr[i]+ufi[i]*ufi[i]);
+	q2meandenum = q2meandenum + (ufr[i]*ufr[i]+ufi[i]*ufi[i]);
+	}
+	q2mean[loop] = q2meannum/q2meandenum;
 
-/*Compute FFT of u(x)^3 */
-for (i=0; i<N; i++){
-NL[i]=u[i]*u[i]*u[i];
-}
+	// ********** begin of main algorithm **********
 
-for(i=0; i<N; i++) {
-in[i][0]=NL[i];
-in[i][1]=0.0;
-}
-fftw_execute(pf); // repeat as needed
-for(i=0; i<N; i++) {
-NLfr[i]=out[i][0];
-NLfi[i]=out[i][1];
-}
+	/*Compute FFT of u(x)^3 */
+	for (i=0; i<N; i++){
+	//NL[i] = u[i] + dt*(C[loop]*u[i]-u[i]*u[i]*u[i]);	/*Using Explicit euler to calculate u^3(t+dt). Note you should put C[loop-1]*/
+	NL[i]=u[i]*u[i]*u[i];
+	}
 
-for (i=0; i<N; i++){
-/*IMPLICIT EULER*/
-//implicit Euler scheme
-udtfr[i]=(ufr[i]-dt*NLfr[i])/integ_coef[i];	//The numerator has unusual shape because eq. in non-linear
-udtfi[i]=(ufi[i]-dt*NLfi[i])/integ_coef[i];
-}
+	for(i=0; i<N; i++) {
+	in[i][0]=NL[i];
+	in[i][1]=0.0;
+	}
+	fftw_execute(pf); // repeat as needed
+	for(i=0; i<N; i++) {
+	NLfr[i]=out[i][0];
+	NLfi[i]=out[i][1];
+	}
 
-// ********** end of main algorithm **********
+	for (i=0; i<N; i++){
+	/*IMPLICIT EULER*/
+	//implicit Euler scheme
+	udtfr[i]=(ufr[i]-dt*NLfr[i])/integ_coef[i];	//The numerator has unusual shape because eq. in non-linear
+	udtfi[i]=(ufi[i]-dt*NLfi[i])/integ_coef[i];
+	}
 
-/*INVERSE FFT*/
-for(i=0; i<N; i++) {
-in[i][0]=udtfr[i];
-in[i][1]=udtfi[i];
-}
-fftw_execute(pb); // repeat as needed
-for(i=0; i<N; i++) {
-udt[i]=out[i][0]/N;
-}
+	// ********** end of main algorithm **********
 
-for(i=0; i<N; i++) {
-u[i]=udt[i];
-}
+	/*INVERSE FFT*/
+	for(i=0; i<N; i++) {
+	in[i][0]=udtfr[i];
+	in[i][1]=udtfi[i];
+	}
+	fftw_execute(pb); // repeat as needed
+	for(i=0; i<N; i++) {
+	udt[i]=out[i][0]/N;
+	}
 
+	for(i=0; i<N; i++) {
+	u[i]=udt[i];
+	}
 
+	/*Compute space average*/
+	uAve[loop] = 0;
+	for (i = 0; i<N; i++){
+		uAve[loop] = uAve[loop] + u[i];
+	}
+	uAve[loop] = uAve[loop]/N;
 }
 
 /*Save the final state*/
