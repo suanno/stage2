@@ -15,7 +15,7 @@ double dx = 0.1;        /*Lattice spacing*/
 double L=N*dx;
 double Hm2=1;           /* ? */
 
-double dt=0.001; // note: stable upto dt=0.001
+double dt=0.008; // note: stable upto dt=0.001
 double tmin=0;
 double tmax=1;  // Suggest "1" because in the fft algorithm tmin = 1 is hardcoded 
 
@@ -40,7 +40,7 @@ if (argc > 4){
   dt = strtod(argv[4], &ptr);
 }
   
-
+int veclen = (int)(round(tmax/dt));
 
 /*The scalar field is Phi(x,t) and we call it u(x,t)
 - x dependance is in the array index
@@ -49,15 +49,15 @@ u = Phi(t)
 up = Phi(t-1)
 udt = dPhi/dt
 */
-double u[10000];       
-double udt[10000];
-double up[10002];
+double* u = malloc(veclen*sizeof(double));       
+double* udt = malloc(veclen*sizeof(double));
+double* up = malloc((veclen + 2)*sizeof(double));
 
-double lapu[10000];
+double* lapu = malloc(veclen*sizeof(double));
 
-double dF[10000];
-double uc[10000];
-double Lu[10000];
+double* dF = malloc(veclen*sizeof(double));
+double* uc = malloc(veclen*sizeof(double));
+double* Lu = malloc(veclen*sizeof(double));
 
 double z;
 double decax;
@@ -73,8 +73,8 @@ double ttime;
 double area;
 int nloop=(tmax-tmin)/dt;
 
-double C[nloop];
-double Ave[nloop];
+double* C = malloc(nloop*sizeof(double));
+double* Ave = malloc(nloop*sizeof(double));
 
 /*Recreate fileCout of values of C(t) and fileAve of Space Averages [Progressive
 executions of the dynamics will APPEND info]*/

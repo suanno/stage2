@@ -41,3 +41,14 @@ Here is, instead, the behaviour at short times, oscillations included
 
 
 Even if, instead of using $u^3(t)$ inside the implicit Euler formula you calculate $u^3(t+h)$ with Explicit Euler and then use it in the Implicit scheme; you have saturation.
+
+Then we enhance that, even if Explicit Euler does not show saturation, **there is still a post-asymptotic behaviour, that is an Exponential decay to zero**)
+![explicitPostAsymptotic](../Plots/saturation%20plots/explicit%20euler%20post%20asymptotic.png?raw=true)
+![explicitExponentialDecay](../Plots/saturation%20plots/explicit%20euler%20post%20asymptotic%20exponential%20decay.png?raw=true)
+
+This exponential decay begins when $u(t)\sim 10^{-3}$ that is not so close to zero.
+So I guess that this behaviour is not only an effect of rounding errors, but of the integration method's error.
+# ETD
+
+With this algorithm we don't see any saturation, but still a post-asymptotic exponential decay.
+![ETD](../Plots/saturation%20plots/explicit%20implicit%20and%20ETD.png?raw=true)
