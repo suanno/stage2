@@ -232,6 +232,8 @@ for (loop=0; loop < nloop; loop++){
 	NLfi[i]=out[i][1];
 	}
 
+	
+
 	for (i=0; i<N; i++){
 	/*IMPLICIT EULER*/
 	//implicit Euler scheme

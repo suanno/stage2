@@ -15,7 +15,7 @@ int main(int argc, char  *argv [ ]){
 
 double dt=0.008;
 double tmin=0;	//tmin is the tmax of previous evolution
-double Deltat = 6000;
+double Deltat = 100000;
 double tmax = tmin + Deltat;
 
 /*C(t) = Ampl*sin(pi*t/(T/2))*/
@@ -23,6 +23,7 @@ double Ampl = 1;
 double Thalf = 0.5;  // with this choice C will be constantly +1
 
 double u = 1;
+double uc = u*u*u;
 double ue;
 double nu;
 
@@ -31,8 +32,10 @@ int use_explicit = 0;
 double ttime;
 int nloop=(Deltat)/dt;
 int loop;
-double C[nloop];
+double* C = malloc(nloop*sizeof(double));
 double Cprev;
+
+FILE* fileAveout;
 
 /*Define value of C(t) in time.
 	C(t) = Ampl*sin(pi*t/(T/2))
@@ -59,29 +62,20 @@ if(Thalf > 0){
 
 
 /* EVOLUTION CODE */
+fileAveout = fopen("fileAveout.dat", "w");
 for (loop=0; loop < nloop; loop++){
 	ttime = tmin + (loop+1)*dt;	/*We calculate u(t+dt) in this loop, so the first time we calculate u(tmin + dt)*/
 
-
-    /*Implicit Euler scheme*/
-	/*[If you want] First use Explicit Euler to calculate u^3 at the new time*/
-	ue = u;
-	if (use_explicit == 1){
-		if (loop == 0)
-			Cprev = 0;
-		else
-			Cprev = C[loop-1];
-		ue = u + (Cprev*u-u*u*u)*dt;
-	}
-	/*Calculate new time u*/
+	/*C[loop] = C(t+dt) but we need even C(t)=Cprev*/
 	if (loop == 0)
-			Cprev = 0;
-		else
-			Cprev = C[loop-1];
-	
-    nu = (u - ue*ue*ue*dt + Cprev*u*dt/2)/(1-C[loop]*dt/2);
+		Cprev = 0;
+	else
+		Cprev = C[loop-1];
+	/*Crak-Nicolson*/
+	uc = u*u*u;
+    nu = (u*(1+Cprev*dt/2)-uc*dt)/(1-C[loop]*dt/2);
 	u = nu;
-	printf("\nu(%.2lf) = %lf", ttime, u);
+	fprintf(fileAveout, "%.5f %.20f\n", ttime, u);
 }
 
 printf("\nu(%.2lf) = %lf", ttime, u);

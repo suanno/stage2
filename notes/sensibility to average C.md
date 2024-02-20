@@ -55,3 +55,40 @@ we can make the following considerations **when $\bar{C} = 0$**.
     So it isn't anymore strange to see an **exponential decay** at long times.
 
 ### So the methods do NOT fail DUE to the non-linear term precence (it's a problem of the linear equation!)
+
+# Removing the bias
+We see that, for $\bar{C} = 0$, we have this Bias in the two methods
+- Implicit Euler: Exponential increase
+- Explicit Euler: Exponential decay
+
+We guess that the different bias is due to the fact that, if you think on how you find the formulas
+- Implicit Euler privileges the time $t+dt$
+- Explicit Euler privileges the time $t$
+
+So, to remove this bias, one could try to build a "semi-implicit" method that does not privilege any of the two instat, **but makes a fair average**
+
+## Crank-Nicolson method
+$$\frac{1}{dt}(u(t+dt)-u(t)) \simeq \frac12\big( C(t+dt)u(t+dt) + C(t)u(t) \big)$$
+
+Notice that, in the previous methods, you keep just one of the two terms in the RHS average. Here you average them.
+
+It follows the Crank-Nicolson scheme
+$$u(t+dt) = u(t)\frac{(1+\frac{dt}{2}C(t))}{(1-\frac{dt}{2}C(t))}$$
+
+![noexplosionCrank-Nicolson](../Plots/no%20cubic%20term/Crank-Nicolson.png?raw=true)
+
+This scheme seems to be a successfull way of removing the bias.
+It seems that, if you choose $\bar{C}=0$, **you can suppress** the exponential increase/decay (absent in the analytical solution) by adopting the Crank-Nicolson method.
+
+## Crank-Nicolson including non-linear term $-u^3$
+
+$$u(t+dt) = u(t)\frac{(1+\frac{dt}{2}C(t))}{(1-\frac{dt}{2}C(t))}-\frac{u^3dt}{(1-\frac{dt}{2}C(t))}$$
+
+Now we expect, for $\bar{C}=0$, to have a **power law decay** $u(t)\sim t^{-\frac12}$
+
+![nosaturationordecaysWithCrank-Nicolson](../Plots/saturation%20plots/Crank-Nicolson%20no%20saturation.png?raw=true)
+
+We can see there is nor a saturation nor an exponential decay after the expected asymptotical behaviour!
+
+With Euler's method we found those two unexpected behaviour already at $t\sim 10^3$ for the adopted parameters ($T=1, u_0=1, dt=0.008$).
+But here we don't see them even at $t\sim 10^5$!!!

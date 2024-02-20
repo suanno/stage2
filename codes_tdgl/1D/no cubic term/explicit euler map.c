@@ -26,8 +26,6 @@ double u = 1;
 double ue = u;
 double nu = u;
 
-int use_explicit = 0;
-
 double ttime;
 int nloop=(Deltat)/dt;
 int loop;
@@ -67,8 +65,7 @@ if(Thalf > 0){
 for (loop=0; loop < nloop; loop++){
 	ttime = tmin + (loop+1)*dt;	/*We calculate u(t+dt) in this loop, so the first time we calculate u(tmin + dt)*/
 
-    /*Implicit Euler scheme*/
-	/*[If you want] First use Explicit Euler to calculate u^3 at the new time*/
+    /*Explicit Euler scheme*/
 	if (loop != 0)
 		nu = u + C[loop-1]*u*dt;
 	/*Calculate new time u*/
