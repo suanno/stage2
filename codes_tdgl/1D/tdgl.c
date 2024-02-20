@@ -11,6 +11,7 @@
 int main(int argc, char  *argv [ ]){
 
 /*Parameters: They are read from previous simulation .dat file*/
+
 int N=1000;
 double dx=0.1;
 
@@ -19,25 +20,23 @@ double tmin=1;	//tmin is the tmax of previous evolution
 double Deltat = 10;
 double tmax = tmin + Deltat;
 
-/*C(t) = Ampl*sin(pi*t/(T/2))*/
+/*C(t) = Cave + Ampl*sin(2pi*t)*/
 double Ampl = 1;
-double Thalf = -1;  // with this choice C will be constantly +1
+double Thalf = -1;  // T/2 If T < 0 it means C(t) = (Cave + Ampl) costant
+double Cave = 0;
 
-/* READ PARAMETERS */
-//fileinit = fopen("tdgl_init.dat", "r");
+/* Read parameters from last simulation */
 FILE *fileinit;
 int seed;
 fileinit = fopen("tdgl_result.dat", "r");
 /*First line is for parameters and seed
   tdgl adopts THE SAME parameters (N,dx, dt) that were used in the
-  previous evolution with tdglfd or tdgl
-  You CAN JUST CHANGE (C, Thalf) otherwise they are the same of the previous evolution
-  You MUST choose Deltat of the evolution
+  previous evolution with tdglfd or tdgl, unless specified in the command prompt.
 */
 fscanf(fileinit, "%d %lf %lf %lf %d %lf %lf\n", &N, &tmin, &dx, &dt, &seed, &Ampl, &Thalf);
 fclose(fileinit);
 
-/* Get inputs from the terminal */
+/* Get inputs from the prompt */
 char *ptr;
 if (argc > 1)
 	/*Choose Deltat of the evolution*/
@@ -48,22 +47,26 @@ if (argc > 2){
 if (argc > 3){
   	Thalf = strtod(argv[3], &ptr);
 }
-/*The evolutions are progressive, so the initial time (and state)
+
+/*The evolutions are consecutive, so the initial time (and state)
  are the finals of the previous evolution
 */
 tmax = tmin + Deltat;
+double ttime=0;
+int nloop=(Deltat)/dt;
+int loop;
 
-double x[vector_size];
-double u[vector_size];
-double ufr[vector_size];
-double ufi[vector_size];
-double udt[vector_size];
-double udtfr[vector_size];
-double udtfi[vector_size];
+double* x = malloc(N*sizeof(double));
+double* u = malloc(N*sizeof(double));
+double* ufr = malloc(N*sizeof(double));
+double* ufi = malloc(N*sizeof(double));
+double* udt = malloc(N*sizeof(double));
+double* udtfr = malloc(N*sizeof(double));
+double* udtfi = malloc(N*sizeof(double));
 
-double NL[vector_size];
-double NLfr[vector_size];
-double NLfi[vector_size];
+double* NL = malloc(N*sizeof(double));
+double* NLfr = malloc(N*sizeof(double));
+double* NLfi = malloc(N*sizeof(double));
 
 int i;
 double decainx=0;
@@ -72,39 +75,35 @@ double decaoutx=0;
 double decaoutu=0;
 double decaoutC=0;
 double decaoutAve=0;
-double decaoutq2mean=0;
 double decainC=0;
 double decatime=0;
 
-double ffr[vector_size];
-double qfr[vector_size];
-double d2coef[vector_size];
-double integ_coef[vector_size];
-double q2meannum=0.0;
-double q2meandenum=0.0;
+double* ffr = malloc(N*sizeof(double));
+double* qfr = malloc(N*sizeof(double));
+double* d2coef = malloc(N*sizeof(double));
+double* integ_coef = malloc(N*sizeof(double));
 
 FILE *stateeqn_result;
-FILE *fileCout;				/*C(t) values*/
+FILE *fileCout;				/*C(t+dt) values*/
 FILE *fileAveout;			/*Space average of u(t) values*/
 //FILE *fileCin;
-FILE *fileq2mean;			/*???*/
 
-double ttime=0;
-int nloop=(Deltat)/dt;
-int loop;
-double q2mean[nloop];
-double C[nloop];
-double uAve[nloop];
+double* C = malloc(nloop*sizeof(double));				/*C(t+dt) values*/
+double Cprev;											/*Temp variable to store C(t) [because C[loop] is C(t+dt) NOT C(t)]*/
+double* uAve = malloc(nloop*sizeof(double));			/*Space average of u(t) values*/
 
-//fileCin = fopen("fileC.dat", "r");
-//for (loop=0; loop<nloop; loop++){
-//fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
-//C[loop]=decainC;
-//}
-//fclose(fileCin);
+/*Read C(t) from file*/
+/*
+fileCin = fopen("fileC.dat", "r");
+for (loop=0; loop<nloop; loop++){
+	fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
+	C[loop]=decainC;
+}
+fclose(fileCin);
+*/
 
 /*Define value of C(t) in time.
-	C(t) = Ampl*sin(pi*t/(T/2))
+	C(t) = Cave + Ampl*sin(pi*t/(T/2))
 	NOTE: Time "t" starts at the beginning of the FIRST of
 	the serie of consecutive evolutions, and NOT at the beginning
 	of the current simulation.
@@ -121,15 +120,8 @@ for (loop=0;loop<nloop;loop++){
 ttime = tmin + (loop + 1)*dt;		/*C[loop] = C(t+dt), so it's NOT C(t)*/
 if(Thalf > 0){
 	C[loop]=Ampl*sin(pi*ttime/Thalf);
-	//C(t_{k+1})
-	/*
-	if (sin(pi*ttime/Thalf)>=0) 
-		C[loop]=Ampl;
-	else 
-		C[loop]=-Ampl;
-	*/
 	}
-	else	/*Thalf < 0 means you want to keep C costant*/
+	else							/*Thalf < 0 means you want to keep C = Cave + Ampl costant*/
 		C[loop] = Ampl;
 }
 
@@ -159,7 +151,6 @@ qfr[i]=ffr[i]*2*pi/N;
 }
 
 /*LOAD INITIAL STATE*/
-//fileinit = fopen("tdgl_init.dat", "r");
 fileinit = fopen("tdgl_result.dat", "r");
 /*First line is for parameters and seed*/
 fscanf(fileinit, "%d %lf %lf %lf %d %lf %lf\n", &N, &tmin, &dx, &dt, &seed, &Ampl, &Thalf);
@@ -182,19 +173,17 @@ d2coef[i]=-(qfr[i]/dx)*(qfr[i]/dx);
 
 /* EVOLUTION CODE */
 for (loop=0; loop < nloop; loop++){
-	ttime = tmin + (loop+1)*dt;	/*We calculate u(t+dt) in this loop, so the first time we calculate u(tmin + dt)*/
+	ttime = tmin + (loop+1)*dt;	/*We calculate u(t+dt) in this loop, 
+	so the first time we calculate (and save in the .dat) u(tmin + dt), NOT u(t)*/
 
-	/*printf("uAve(%d) = %lf\n", loop, uAve[loop]);*/
-	//printf("Ave(%lf) = %lf", ttime, uAve[loop]);
-
-	/*Denominator of implicit euler [As equation is non-linear, the numerator will be unusual, but the denominator no]*/
+	/*Denominator of Crank-Nicolson*/
 	for (i=0; i<N; i++){
-	integ_coef[i]=1-dt*C[loop]-dt*d2coef[i]; //Note that d2coeff = -q^2 (already contains a minus sign)
-											 //And that C[loop] is C(t+dt), NOT C(t)
+	integ_coef[i]=1-dt*C[loop]/2-dt*d2coef[i]/2; 	//Note that d2coeff = -q^2 (already contains a minus sign)
+											 		//And that C[loop] is C(t+dt), NOT C(t)
+													//And the 1/2 is for Crank-Nicolson
 	}
 
-	/*Compute FFT of u(x)->u(q)*/
-	// transform h
+	/*Compute FFT of u(x)->U(q)*/
 	for(i=0; i<N; i++) {
 	in[i][0]=u[i];
 	in[i][1]=0.0;
@@ -205,20 +194,10 @@ for (loop=0; loop < nloop; loop++){
 	ufi[i]=out[i][1];
 	}
 
-	/*???*/
-	q2meannum=0.0;
-	q2meandenum=0.0;
-	for(i=0; i<N; i++) {
-	q2meannum = q2meannum + (qfr[i]/dx)*(qfr[i]/dx)*(ufr[i]*ufr[i]+ufi[i]*ufi[i]);
-	q2meandenum = q2meandenum + (ufr[i]*ufr[i]+ufi[i]*ufi[i]);
-	}
-	q2mean[loop] = q2meannum/q2meandenum;
-
 	// ********** begin of main algorithm **********
 
-	/*Compute FFT of u(x)^3 */
+	/*Compute FFT of u(x)^3 (u^3 is called NL: Non Linear term)*/
 	for (i=0; i<N; i++){
-	//NL[i] = u[i] + dt*(C[loop]*u[i]-u[i]*u[i]*u[i]);	/*Using Explicit euler to calculate u^3(t+dt). Note you should put C[loop-1]*/
 	NL[i]=u[i]*u[i]*u[i];
 	}
 
@@ -232,13 +211,16 @@ for (loop=0; loop < nloop; loop++){
 	NLfi[i]=out[i][1];
 	}
 
+	/*C[loop] = C(t+dt) but we need even C(t)=Cprev*/
+	if (loop == 0)
+		Cprev = 0;
+	else
+		Cprev = C[loop-1];
 	
-
+	/*Crank-Nicolson*/
 	for (i=0; i<N; i++){
-	/*IMPLICIT EULER*/
-	//implicit Euler scheme
-	udtfr[i]=(ufr[i]-dt*NLfr[i])/integ_coef[i];	//The numerator has unusual shape because eq. in non-linear
-	udtfi[i]=(ufi[i]-dt*NLfi[i])/integ_coef[i];
+		udtfr[i]=(ufr[i]*(1+dt*Cprev/2+dt*d2coef[i]/2)-dt*NLfr[i])/integ_coef[i];
+		udtfi[i]=(ufi[i]*(1+dt*Cprev/2+dt*d2coef[i]/2)-dt*NLfi[i])/integ_coef[i];	
 	}
 
 	// ********** end of main algorithm **********
@@ -275,14 +257,6 @@ decaoutu=u[i];
 fprintf(stateeqn_result, "%.1f %.20f\n", decaoutx, decaoutu);
 }
 fclose(stateeqn_result);
-
-fileq2mean = fopen("q2mean.dat", "w");
-for (loop=0; loop<nloop; loop++){
-ttime = tmin + (loop+1)*dt;
-decaoutq2mean=q2mean[loop];
-fprintf(fileq2mean, "%.2f %.20f\n", ttime, decaoutq2mean);
-}
-fclose(fileq2mean);
 
 /*Save the values taken by C(t) in time.
   They are appendend, so you save its values from t=0

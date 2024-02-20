@@ -28,7 +28,7 @@
     
 - Execute "tdgl", this code evolves **progressively** the state in Fourier space. The syntax is the same of "tdglfd"
 
-        gcc tdglfd.c -o .bin/tdglfd -lfftw3 -lm
+        gcc tdgl.c -o .bin/tdglfd -lfftw3 -lm
         ./tdgl <tspan> A T
     It needs the existance of the file "tdgl_result.dat" to be run and the initial state must be smooth (because a sinusoidal decomposition must make sense).
 
