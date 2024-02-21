@@ -13,21 +13,23 @@ int main(int argc, char* argv[]){
 int N=1000;            /*Lattice sites*/
 double dx = 0.1;        /*Lattice spacing*/
 double L=N*dx;
-double Hm2=1;           /* ? */
 
 double dt=0.008; // note: stable upto dt=0.001
 double tmin=0;
 double tmax=1;  // Suggest "1" because in the fft algorithm tmin = 1 is hardcoded 
+double Deltat = tmax - tmin;
 
+/*C(t) = Cave + Ampl*sin(2pi*t)*/
+double Cave = 0;
 double Ampl = 1;
-double Thalf = -1;  // with this choice C will be constantly +Ampl
+double Thalf = -1;  // T/2; If Thalf < 0, then C(t) will be constantly +Cave
 
 
 /* Get inputs from the terminal */
 char *ptr;
 //printf("argv1 = %lf", atof(argv[1]));
 if (argc > 1)
-	tmax=strtod(argv[1], &ptr);
+	Deltat = strtod(argv[1], &ptr);
 if (argc > 2){
   Ampl = strtod(argv[2], &ptr);
 }
@@ -36,11 +38,14 @@ if (argc > 3){
   Thalf = strtod(argv[3], &ptr)/2;
 }
 if (argc > 4){
-  /*Period of the sine*/
-  dt = strtod(argv[4], &ptr);
+  /*Offset of C(t)*/
+  Cave = strtod(argv[4], &ptr);
 }
-  
-int veclen = (int)(round(tmax/dt));
+if (argc > 5){
+  /*Period of the sine*/
+  dt = strtod(argv[5], &ptr);
+}
+tmax = tmin + Deltat;
 
 /*The scalar field is Phi(x,t) and we call it u(x,t)
 - x dependance is in the array index
@@ -49,15 +54,15 @@ u = Phi(t)
 up = Phi(t-1)
 udt = dPhi/dt
 */
-double* u = malloc(veclen*sizeof(double));       
-double* udt = malloc(veclen*sizeof(double));
-double* up = malloc((veclen + 2)*sizeof(double));
+double* u = malloc(N*sizeof(double));       
+double* udt = malloc(N*sizeof(double));
+double* up = malloc((N + 2)*sizeof(double));
 
-double* lapu = malloc(veclen*sizeof(double));
+double* lapu = malloc(N*sizeof(double));
 
-double* dF = malloc(veclen*sizeof(double));
-double* uc = malloc(veclen*sizeof(double));
-double* Lu = malloc(veclen*sizeof(double));
+double* dF = malloc(N*sizeof(double));
+double* uc = malloc(N*sizeof(double));
+double* Lu = malloc(N*sizeof(double));
 
 double z;
 double decax;
@@ -71,7 +76,7 @@ int loop;
 double ttime;
 
 double area;
-int nloop=(tmax-tmin)/dt;
+int nloop=Deltat/dt;
 
 double* C = malloc(nloop*sizeof(double));
 double* Ave = malloc(nloop*sizeof(double));
@@ -84,17 +89,12 @@ fclose(file);
 file = fopen("fileAveout.dat", "w");
 fclose(file);
 
-/*Define the values of C(t) at different times
-  We set C(t) switching between +Ampl and -Ampl with the
-  period of sin(2pi*t)
-*/
-
-
+/*Define the values of C(t) at different times*/
 for (loop=0;loop<nloop;loop++){
 ttime = tmin + (loop+1)*dt;
 //C(t_{k+1})
 if(Thalf > 0){
-  C[loop]=Ampl*sin(pi*ttime/Thalf);
+  C[loop]= Cave + Ampl*sin(pi*ttime/Thalf);
   /*
 	if (sin(pi*ttime/Thalf)>=0) 
 		C[loop]=Ampl;
@@ -103,7 +103,7 @@ if(Thalf > 0){
   */
 	}
 	else
-		C[loop] = Ampl;
+		C[loop] = Cave;
 }
 /*
 for (loop = 0; loop < nloop; loop++){
@@ -129,7 +129,7 @@ u[i]=z;
 fclose(filerandominit);
 
 
-/*--- Numerical solving A.L. eq ---*/
+/*--- Numerical solving TDGL eq ---*/
 
 /*Time loop*/
 
@@ -139,8 +139,8 @@ for(loop=0;loop<nloop;loop++) {
     ttime = (loop+1)*dt+tmin;
 
     for(i=0; i<N; i++) {
-    up[i+1] = u[i];
-    dF[i]=u[i]*u[i]*u[i]-C[loop]*Hm2*u[i];
+      up[i+1] = u[i];
+      dF[i]=u[i]*u[i]*u[i]-C[loop]*u[i];
     }
 
     /*PBC boundaries*/
@@ -149,16 +149,16 @@ for(loop=0;loop<nloop;loop++) {
 
     /*Compute second order second derivative*/
     for(i=1; i<N+1; i++) {
-    lapu[i-1]=d2coef*(up[i+1]+up[i-1]-2*up[i]);
+      lapu[i-1]=d2coef*(up[i+1]+up[i-1]-2*up[i]);
     }
 
     /*Compute EXPLICIT Euler du/dt and then du (and so u(t+1))*/
     for(i=0;i<N;i++) {
-    Lu[i] = lapu[i] - dF[i];
-    udt[i] = u[i] + dt*Lu[i];
+      Lu[i] = lapu[i] - dF[i];
+      udt[i] = u[i] + dt*Lu[i];
     }
     for(i=0;i<N;i++) {
-    u[i] = udt[i];
+      u[i] = udt[i];
     }
     
     /*Compute space average*/
@@ -192,7 +192,7 @@ fclose(fileAveout);
 filetdglinit = fopen("tdgl_result.dat", "w");
 /*Save parameters N, tmax, dx, dt, seed*/
 tmax = tmax + tmin; // So we save the TOTAL time of the dynamics
-fprintf(filetdglinit, "%d %.2lf %.10lf %.10lf %d %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf);
+fprintf(filetdglinit, "%d %.2lf %.10lf %.10lf %d %lf %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf, Cave);
 for(i=0;i<N;i++) {
 decax=i*dx;
 decau=u[i];
@@ -200,6 +200,15 @@ fprintf(filetdglinit, "%.2f %.20f\n", decax, decau);
 }
 fclose(filetdglinit);
 
+free(u);
+free(up);
+free(udt);
+free(dF);
+free(uc);
+free(Lu);
+free(lapu);
+free(C);
+free(Ave);
+
 return 0;
 }
-

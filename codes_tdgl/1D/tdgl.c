@@ -5,7 +5,6 @@
 #include <math.h>
 #include <fftw3.h>
 
-#define vector_size 10000
 #define pi 4*atan(1.0)
 
 int main(int argc, char  *argv [ ]){
@@ -21,9 +20,9 @@ double Deltat = 10;
 double tmax = tmin + Deltat;
 
 /*C(t) = Cave + Ampl*sin(2pi*t)*/
-double Ampl = 1;
-double Thalf = -1;  // T/2 If T < 0 it means C(t) = (Cave + Ampl) costant
 double Cave = 0;
+double Ampl = 1;
+double Thalf = -1;  // T/2 If T < 0 it means C(t) = Cave costant
 
 /* Read parameters from last simulation */
 FILE *fileinit;
@@ -33,19 +32,28 @@ fileinit = fopen("tdgl_result.dat", "r");
   tdgl adopts THE SAME parameters (N,dx, dt) that were used in the
   previous evolution with tdglfd or tdgl, unless specified in the command prompt.
 */
-fscanf(fileinit, "%d %lf %lf %lf %d %lf %lf\n", &N, &tmin, &dx, &dt, &seed, &Ampl, &Thalf);
+fscanf(fileinit, "%d %lf %lf %lf %d %lf %lf %lf\n", &N, &tmin, &dx, &dt, &seed, &Ampl, &Thalf, &Cave);
 fclose(fileinit);
 
-/* Get inputs from the prompt */
+/* Get inputs from the terminal */
 char *ptr;
+//printf("argv1 = %lf", atof(argv[1]));
 if (argc > 1)
-	/*Choose Deltat of the evolution*/
 	Deltat = strtod(argv[1], &ptr);
 if (argc > 2){
   	Ampl = strtod(argv[2], &ptr);
 }
 if (argc > 3){
-  	Thalf = strtod(argv[3], &ptr);
+  	/*Period of the sine*/
+  	Thalf = strtod(argv[3], &ptr)/2;
+}
+if (argc > 4){
+  	/*Offset of C(t)*/
+  	Cave = strtod(argv[4], &ptr);
+}
+if (argc > 5){
+  	/*Period of the sine*/
+  	dt = strtod(argv[5], &ptr);
 }
 
 /*The evolutions are consecutive, so the initial time (and state)
@@ -119,10 +127,10 @@ fclose(fileCin);
 for (loop=0;loop<nloop;loop++){
 ttime = tmin + (loop + 1)*dt;		/*C[loop] = C(t+dt), so it's NOT C(t)*/
 if(Thalf > 0){
-	C[loop]=Ampl*sin(pi*ttime/Thalf);
+	C[loop]=Cave + Ampl*sin(pi*ttime/Thalf);
 	}
 	else							/*Thalf < 0 means you want to keep C = Cave + Ampl costant*/
-		C[loop] = Ampl;
+		C[loop] = Cave;
 }
 
 ttime=0;
@@ -250,7 +258,7 @@ for (loop=0; loop < nloop; loop++){
 /*Save the final state*/
 stateeqn_result = fopen("tdgl_result.dat", "w");
 /*Save parameters N, tmax, dx, dt, seed, Ampl, Thalf*/
-fprintf(stateeqn_result, "%d %.2lf %.10lf %.10lf %d %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf);
+fprintf(stateeqn_result, "%d %.2lf %.10lf %.10lf %d %lf %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf, Cave);
 for (i=0; i<N; i++){
 decaoutx=x[i];
 decaoutu=u[i];
@@ -285,6 +293,24 @@ fftw_destroy_plan(pf);
 fftw_destroy_plan(pb);
 fftw_free(in);
 fftw_free(out);
+
+free(x);
+free(u);
+free(ufr);
+free(ufi);
+free(udt);
+free(udtfr);
+free(udtfi);
+free(NL);
+free(NLfr);
+free(NLfi);
+free(C);
+free(uAve);
+free(ffr);
+free(qfr);
+free(d2coef);
+free(integ_coef);
+
 	return 0;
 }
 
