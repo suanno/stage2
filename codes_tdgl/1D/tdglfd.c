@@ -16,7 +16,7 @@ double L=N*dx;
 
 double dt=0.008; // note: stable upto dt=0.001
 double tmin=0;
-double tmax=1;  // Suggest "1" because in the fft algorithm tmin = 1 is hardcoded 
+double tmax=0;
 double Deltat = tmax - tmin;
 
 /*C(t) = Cave + Ampl*sin(2pi*t)*/
@@ -24,6 +24,13 @@ double Cave = 0;
 double Ampl = 1;
 double Thalf = -1;  // T/2; If Thalf < 0, then C(t) will be constantly +Cave
 
+/*Read parameters from parameters.txt.
+  Those are the used parameters, unless specified in the prompt
+*/
+FILE *fileparams;
+fileparams = fopen("parameters.dat", "r");
+fscanf(fileparams, "dx %lf\ndt %lf\nA %lf\nT %lf\nCave %lf", &dx, &dt, &Ampl, &Thalf, &Cave);
+fclose(fileparams);
 
 /* Get inputs from the terminal */
 char *ptr;
@@ -192,11 +199,11 @@ fclose(fileAveout);
 filetdglinit = fopen("tdgl_result.dat", "w");
 /*Save parameters N, tmax, dx, dt, seed*/
 tmax = tmax + tmin; // So we save the TOTAL time of the dynamics
-fprintf(filetdglinit, "%d %.2lf %.10lf %.10lf %d %lf %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf, Cave);
+fprintf(filetdglinit, "%d %.10lf %.10lf %.10lf %d %lf %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf, Cave);
 for(i=0;i<N;i++) {
 decax=i*dx;
 decau=u[i];
-fprintf(filetdglinit, "%.2f %.20f\n", decax, decau);
+fprintf(filetdglinit, "%.5f %.20f\n", decax, decau);
 }
 fclose(filetdglinit);
 

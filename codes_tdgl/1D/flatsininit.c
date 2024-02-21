@@ -18,35 +18,45 @@ return randU1;
 }
 
 int main(int argc, char  *argv [ ]){
-/*Generate N unif r.v. with average hmoy and amplitude eps*/
-
 
 int i;
 
 int N=1000;
-double deca;
-double eps = 0;
-double hmoy = 0;
+double u0;              /*Initial flat value*/
 int seed;
+double eps = 0;
+double dx = 0.1;
+
+
+seed = time(NULL);
+srand(seed);
 
 char *ptr;
 if (argc > 1)
 	N = (int)strtod(argv[1], &ptr);
-if (argc > 2)
-  	eps = strtod(argv[2], &ptr);
-if (argc > 3)
-    hmoy = strtod(argv[3], &ptr);
+if (argc > 2){
+  	u0 = strtod(argv[2], &ptr);
+    if (argc > 3){
+        eps = strtod(argv[3], &ptr);
+        if (argc > 4){
+            dx = strtod(argv[4], &ptr);
+        }
+    }
+}
+
+
 
 FILE *fileinit;
+double u;
+double lambda = 20;
 
-seed = time(NULL);
-srand(seed);
 fileinit = fopen("fileinit.dat", "w");
 fprintf(fileinit, "%d %d\n", seed, N);
 #pragma omp parallel for
 for (i=0; i<N; i++){
-    deca=randU(-eps, eps)+hmoy;
-    fprintf(fileinit, "%.20f\n", deca);
+    u = u0 + eps*sin(2*pi*i*dx/lambda);
+    //printf("\nlambda = %lf; x = %lf", lambda, i*dx);
+    fprintf(fileinit, "%.20f\n", u);
 }
 
 fclose(fileinit);

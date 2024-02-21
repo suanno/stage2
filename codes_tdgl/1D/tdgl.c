@@ -159,18 +159,19 @@ qfr[i]=ffr[i]*2*pi/N;
 }
 
 /*LOAD INITIAL STATE*/
-fileinit = fopen("tdgl_result.dat", "r");
+
+FILE *fileinit2;
+fileinit2 = fopen("tdgl_result.dat", "r");
 /*First line is for parameters and seed*/
-fscanf(fileinit, "%d %lf %lf %lf %d %lf %lf\n", &N, &tmin, &dx, &dt, &seed, &Ampl, &Thalf);
+fscanf(fileinit2, "%d %lf %lf %lf %d %lf %lf %lf\n", &N, &tmin, &dx, &dt, &seed, &Ampl, &Thalf, &Cave);
 /*Now read the initial (smooth) state*/
 for (i=0; i<N; i++){
-fscanf(fileinit, "%lf %lf \n", &decainx, &decainu);
-if(i==0)
-	printf("%lf\n", decainx);
+fscanf(fileinit2, "%lf %lf\n", &decainx, &decainu);
 x[i]=decainx;
 u[i]=decainu;
+printf("\n\n%lf\n", decainx);
 }
-fclose(fileinit);
+fclose(fileinit2);
 
 //------------------------------------
 
@@ -258,11 +259,11 @@ for (loop=0; loop < nloop; loop++){
 /*Save the final state*/
 stateeqn_result = fopen("tdgl_result.dat", "w");
 /*Save parameters N, tmax, dx, dt, seed, Ampl, Thalf*/
-fprintf(stateeqn_result, "%d %.2lf %.10lf %.10lf %d %lf %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf, Cave);
+fprintf(stateeqn_result, "%d %.10lf %.10lf %.10lf %d %lf %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf, Cave);
 for (i=0; i<N; i++){
 decaoutx=x[i];
 decaoutu=u[i];
-fprintf(stateeqn_result, "%.1f %.20f\n", decaoutx, decaoutu);
+fprintf(stateeqn_result, "%.10f %.20f\n", decaoutx, decaoutu);
 }
 fclose(stateeqn_result);
 

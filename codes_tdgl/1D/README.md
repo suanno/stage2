@@ -40,7 +40,15 @@
 ## Saving
 You can execute "save.ipynb" to save the results of the evolution (see the notebook for more info).
 
+**ATTENTION**: Now i commented some lines of save.ipynb and added some new. Now it works for "rapid plot" but not for "flat plot" because i add a new line at the top of the file.
+
+You **have to FIX** this incompatibility!
+
 ## Plotting
 - To plot the actual state of the system, you can use "plot_state.ipynb" that even saves the plot in a directory with the _seed_ name, while the name of the image is the _time t_ of the state.
 
 - To plot the space average of $u(x,t)$ at times $t=nT$, where $T$ is the period of $C(t)$, you can use "flat plots saves.ipynb", that uses the saved data with "save.ipynb".
+
+- Rapid plot: Are two files 
+    - rapid plot.ipynb: Plots the content of fileAveout.dat and tdgl_results.dat (of the **last** simulation you run without the need of specifying the name of the saves' file)
+    - rapid multiplot.ipynb: You specify the name of the folder containing the data you want to plot (Space average of $u$ data) and plots on the same canvas all the curves. The label of each curve is the **first line** of the corresponding fileAveout.dat, that **is added editing save.ipynb**
