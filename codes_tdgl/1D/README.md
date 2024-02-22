@@ -1,10 +1,10 @@
 # TUTORIAL: solve TDGL
 - Execute "flatinit" to have a flat initial state or "datainit" to have a random state very close to $u=0$ .
         
-        gcc flatinit.c -o .bin/flatinit
+        gcc initialization/flatinit.c -o .bin/flatinit
         ./flatinit <lattice points> <flat value>
 
-        gcc datainit.c -o .bin/datainit
+        gcc initialization/datainit.c -o .bin/datainit
         ./datainit <lattice points>
     Both file will create a "fileinit.dat" which has the _seed_ and the _number of lattice points_ in the first line.
     In the following lines it contains the $u(x,0)$ values.
@@ -26,7 +26,9 @@
     - the seed (this information can be used when reading the data to label a plot or to perform again the same evolution for _troubleshooting_)
     - the amplitude $A$ and the half-period $T/2$ of the $C(t)$ evolution
     
-- Execute "tdgl", this code evolves **progressively** the state in Fourier space. The syntax is the same of "tdglfd"
+- Execute "tdgl", this code evolves **progressively** the state in Fourier space. 
+It is **necessary** to execute before "tdglfd", even for a timespan = 0, in order to initialize the "tdgl_result.dat" file.
+The syntax is the same of "tdglfd"
 
         gcc tdgl.c -o .bin/tdglfd -lfftw3 -lm
         ./tdgl <tspan> <A> <T> <Caverage> <dt>
@@ -38,17 +40,17 @@
     The files "fileCout.dat" and "fileAveout.dat" are emptied when "tdglfd" or "flatinit" or "datainit" are executed and the file "fileinit.dat" is overwritten.
 
 ## Saving
-You can execute "save.ipynb" to save the results of the evolution (see the notebook for more info).
+You can execute "save.ipynb" to save the results (initial/final states, <u(t)>, C(t)) of the evolution (see the notebook for more info).
 
-**ATTENTION**: Now i commented some lines of save.ipynb and added some new. Now it works for "rapid plot" but not for "flat plot" because i add a new line at the top of the file.
-
-You **have to FIX** this incompatibility!
+You only need to specify:
+- the **folder** were save the results. Results contained in the same folder can be plotted on the same canvas.
+- a **custom label** that will be show when you plot many results on the same canvas. It is saved in _label.dat_. [This feature is not present in "flat plot" script, that will neglect this file]
 
 ## Plotting
-- To plot the actual state of the system, you can use "plot_state.ipynb" that even saves the plot in a directory with the _seed_ name, while the name of the image is the _time t_ of the state.
 
-- To plot the space average of $u(x,t)$ at times $t=nT$, where $T$ is the period of $C(t)$, you can use "flat plots saves.ipynb", that uses the saved data with "save.ipynb".
-
-- Rapid plot: Are two files 
-    - rapid plot.ipynb: Plots the content of fileAveout.dat and tdgl_results.dat (of the **last** simulation you run without the need of specifying the name of the saves' file)
-    - rapid multiplot.ipynb: You specify the name of the folder containing the data you want to plot (Space average of $u$ data) and plots on the same canvas all the curves. The label of each curve is the **first line** of the corresponding fileAveout.dat, that **is added editing save.ipynb**
+- **Rapid** plot
+    - _rapid plot.ipynb_ just plots the space average of $u(t)$ and the final state $u(x,tmax)$ of the **last** simulation (**it's not necessary to save**)
+    - _rapid multiplot.ipynb_ plots the space average of $u(t)$ and the final state of **ALL** the experiments contained **in the specified folder**.
+- **Flat** plot
+    
+    They are some scripts to plot the results of evolution of a flat profile. The oscillatory behaviour is removed by evaluating $u(t)$ only at times $t=nT$. [To plot old simulation, you may have to edit the script and remove "Cave" from the values that you expect to read in the first line of "tdgl_results.dat"]

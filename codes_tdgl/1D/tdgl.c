@@ -169,7 +169,7 @@ for (i=0; i<N; i++){
 fscanf(fileinit2, "%lf %lf\n", &decainx, &decainu);
 x[i]=decainx;
 u[i]=decainu;
-printf("\n\n%lf\n", decainx);
+/*printf("\n\n%lf\n", decainx);*/
 }
 fclose(fileinit2);
 
