@@ -1,16 +1,23 @@
 # TUTORIAL: solve TDGL
-- Execute "flatinit" to have a flat initial state or "datainit" to have a random state very close to $u=0$ .
+- Execute one of the codes in /initialization/ to generate the initial state.
         
         gcc initialization/flatinit.c -o .bin/flatinit
         ./flatinit <lattice points> <flat value>
 
         gcc initialization/datainit.c -o .bin/datainit
         ./datainit <lattice points>
-    Both file will create a "fileinit.dat" which has the _seed_ and the _number of lattice points_ in the first line.
+
+        For more, see /initialization/README.md
+    It will be created a file named "fileinit.dat" which has the _seed_ and the _number of lattice points_ in the first line.
     In the following lines it contains the $u(x,0)$ values.
     **NOTE:** You have to select **$N$ even** to use "tdgl", because the FFT algotithm used assumes that $N$ is even!!!
 
-- Execute "tdglfd", it evolves the state with **Explicit euler** (_fd_ stands for _finite difference_) for a time $tspan$ (with discrete time step $dt$) with varying in time $C(t) = \bar{C} + A\sin(2\pi t/T)$ (where we adopt the convention $T/2 = -1$ means that C is costant and $C=A$)
+- Execute "tdglfd". 
+
+    ### The execution of this code **is MANDATORY BEFORE evolving the state with "tdgl"
+    (even for $\Delta t = 0$) for evolving the system with "tdgl", **because it creates the necessary file "tdgl_result.dat".**
+    
+    This code evolves the state with **Explicit euler** (_fd_ stands for _finite difference_) for a time $tspan$ (with discrete time step $dt$) with varying in time $C(t) = \bar{C} + A\sin(2\pi t/T)$ (where we adopt the convention $T/2 = -1$ means that C is costant and $C=A$)
         
         gcc tdglfd.c -o .bin/tdglfd -lm
         ./tdglfd <tspan> <A> <T> <Caverage> <dt>
@@ -27,8 +34,9 @@
     - the amplitude $A$ and the half-period $T/2$ of the $C(t)$ evolution
     
 - Execute "tdgl", this code evolves **progressively** the state in Fourier space. 
-It is **necessary** to execute before "tdglfd", even for a timespan = 0, in order to initialize the "tdgl_result.dat" file.
-The syntax is the same of "tdglfd"
+It is **necessary** to execute before "tdglfd", even for a timespan = 0, in order to initialize the "tdgl_result.dat" file (with certain exeptions: flatsinit.c, see more on /initialization/).
+
+    The syntax is the same of "tdglfd"
 
         gcc tdgl.c -o .bin/tdglfd -lfftw3 -lm
         ./tdgl <tspan> <A> <T> <Caverage> <dt>
