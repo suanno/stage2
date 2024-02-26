@@ -73,3 +73,18 @@ But we know (from non-rigorous reasoning) that we have unstable modes if $q < q_
 This means that they decay exponentially, and so it does the central plateau.
 
 - The stationary solutions are periodic. This means that we can have a stationary solution with two very close plateau but, **at the same time** there must be other plateaus, as the solution is periodic and the two kinks are very close and occupy very small space of the simulation box.
+
+# Kinks (periodic) sytationary state stability
+
+The periodic (with kinks) stationary states are not stable, because it exists a mechanism of annichilation of the kinks.
+This mechanism is very slow, because its velocity is $\sim e^{-d}$ where $d$ is the kinks' distance.
+Anyway it exists, so **the periodic stationary states are NOT stable**.
+
+### Adiabatic and Non-adiabatic behaviour
+As a consequence, it is reasonable that, if we vary $C(t)$ in time, the system does not "follow" the stationary state (whose shape depends on C).
+Because the system is "not attracted" by the stationary state, as it's unstable.
+
+As the mechanism is very slow, we expect an "adiabatic" behaviour (follow the stationary state) when $T>>\tau$ where the charateristic time for the evolution of the system $\tau$ is found like this:
+
+In a stationary state, the plateaus are $\simeq C$ [IF $C$ is sufficiently big].
+So if $C\sim 1$ (oscillates around 1), then we can neglect the non-linear term and so $u_t = Cu \implies \tau\sim\frac{1}{C}$.
