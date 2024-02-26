@@ -23,6 +23,9 @@ double tmax = tmin + Deltat;
 double Cave = 0;
 double Ampl = 1;
 double Thalf = -1;  // T/2 If T < 0 it means C(t) = Cave costant
+int notsmoothC = 0;	// 1: C(t) starts from 0 at the beginning of CURRENT/LAST evolution
+					// 0: C(t) starts from zero at the beginning of the FISRT EVER evolution
+
 
 /* Read parameters from last simulation */
 FILE *fileinit;
@@ -52,8 +55,15 @@ if (argc > 4){
   	Cave = strtod(argv[4], &ptr);
 }
 if (argc > 5){
+	/*Decide wether C(t) must vary SMOOTHLY between
+	an evolution and the next one. Or if it shall start from
+	sin(0) = 0 in the CURRENT/LAST evolution*/
+	if (strtod(argv[5], &ptr) == 1)
+		notsmoothC = 1;
+}
+if (argc > 6){
   	/*Period of the sine*/
-  	dt = strtod(argv[5], &ptr);
+  	dt = strtod(argv[6], &ptr);
 }
 
 /*The evolutions are consecutive, so the initial time (and state)
@@ -127,7 +137,7 @@ fclose(fileCin);
 for (loop=0;loop<nloop;loop++){
 ttime = tmin + (loop + 1)*dt;		/*C[loop] = C(t+dt), so it's NOT C(t)*/
 if(Thalf > 0){
-	C[loop]=Cave + Ampl*sin(pi*ttime/Thalf);
+	C[loop]=Cave + Ampl*sin(pi*(ttime-tmin*notsmoothC)/Thalf);
 	}
 	else							/*Thalf < 0 means you want to keep C = Cave + Ampl costant*/
 		C[loop] = Cave;
@@ -163,7 +173,8 @@ qfr[i]=ffr[i]*2*pi/N;
 FILE *fileinit2;
 fileinit2 = fopen("tdgl_result.dat", "r");
 /*First line is for parameters and seed*/
-fscanf(fileinit2, "%d %lf %lf %lf %d %lf %lf %lf\n", &N, &tmin, &dx, &dt, &seed, &Ampl, &Thalf, &Cave);
+double Thalf_temp, dt_temp, Cave_temp, Ampl_temp;
+fscanf(fileinit2, "%d %lf %lf %lf %d %lf %lf %lf\n", &N, &tmin, &dx, &dt_temp, &seed, &Ampl_temp, &Thalf_temp, &Cave_temp);
 /*Now read the initial (smooth) state*/
 for (i=0; i<N; i++){
 fscanf(fileinit2, "%lf %lf\n", &decainx, &decainu);

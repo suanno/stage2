@@ -40,6 +40,9 @@ It is **necessary** to execute before "tdglfd", even for a timespan = 0, in orde
 
         gcc tdgl.c -o .bin/tdglfd -lfftw3 -lm
         ./tdgl <tspan> <A> <T> <Caverage> <dt>
+
+    **Note**: The oscillation $C(t)$ starts from the beginning of the _current_ evolution (not of the first one!). So the first value, in the launched evolution, of $C(t)$ is zero! (unless you vary $C(t)$ taking it constant).
+
     It needs the existance of the file "tdgl_result.dat" to be run and the initial state must be smooth (because a sinusoidal decomposition must make sense).
 
     It **updates** the state recorded in "tdgl_result.dat", updating even the time $t$ of the state.
