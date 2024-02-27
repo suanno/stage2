@@ -30,10 +30,10 @@ If the dynamic is fast, the numerical error you have in the first steps is large
 
 ### Pre-asymptotic behavior
 
-We can see the pre-asymptotic behavior for a small initial value $u_0 = 0.2$ ![here](../Plots/asymptotic%20new%20plots/analytical%20u=0.2.png?raw=true)
+We can see the pre-asymptotic behavior for a small initial value $u_0 = 0.2$ ![here](../../Plots/asymptotic%20new%20plots/analytical%20u=0.2.png?raw=true)
 
 ### Asymptotic behavior
-The asymptotic behavior is observable in the numerical solutions ![here](../Plots/asymptotic%20new%20plots/analytical%20u=10.png?raw=true), where we adopted a large $u_0=10$ in order to get rid of the pre-asymptotic behaviour
+The asymptotic behavior is observable in the numerical solutions ![here](../../Plots/asymptotic%20new%20plots/analytical%20u=10.png?raw=true), where we adopted a large $u_0=10$ in order to get rid of the pre-asymptotic behaviour
 
 **However:**
         
@@ -41,9 +41,9 @@ The asymptotic behavior is observable in the numerical solutions ![here](../Plot
 
 ### Post-asymptotic behavior
 The saturation time is independent on the period $T$ as shown her
-![here](../Plots/asymptotic%20new%20plots/fixed%20dt=0.008%20u=0.2.png?raw=true)
+![here](../../Plots/asymptotic%20new%20plots/fixed%20dt=0.008%20u=0.2.png?raw=true)
 
 So the saturation time depends only on $dt$ and not on $T$.
 
 The _lenght_ of the _saturation tail_ seems to be infinite as shows this $tspan = 10^4$ evolution ($u_0 = 10$)
-![here](../Plots/asymptotic%20new%20plots/saturation%20tail.png?raw=true)
+![here](../../Plots/asymptotic%20new%20plots/saturation%20tail.png?raw=true)
