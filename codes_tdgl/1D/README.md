@@ -39,9 +39,11 @@ It is **necessary** to execute before "tdglfd", even for a timespan = 0, in orde
     The syntax is the same of "tdglfd"
 
         gcc tdgl.c -o .bin/tdglfd -lfftw3 -lm
-        ./tdgl <tspan> <A> <T> <Caverage> <dt>
+        ./tdgl <tspan> <A> <T> <Caverage> <notsmoothC(t)> <dt>
 
-    **Note**: The oscillation $C(t)$ starts from the beginning of the _current_ evolution (not of the first one!). So the first value, in the launched evolution, of $C(t)$ is zero! (unless you vary $C(t)$ taking it constant).
+    **Note**: The oscillation $C(t)$ starts from $t=0$ and **NOT** from the beginning of the _last evolution_. So the first value, in the simulation you will launch, is **NOT** necessary zero! (unless the initial time of the simulation is a multiple of the period $T$).
+    In this way $C(t)$ is varying **smoothly** during the whole (composition of the many) simulations.
+    Anyway, **you can also** let $C(t)$ start oscillating from $t=t_{initial}$ instead of $t=0$, by selecting <notsmoothC(t)> = 1 (by default it is 0).
 
     It needs the existance of the file "tdgl_result.dat" to be run and the initial state must be smooth (because a sinusoidal decomposition must make sense).
 
