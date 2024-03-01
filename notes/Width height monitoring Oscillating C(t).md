@@ -93,6 +93,7 @@ That's because $C(t)$ spends lot of time $T=10$ close to zero. And we expect a d
     ![T=10Cave=0longtime](../Plots/kink%20shape%20varying%20C/rescaled/T%20=%2010%20C%20near%200/t=115.png?raw=true)
 
 
+
 ## Is the shape of the kink still tanh after long time?
 We monitored the height and width of the kink, but we do not know if its shape is still tanh.
 

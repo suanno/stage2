@@ -40,31 +40,39 @@ fclose(fileinit);
 
 /* Get inputs from the terminal */
 char *ptr;
+char* fileCname;
+int doreadCfromfile = 0;
 //printf("argv1 = %lf", atof(argv[1]));
 if (argc > 1)
 	Deltat = strtod(argv[1], &ptr);
 if (argc > 2){
   	Ampl = strtod(argv[2], &ptr);
+	if (argc > 3){
+		/*Period of the sine*/
+		Thalf = strtod(argv[3], &ptr)/2;
+		if (argc > 4){
+		/*Offset of C(t)*/
+		Cave = strtod(argv[4], &ptr);
+		}
+		if (argc > 5){
+			/*Decide wether C(t) must vary SMOOTHLY between
+			an evolution and the next one. Or if it shall start from
+			sin(0) = 0 in the CURRENT/LAST evolution*/
+			if (strtod(argv[5], &ptr) == 1)
+				notsmoothC = 1;
+		}
+		if (argc > 6){
+			/*Period of the sine*/
+			dt = strtod(argv[6], &ptr);
+		}
+	}
+	else{
+		doreadCfromfile = 1;
+		fileCname = argv[2];
+	}
 }
-if (argc > 3){
-  	/*Period of the sine*/
-  	Thalf = strtod(argv[3], &ptr)/2;
-}
-if (argc > 4){
-  	/*Offset of C(t)*/
-  	Cave = strtod(argv[4], &ptr);
-}
-if (argc > 5){
-	/*Decide wether C(t) must vary SMOOTHLY between
-	an evolution and the next one. Or if it shall start from
-	sin(0) = 0 in the CURRENT/LAST evolution*/
-	if (strtod(argv[5], &ptr) == 1)
-		notsmoothC = 1;
-}
-if (argc > 6){
-  	/*Period of the sine*/
-  	dt = strtod(argv[6], &ptr);
-}
+
+
 
 /*The evolutions are consecutive, so the initial time (and state)
  are the finals of the previous evolution
@@ -104,44 +112,57 @@ double* integ_coef = malloc(N*sizeof(double));
 FILE *stateeqn_result;
 FILE *fileCout;				/*C(t+dt) values*/
 FILE *fileAveout;			/*Space average of u(t) values*/
-//FILE *fileCin;
+FILE *fileCin;
 
 double* C = malloc(nloop*sizeof(double));				/*C(t+dt) values*/
 double Cprev;											/*Temp variable to store C(t) [because C[loop] is C(t+dt) NOT C(t)]*/
 double* uAve = malloc(nloop*sizeof(double));			/*Space average of u(t) values*/
 
 /*Read C(t) from file*/
-/*
-fileCin = fopen("fileC.dat", "r");
-for (loop=0; loop<nloop; loop++){
-	fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
-	C[loop]=decainC;
-}
-fclose(fileCin);
-*/
-
-/*Define value of C(t) in time.
-	C(t) = Cave + Ampl*sin(pi*t/(T/2))
-	NOTE: Time "t" starts at the beginning of the FIRST of
-	the serie of consecutive evolutions, and NOT at the beginning
-	of the current simulation.
-	So the C value at the beginning of the current simulation
-	is NOT Ampl*sin(0) = 0 .
-	BUT defining C(t) like this, we have the property that C(t)
-	is varying SMOOTHLY during the WHOLE (total serie of consecutive evolutions) experiment.
-*/
-/*NOTE: As to calculate u(t+dt) we need C(t+dt), we adopt the following convention
-	C[loop] = C(dt*loop + dt)
-	So C[0] = C(0 + dt) and so on
-*/
-for (loop=0;loop<nloop;loop++){
-ttime = tmin + (loop + 1)*dt;		/*C[loop] = C(t+dt), so it's NOT C(t)*/
-if(Thalf > 0){
-	C[loop]=Cave + Ampl*sin(pi*(ttime-tmin*notsmoothC)/Thalf);
+/*If the file is shorter than nloop, C(t)
+is elonged Periodically*/
+if (doreadCfromfile == 1){
+	fileCin = fopen(fileCname, "r");
+	loop = 0;
+	while (loop < nloop){
+		if(fscanf(fileCin, "%lf %lf \n", &decatime, &decainC) == EOF){
+			fclose(fileCin);
+			fileCin = fopen(fileCname, "r");
+			fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
+		}
+		C[loop]=decainC;
+		//printf("C[%d] = %lf\n", loop, C[loop]);
+		loop = loop + 1;
 	}
-	else							/*Thalf < 0 means you want to keep C = Cave + Ampl costant*/
-		C[loop] = Cave;
+	fclose(fileCin);
+}else{
+	/*Define value of C(t) in time.
+		C(t) = Cave + Ampl*sin(pi*t/(T/2))
+		NOTE: Time "t" starts at the beginning of the FIRST of
+		the serie of consecutive evolutions, and NOT at the beginning
+		of the current simulation.
+		So the C value at the beginning of the current simulation
+		is NOT Ampl*sin(0) = 0 .
+		BUT defining C(t) like this, we have the property that C(t)
+		is varying SMOOTHLY during the WHOLE (total serie of consecutive evolutions) experiment.
+	*/
+	/*NOTE: As to calculate u(t+dt) we need C(t+dt), we adopt the following convention
+		C[loop] = C(dt*loop + dt)
+		So C[0] = C(0 + dt) and so on
+	*/
+	for (loop=0;loop<nloop;loop++){
+	ttime = tmin + (loop + 1)*dt;		/*C[loop] = C(t+dt), so it's NOT C(t)*/
+	if(Thalf > 0){
+		C[loop]=Cave + Ampl*sin(pi*(ttime-tmin*notsmoothC)/Thalf);
+		}
+		else							/*Thalf < 0 means you want to keep C = Cave + Ampl costant*/
+			C[loop] = Cave;
+	}
 }
+
+
+
+
 
 ttime=0;
 loop=0;

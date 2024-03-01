@@ -36,21 +36,27 @@
 - Execute "tdgl", this code evolves **progressively** the state in Fourier space. 
 It is **necessary** to execute before "tdglfd", even for a timespan = 0, in order to initialize the "tdgl_result.dat" file (with certain exeptions: flatsinit.c, see more on /initialization/).
 
+If you call "tdgl" with only two arguments, the values of $C(t)$ are read from the specified .dat file.
+If the file is short, its values are repeated _periodically_.
+
     The syntax is the same of "tdglfd"
 
         gcc tdgl.c -o .bin/tdglfd -lfftw3 -lm
+
         ./tdgl <tspan> <A> <T> <Caverage> <notsmoothC(t)> <dt>
 
-    **Note**: The oscillation $C(t)$ starts from $t=0$ and **NOT** from the beginning of the _last evolution_. So the first value, in the simulation you will launch, is **NOT** necessary zero! (unless the initial time of the simulation is a multiple of the period $T$).
+        ./tdgl <tspan> "fileCin.dat"
+
+**Note**: The oscillation $C(t)$ starts from $t=0$ and **NOT** from the beginning of the _last evolution_. So the first value, in the simulation you will launch, is **NOT** necessary zero! (unless the initial time of the simulation is a multiple of the period $T$).
     In this way $C(t)$ is varying **smoothly** during the whole (composition of the many) simulations.
     Anyway, **you can also** let $C(t)$ start oscillating from $t=t_{initial}$ instead of $t=0$, by selecting <notsmoothC(t)> = 1 (by default it is 0).
 
-    It needs the existance of the file "tdgl_result.dat" to be run and the initial state must be smooth (because a sinusoidal decomposition must make sense).
+It needs the existance of the file "tdgl_result.dat" to be run and the initial state must be smooth (because a sinusoidal decomposition must make sense).
 
-    It **updates** the state recorded in "tdgl_result.dat", updating even the time $t$ of the state.
-    The new values of $C(t)$ in time and of the space average of $u(x,t)$ are **appended** in the files "fileCout.dat" and "fileAveout.dat", so those files contains information about **the whole** simulation (from $t=0$).
+It **updates** the state recorded in "tdgl_result.dat", updating even the time $t$ of the state.
+The new values of $C(t)$ in time and of the space average of $u(x,t)$ are **appended** in the files "fileCout.dat" and "fileAveout.dat", so those files contains information about **the whole** simulation (from $t=0$).
 
-    The files "fileCout.dat" and "fileAveout.dat" are emptied when "tdglfd" or "flatinit" or "datainit" are executed and the file "fileinit.dat" is overwritten.
+The files "fileCout.dat" and "fileAveout.dat" are emptied when "tdglfd" or "flatinit" or "datainit" are executed and the file "fileinit.dat" is overwritten.
 
 ## Saving
 You can execute "save.ipynb" to save the results (initial/final states, <u(t)>, C(t)) of the evolution (see the notebook for more info).
