@@ -141,7 +141,11 @@ $$\partial_{\chi\chi} u_k = b \partial_{\chi'\chi'}u_k$$
 $$u_k(\chi) = u_k(b^{-\frac12}\chi')$$
 
 and we get an expression depending only on one parameter $\frac{a}{b}$
-$$\frac{a}{b}\chi'\partial_{\chi'}u_k = \partial_{\chi'\chi'}+u_k(1-u_k^2)$$
+$$\frac{a}{b}\chi'\partial_{\chi'}u_k = \partial_{\chi'\chi'}u_k+u_k(1-u_k^2)$$
+
+**Pay attention** to the fact that the solution of this equation is $u_k(b^{-\frac12}\chi')$ and NOT $u_k(\chi')$!!!
+
+So, after you find a solution, that will be a function of $\chi'$, say $y(\chi')$; to recover $u_k(\chi)$ you have to use the fact that $y(\chi') = u_k(b^{-\frac12}\chi')$.
 
 ### Physical analogy
 
@@ -214,7 +218,49 @@ $$u_k(\chi) = Erf(\sqrt{-a/2}\chi) + const.$$
 
     $$u_k(\chi) = \tanh(2^{-\frac12}\chi)$$
 
+### Linearization @ $\chi' \rightarrow \infty$
 
+Let's consider $\chi'$ as variable
+
+$$\frac{a}{b}\chi'\partial_{\chi'}u_k = \partial_{\chi'\chi'}u_k + u_k(1-u_k^2)$$
+
+We assumed that $u_k \rightarrow \pm 1$ if $\chi'\rightarrow \infty$, so let's write $u_k$ as
+$$u_k = 1-\delta u_k$$
+where $\delta u_k$ is small if $\chi'\rightarrow \infty$.
+
+$$\partial_{\chi'}u_k = -\partial_{\chi'}\delta u_k$$
+$$u_k(1-u_k^2)=u_k(1+u_k)(1-u_k)\simeq 2\delta u_k$$
+
+So the linearized equation is
+$$-\frac{a}{b}\chi'\partial_{\chi'}\delta u_k = -\partial_{\chi'\chi'} + 2\delta u_k$$
+
+
+#### Analytical solution for $\frac{a}{b} = -2$
+
+This is a special case, because we can find that the solution is
+$$\delta u_k = c_1 x + c_2e^{-\chi'^2}(1+e^{\chi'^2}\sqrt{\pi}\chi'Erf(\chi'))$$
+
+Both the two independent solutions **diverge** when $\chi'\rightarrow \infty$.
+But both diverge **linearly in $\chi'$**, so we can make a choice of $c_1$ and $c_2$ such that the two divergencies "destroy each other".
+
+In fact, if we choose $c_1 = -\sqrt{\pi}c_2$, we find that $\delta u_k \rightarrow 0$ when $\chi'\rightarrow \infty$ and **Mathematica** tells that
+$$\delta u_k \sim e^{-\chi'^2}O[\frac{1}{\chi'^2}]$$
+
+#### It simpler when $\frac{a}{b} \neq -2$
+
+In this case the two independent solutions are one divergent and one convergent to zero (and alway positive as $\delta u_k$ should be).
+
+So only one of the two solution is compatible with the boundary condition $u_k(\infty)=\pm 1$.
+
+Expanding that solution for $\chi'\rightarrow \infty$ with **Mathematica**, we find it goes as
+
+$$\delta u_k \sim \frac{1}{\chi'^{k_2}}e^{-k_1\chi'^2}$$
+where both $k_1, k_2 > 0$.
+
+So $\delta u_k$ (and so $u_k$) goes zero as the $Erf(\chi')$ function and NOT as the $\tanh(\chi')$
+
+$$\tanh (\chi') \simeq 1 - 2e^{-2\chi'}$$
+$$Erf(\chi') \simeq 1 - \frac{1}{\sqrt{\pi}\chi'}e^{-\chi'^2}$$
 ## About the Sign of a, b
 The sign of those parameter is not arbitrary, in order to be consistent with our previous assumptions / imposed constrains.
 
