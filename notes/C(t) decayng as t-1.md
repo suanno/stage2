@@ -34,3 +34,5 @@ As our analytical stuff are based on an infinite lattice, we cannot compare our 
 
 - Width
 ![width](../Plots/kink%20shape%20varying%20C/rescaled/C(t)%20decaying%20t-1/width.png?raw=true)
+
+### Width saturation
