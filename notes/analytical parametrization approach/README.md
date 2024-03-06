@@ -94,13 +94,16 @@ and the sign $\pm$ is the sign of $\alpha(0)$ (check that putting $t=0$ and cons
 
     then $t_0 > 0$ and the expression is well defined only if $t < t_0$
 
-   ![Plot_alpha_a>0]
+   ![Plot_alpha_a>0](Plots/alpha(t)%20a%20>%200.png?raw=true)
 
 - If $a < 0$
 
     then $t_0 < 0$ and the expression is well defined only if $t > t_0$
 
-    ![Plot_alpha_a>0]
+    ![Plot_alpha_a>0](Plots/C(t)%20a%20<%200.png?raw=true)
+
+**Notice that**, in both cases, $\alpha(t)$ is well defined in a neighborhood of $t = 0$. This is important, because $t=0$ is the time when $\alpha(t)=\alpha_0$, so it's the time when we start varying $C(t)$.
+It's important that what happens to $\alpha(t), \beta(t)$ after a small from the one you started varying $C$ in time is well defined.
 
 The evolution of $\beta(t)$ is barely the same of $\alpha(t)$ because $\beta^2 = b \alpha^2$
 
@@ -118,22 +121,28 @@ $$C(t) = -\frac{1}{2(t-t_0)}(1+\frac{b}{a})$$
 
 This is the expression **we HAVE TO adopt for $C(t)$ in order to have** the above evolutions of $\alpha(t),\beta(t)$ and a shape $u_k$ that solves the ODE.
 
-- If a > 0
-
-    ![Plot_C(t)_a>0]
-- If a < 0 and 0 < b < -a
-
-    ![Plot_C(t)_a<0b<-a]
-- If a < 0 and b > -a
+- If a > 0,
     
-    ![Plot_C(t)_a<0b>-a]
+    then $t_0 > 0$ and $\beta(t)$ is well defined only if $t < t_0$; so even $C(t)$, that is a function of $\beta(t)$.
+
+
+    ![Plot_C(t)_a>0](Plots/C(t)%20a%20>%200.png?raw=true)
+- If a < 0 and 0 < b < -a
+    
+    then $t_0 < 0$ and $\beta(t)$ is well defined only if $t > t_0$; so even $C(t)$, that is a function of $\beta(t)$.
+    The sign of $C(t)$ is positive.
+- If a < 0 and b > -a
+
+    here too $t_0 < 0$ and $C(t)$ is well defined only for $t > t_0$. And the sign of $C(t)$ is negative.
+    
+    ![Plot_C(t)_a<0](Plots/alpha(t)%20a%20<%200.png?raw=true)
 
 ## ODE for the shape $u_k(\chi)$
 We found that the shape $u_k$ solves
 
 $$a\chi \partial_{\chi}u_k = \partial_{\chi\chi}u_k + bu_k(1-u_k^2)$$
 
-### Second change of variable
+### Second change of variable $\chi' = b^{\frac12}\chi$
 we can make an additional change of variable in order to let the above equation depend only over one parameter
 
 $$\chi' = b^{\frac12}\chi$$
@@ -158,6 +167,8 @@ if we call $\gamma(t) = -\frac{a}{b} t$ and $V(x) = \frac12 x^2 - \frac14 x^4$ w
 $$\ddot{x} = -\gamma(t)\dot{x}-\frac{dV(x)}{dx}$$
 
 that is the equation of a 1D particle (with mass $M=1$) moving in the double well potential $V(x)$ while **experiencing a "friction" that increases in time**.
+
+![DoubleWellPotential](Plots/double%20well.png?raw=true)
 
 - If $a > 0$, we do not have a friction, instead we have a force that increases the velocity of the particle with a linear time dependance. So, if $a > 0$, the particle will eventually cross one of the two barrier and move forward in that direction, independently on the initial conditions.
 This means that 
@@ -196,6 +207,15 @@ This means that
 
     But we do not know how to solve this integral equation.
 
+    #### Numerical calculation of the critical velocity
+
+    Numerically we can calculate the critical velocity, so the **minimum velocity** that a particle must have at $x=0$ to cross one of the two barriers of the potential $V(x)$.
+
+    Here we report this numerical calculation, where we plotted another curve for comparison.
+    The number $1/\sqrt{2}$ is the minimum velocity to cross the barrier in absence of the friction.
+
+    ![numericalCritycalVelocity](Plots/numerical%20critical%20velocity.png?raw=true)
+
 ### Analytical solutions for special choices of $a, b$
 
 Consider $\chi$ as the variable
@@ -206,8 +226,8 @@ $$\frac{a}{b}\chi\partial_{\chi}u_k = \partial_{\chi\chi}u_k + bu_k(1-u_k^2)$$
 
     In this limit the term without derivatives (the double well potential $V(x)$, that contains _the non linear term_) becomes negligible
     $$\frac{a}{b}\chi\partial_{\chi}u_k = \partial_{\chi\chi}u_k$$
-    This equation is linear and has solution
-$$u_k(\chi) = Erf(\sqrt{-a/2}\chi) + const.$$
+    This equation is linear and has solution (if we require $u_k(\infty)=1$)
+$$u_k(\chi) = Erf(\sqrt{\frac{-a/b}{2}}\chi)$$
 
 - $a \rightarrow 0$
 
@@ -216,7 +236,7 @@ $$u_k(\chi) = Erf(\sqrt{-a/2}\chi) + const.$$
     $$\partial_{\chi\chi}u_k + bu_k(1-u_k^3)$$
     that has solution
 
-    $$u_k(\chi) = \tanh(2^{-\frac12}\chi)$$
+    $$u_k(\chi) = \tanh(\frac{\chi}{\sqrt2})$$
 
 ### Linearization @ $\chi' \rightarrow \infty$
 
@@ -261,8 +281,34 @@ So $\delta u_k$ (and so $u_k$) goes zero as the $Erf(\chi')$ function and NOT as
 
 $$\tanh (\chi') \simeq 1 - 2e^{-2\chi'}$$
 $$Erf(\chi') \simeq 1 - \frac{1}{\sqrt{\pi}\chi'}e^{-\chi'^2}$$
+
+### Third change of variable $\chi'' = |a/b|^{\frac12}$ [???]
+
+The ODE becomes
+
+$$\frac{a}{b}\chi''\partial_{\chi''}u_k = |\frac{a}{b}|\partial_{\chi''\chi''}u_k + u_k(1-u_k^2)$$
+
+If we take the limit $|a/b|\rightarrow \infty$ **and we say that a kink solution $u_k$ is always limited** between $-1 < u_k < 1$ [**Note** that we did NOT assumed YET this statement, but just that $u_k(\chi) \rightarrow 1$ when $\chi\rightarrow \infty$]
+then the term without $\frac{a}{b}$ can be neglected in favor of the other two, leaving to the equation
+
+
+$$\chi''\partial_{\chi''}u_k = -\partial_{\chi''\chi''}u_k$$
+
+where we simplified $\frac{a}{b}$ and used the fact that $|\frac{a}{b}| = -\frac{a}{b}| because the ratio is negative.
+
+This equation has analytical solution, if we require the solution $u_k(|\frac{a}{b}|^{-\frac12}b^{-\frac12}\chi'')\rightarrow 0$ when $\chi''\rightarrow 0$
+
+$$Erf(\frac{\chi''}{\sqrt2})$$
+
+By using $\chi'' = |\frac{a}{b}|^{\frac12}b^{\frac12}\chi$, we find that
+
+$$u_k(\chi) = Erf(\frac{1}{\sqrt2}|\frac{a}{b}|^{\frac12}b^{\frac12}\chi)$$
+
+**I CANNOT GET WHY** this result shall hold only for $\chi\rightarrow \infty$.
+In addition, I don't know if it makes sense saying that the solution of the ode goes 1 if $\chi''\rightarrow \infty$, as we have $|a/b|^{-\frac12}\chi''$ so we have $\frac00$.
+
 ## About the Sign of a, b
-The sign of those parameter is not arbitrary, in order to be consistent with our previous assumptions / imposed constrains.
+The **sign of $a, b$ is NOT arbitrary**, in order to be consistent with our previous assumptions / imposed constrains.
 
 - $a < 0$ because we asked $u_k(\infty) = \pm 1$
 - $b > 0$ because $\alpha, \beta$ are real and we imposed the constraint $\beta^2 = b\alpha^2$
@@ -272,4 +318,4 @@ The sign of those parameter is not arbitrary, in order to be consistent with our
 ### What we achieved
 As $a$ must be negative, with this analytical approach we **only achieved to control** the **height** and **width** of the kink for **decreasing** them.
 
-And we still do not know the analytical shape of the kink $u_k$.
+And we still do not know the analytical shape of the kink $u_k$, we only know 
