@@ -94,13 +94,13 @@ and the sign $\pm$ is the sign of $\alpha(0)$ (check that putting $t=0$ and cons
 
     then $t_0 > 0$ and the expression is well defined only if $t < t_0$
 
-   ![Plot_alpha_a>0](Plots/alpha(t)%20a%20>%200.png?raw=true)
+![Plot_alpha_a>0](Plots/alpha(t)%20a%20>%200.png?raw=true)
 
 - If $a < 0$
 
     then $t_0 < 0$ and the expression is well defined only if $t > t_0$
 
-    ![Plot_alpha_a>0](Plots/C(t)%20a%20<%200.png?raw=true)
+![Plot_alpha_a>0](Plots/C(t)%20a%20<%200.png?raw=true)
 
 **Notice that**, in both cases, $\alpha(t)$ is well defined in a neighborhood of $t = 0$. This is important, because $t=0$ is the time when $\alpha(t)=\alpha_0$, so it's the time when we start varying $C(t)$.
 It's important that what happens to $\alpha(t), \beta(t)$ after a small from the one you started varying $C$ in time is well defined.
@@ -135,7 +135,7 @@ This is the expression **we HAVE TO adopt for $C(t)$ in order to have** the abov
 
     here too $t_0 < 0$ and $C(t)$ is well defined only for $t > t_0$. And the sign of $C(t)$ is negative.
     
-    ![Plot_C(t)_a<0](Plots/alpha(t)%20a%20<%200.png?raw=true)
+![Plot_C(t)_a<0](Plots/alpha(t)%20a%20<%200.png?raw=true)
 
 ## ODE for the shape $u_k(\chi)$
 We found that the shape $u_k$ solves
