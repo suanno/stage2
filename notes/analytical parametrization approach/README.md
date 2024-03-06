@@ -294,18 +294,24 @@ then the term without $\frac{a}{b}$ can be neglected in favor of the other two, 
 
 $$\chi''\partial_{\chi''}u_k = -\partial_{\chi''\chi''}u_k$$
 
-where we simplified $\frac{a}{b}$ and used the fact that $|\frac{a}{b}| = -\frac{a}{b}| because the ratio is negative.
+where we simplified $\frac{a}{b}$ and used the fact that $|\frac{a}{b}| = -\frac{a}{b}$ because the ratio is negative.
 
-This equation has analytical solution, if we require the solution $u_k(|\frac{a}{b}|^{-\frac12}b^{-\frac12}\chi'')\rightarrow 0$ when $\chi''\rightarrow 0$
+This equation is linear and its analytical solution (**without imposing any boundary** condition) is
 
-$$Erf(\frac{\chi''}{\sqrt2})$$
+$$f(\chi'') = c_1 + c_2 Erf(\frac{\chi''}{\sqrt2})$$
 
-By using $\chi'' = |\frac{a}{b}|^{\frac12}b^{\frac12}\chi$, we find that
+and if we write this as a function of $\chi$ (instead of $\chi''$) [this **is equivalent** to equate $f(\chi'') = u_k(\chi)$, that we know to be the solution, and make use of the fact that $\chi'' = |\frac{a}{b}|^{\frac12}b^{\frac12}\chi''$]
+we find
 
-$$u_k(\chi) = Erf(\frac{1}{\sqrt2}|\frac{a}{b}|^{\frac12}b^{\frac12}\chi)$$
+$$u_k(\chi) = f(|a|^{\frac12}\chi'') = c_1 + c_2Erf(\sqrt{\frac{|a|}{2}}\chi)$$
+
+if now we impose the boundary condition, so we require $u_k(\chi)$ _to have a kink shape_ $u_k(\infty) = +1 \implies c_1 = 0, c_2 = 1$
+
+$$u_k(\chi) = Erf(\sqrt{\frac{|a|}{2}}\chi)$$
+
+**Notice that** there are no problems in taking the limit $\chi\rightarrow \infty$ (when we impose the boundary) at the same time when we take the limit $|a|\rightarrow \infty$, that is the regime we're studying. That's because, inside $u_k$, the two quantities are multiplyied (not divided). Otherwise we would have got an indeterminate expression $\frac00$.
 
 **I CANNOT GET WHY** this result shall hold only for $\chi\rightarrow \infty$.
-In addition, I don't know if it makes sense saying that the solution of the ode goes 1 if $\chi''\rightarrow \infty$, as we have $|a/b|^{-\frac12}\chi''$ so we have $\frac00$.
 
 ## About the Sign of a, b
 The **sign of $a, b$ is NOT arbitrary**, in order to be consistent with our previous assumptions / imposed constrains.
