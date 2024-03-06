@@ -126,7 +126,7 @@ This is the expression **we HAVE TO adopt for $C(t)$ in order to have** the abov
     then $t_0 > 0$ and $\beta(t)$ is well defined only if $t < t_0$; so even $C(t)$, that is a function of $\beta(t)$.
 
 
-    ![Plot_C(t)_a>0](Plots/C(t)%20a%20>%200.png?raw=true)
+![Plot_C(t)_a>0](Plots/C(t)%20a%20>%200.png?raw=true)
 - If a < 0 and 0 < b < -a
     
     then $t_0 < 0$ and $\beta(t)$ is well defined only if $t > t_0$; so even $C(t)$, that is a function of $\beta(t)$.
