@@ -214,7 +214,7 @@ This means that
     Here we report this numerical calculation, where we plotted another curve for comparison.
     The number $1/\sqrt{2}$ is the minimum velocity to cross the barrier in absence of the friction.
 
-    ![numericalCritycalVelocity](Plots/numerical%20critical%20velocity.png?raw=true)
+![numericalCritycalVelocity](Plots/numerical%20critical%20velocity.png?raw=true)
 
 ### Analytical solutions for special choices of $a, b$
 
