@@ -282,14 +282,14 @@ So $\delta u_k$ (and so $u_k$) goes zero as the $Erf(\chi')$ function and NOT as
 $$\tanh (\chi') \simeq 1 - 2e^{-2\chi'}$$
 $$Erf(\chi') \simeq 1 - \frac{1}{\sqrt{\pi}\chi'}e^{-\chi'^2}$$
 
-### Third change of variable $\chi'' = |a/b|^{\frac12}$ [???]
+### Third change of variable $\chi'' = |a/b|^{\frac12}\chi'$
 
 The ODE becomes
 
 $$\frac{a}{b}\chi''\partial_{\chi''}u_k = |\frac{a}{b}|\partial_{\chi''\chi''}u_k + u_k(1-u_k^2)$$
 
 If we take the limit $|a/b|\rightarrow \infty$ **and we say that a kink solution $u_k$ is always limited** between $-1 < u_k < 1$ [**Note** that we did NOT assumed YET this statement, but just that $u_k(\chi) \rightarrow 1$ when $\chi\rightarrow \infty$]
-then the term without $\frac{a}{b}$ can be neglected in favor of the other two, leaving to the equation
+then the term without $\frac{a}{b}$ **is of order 1 so** can be neglected in favor of the other two, leaving to the equation
 
 
 $$\chi''\partial_{\chi''}u_k = -\partial_{\chi''\chi''}u_k$$
@@ -309,9 +309,29 @@ if now we impose the boundary condition, so we require $u_k(\chi)$ _to have a ki
 
 $$u_k(\chi) = Erf(\sqrt{\frac{|a|}{2}}\chi)$$
 
-**Notice that** there are no problems in taking the limit $\chi\rightarrow \infty$ (when we impose the boundary) at the same time when we take the limit $|a|\rightarrow \infty$, that is the regime we're studying. That's because, inside $u_k$, the two quantities are multiplyied (not divided). Otherwise we would have got an indeterminate expression $\frac00$.
+We said that the function above is a solution of the kink's shape ODE **IF** $a\rightarrow \infty$, but **let's be more quantitative:**
 
-**I CANNOT GET WHY** this result shall hold only for $\chi\rightarrow \infty$.
+When we took the limit $a\rightarrow \infty$ we neglected the term $u_k(1-u_k^2)$ in favor of the other two because we said that this term is of order one, as we expect the kink's shape to be a limited function.
+But, if we consider $\chi'' \rightarrow \infty$, then the derivatives of $u_k$ go zero, as $u_k\rightarrow 1$.
+So, for **very large** (compared to $|\frac{a}{b}|$) values of $\chi''$, the approximation we made is no more true.
+
+In fact the approximation is correct **only if** the derivatives and the neglected term are of the same order and so, if you make $a\rightarrow \infty$, you make the terms with the derivatives larger.
+But now the neglected term is of order one, while **the derivatives are smaller**!
+
+**More quantitatively**, if we look at the solution of the equation as a function of $\chi''$
+
+$$u_k = Erf(\frac{\chi''}{\sqrt2})$$
+
+we have that the derivatives of $u_k$ are of order 1 **only if** $|\chi''| << 1$ (that means that $\chi''$ takes values **within the width** of the error function).
+And **only if** the derivatives are of order 1, so **the same of** the term we neglect, we can neglect it!
+
+This means that, the error function it's a **correct solution** if **both**
+
+- $a \rightarrow \infty$
+- $\chi'' << 1 \implies \chi = \frac{\chi''}{|a|^{\frac12}}<<\frac{1}{|a|^{\frac12}}$
+
+When $\chi \sim> |a|^{\frac12}$, then $u_k(\chi)$ can deviate from the error function shape (because the neglected terms are no more negligible).
+To understand how $u_k(\chi)$ behaves at large values of $\chi$, you can linearize the ODE for large values of $\chi$.
 
 ## About the Sign of a, b
 The **sign of $a, b$ is NOT arbitrary**, in order to be consistent with our previous assumptions / imposed constrains.
