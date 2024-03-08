@@ -27,6 +27,6 @@ The perturbation consist in giving a small amplitude eps to the modes k=1,2,...,
 
         ./flatsinit L dx u0 lamb eps
 
-- twokinksinit: Generate a **two kinks profile** with arcotangent shape
+- twokinksinit: Generate a **two kinks profile** with tanh shape
 
         # To implement...

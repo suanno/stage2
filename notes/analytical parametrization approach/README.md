@@ -100,7 +100,7 @@ and the sign $\pm$ is the sign of $\alpha(0)$ (check that putting $t=0$ and cons
 
     then $t_0 < 0$ and the expression is well defined only if $t > t_0$
 
-![Plot_alpha_a>0](Plots/C(t)%20a%20<%200.png?raw=true)
+![Plot_alpha_a>0](Plots/alpha(t)%20a%20<%200.png?raw=true)
 
 **Notice that**, in both cases, $\alpha(t)$ is well defined in a neighborhood of $t = 0$. This is important, because $t=0$ is the time when $\alpha(t)=\alpha_0$, so it's the time when we start varying $C(t)$.
 It's important that what happens to $\alpha(t), \beta(t)$ after a small from the one you started varying $C$ in time is well defined.
@@ -135,7 +135,7 @@ This is the expression **we HAVE TO adopt for $C(t)$ in order to have** the abov
 
     here too $t_0 < 0$ and $C(t)$ is well defined only for $t > t_0$. And the sign of $C(t)$ is negative.
     
-![Plot_C(t)_a<0](Plots/alpha(t)%20a%20<%200.png?raw=true)
+![Plot_C(t)_a<0](Plots/C(t)%20a%20<%200.png?raw=true)
 
 ## ODE for the shape $u_k(\chi)$
 We found that the shape $u_k$ solves
@@ -266,6 +266,9 @@ But both diverge **linearly in $\chi'$**, so we can make a choice of $c_1$ and $
 In fact, if we choose $c_1 = -\sqrt{\pi}c_2$, we find that $\delta u_k \rightarrow 0$ when $\chi'\rightarrow \infty$ and **Mathematica** tells that
 $$\delta u_k \sim e^{-\chi'^2}O[\frac{1}{\chi'^2}]$$
 
+Without using Mathematica, if you use the asymptotic expansion of $Erf(x)$ until second order, you find
+ $$\delta u_k \sim e^{-\chi'^2}\frac{1}{\chi'^2}$$
+
 #### It simpler when $\frac{a}{b} \neq -2$
 
 In this case the two independent solutions are one divergent and one convergent to zero (and alway positive as $\delta u_k$ should be).
@@ -344,4 +347,8 @@ The **sign of $a, b$ is NOT arbitrary**, in order to be consistent with our prev
 ### What we achieved
 As $a$ must be negative, with this analytical approach we **only achieved to control** the **height** and **width** of the kink for **decreasing** them.
 
-And we still do not know the analytical shape of the kink $u_k$, we only know 
+And we still do not know the analytical shape of the kink $u_k$, we only know
+
+- The shape when $a\rightarrow 0$
+
+- The shape when $a\rightarrow \infty$
