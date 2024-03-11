@@ -78,7 +78,30 @@ There are **three regions** of values of $x$
 
     If you look at the previou plot, you see that the expected "linear" asymptotic behaviour is numerically seen only until a certain $x$.
     If you compare with the second plot, this happens when $x$ starts to approach the midpoint between the two values.
-    ![kinkShapeDecayingCt=20](../../Plots/kink%20shape%20varying%20C/rescaled/C(t)%20decaying%20t-1/t%20=%2020.png)
+    ![kinkShapeDecayingCt=20](../../Plots/kink%20shape%20varying%20C/rescaled/C(t)%20decaying%20t-1/t%20=%2020.png?raw=true)
 
 So we can see the expected asymptotic, but only for values of $t$ sufficiently large.
 This must be related to the fact that we're starting with a state that is incompatible with the ansatz, so doesn't show the expected asymptotic from the beginning.
+
+Pay attention to the fact that, for large times, the kinks overlap and so the "independent kink approximation" no more holds.
+
+![kinkShapeDecayingCt=20](../../Plots/kink%20shape%20varying%20C/rescaled/C(t)%20decaying%20t-1/t%20=%2050.png?raw=true)
+
+Anyway, from the previous plot it seems that the shape of the tail follows the expected asymptotic behaviour even when the kinks overlap.
+
+### Comparison with NDSolve numerical solution of the $u_k(\chi)$ ODE
+
+We said that we expect 
+
+$$\log(1-u_k(\chi)) \sim -\chi^2$$
+$$\log(1-\frac{u(x,t)}{\beta(t)})\sim -\alpha(t)^2x^2$$
+
+So, if we plot **over** the previous figure the numerical solution $u_k(\chi)$ obtained from NDSolve (v.s. $\chi^2$) we **cannot make serious comparisons**. 
+That's because there is a factor $\alpha^2$ in one of the two cases so we expect a different inclination of the line we expect to see.
+
+Anyway we report this result [Note that, for the numerical solution, you are plotting $u_k(\chi); \chi^2$ **instead of** $u(x,t); x^2$]
+
+
+![kinkShapeDecayingCt=20](../../Plots/kink%20shape%20varying%20C/rescaled/C(t)%20decaying%20t-1/tail_shape_NDSolve%20comparison.png?raw=true)
+
+In order to make a serious comparison, you should **measure** the width (and so extimate $\alpha(t)$) and put on the x axis $\chi^2$ instead of $x^2$ **even for** the simulation data.

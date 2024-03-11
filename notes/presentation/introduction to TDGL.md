@@ -4,13 +4,22 @@
 
 We know that, **at thermodynamic equilibrium**, many systems, that look very different as
 - the Ising model
-- the Gas / Liquid systemsm
+- the Gas / Liquid system
 
 show the **same behaviour** **near the critical point**. In fact we find the same critical exponents for any system in the universality class.
 
-#### Introducing the Gitzburg-Landau ansatz
+- In a magnetic system (Ising model)
+$$m\sim (T_c - T)^{\beta}\quad\text{when } T\rightarrow T_C, H=0$$
+- In a Van der Waals gas (gas / liquid system)
+$$(\rho_l - \rho_g) \sim (T_c - T)^{\beta}\quad\text{when } T\rightarrow T_C, P=P_C$$
 
-A way of describing this universal behaviour is to **make** the Gitzburg-Landau free energy **ansatz**.
+where the exponent $\beta$ **is the same**.
+
+## Introducing the Gitzburg-Landau ansatz
+
+A way **of describing** this universal behaviour is to **make** the Gitzburg-Landau free energy **ansatz**.
+
+**Close to the critical point**, you assume that the free energy of **any system** can be written as this functional. 
 
 <!---
 A way of finding the critical exponents consists in minimizing the gitzburg landau free energy density **anstatz** $\frac{\partial f}{\partial t} = 0$
@@ -20,25 +29,36 @@ A way of finding the critical exponents consists in minimizing the gitzburg land
 
 $$f(m,T,H) = \frac12|\nabla m(x)|^2-Hm(x)+\frac12am^2(x)+bm^3(x)+...$$
 where $a = a_0 \frac{(T-T_c)}{T}$
+and the coefficients **depend on the simmetries** of the system.
+
+[This means that, if two systems have the same simmetries, the predicted behaviour close to the critical point is the same.]
+
+**For example**, if we consider uniform states and up/down simmetry, the free energy will be this potential.
+When temperature goes under the critical value, you **predit** a spontaneous breaking of the simmetry.
+
+![doubleWellPotential](Plots/universal%20V(x).png?raw=true)
 
 [where the coefficients $a_0$, b, $T_c$ are different among the systems in the universality class, but the order parameter $m(x)$ can be rescaled respect to its equilibrium value (that depends over the parameters) and so get an universal expression]
 
-## Universal dynamics
+## Out of equilibrium dynamics
 
-The Gitzburg Landau free energy expression is a **general ansatz** that we adopt for **any system**.
-So (in principle, from this functional) we can find **an universal law of DYNAMICS**, that hold when both 
+The Gitzburg Landau free energy expression is used to find the **equilibrium states** of the system from simmetry consideration.
+
+But, if we consider it **even out of equilibrium**, we can look for a law that describes the **dynamics** with which **the system approaches equilibrium**.
+
+
+ we can look for **an universal law of DYNAMICS**, that hold when both 
 - the control parameter $H$
 - and the temperature $T$
 
 are close to the critical values.
 
-![doubleWellPotential](Plots/universal%20V(x).png?raw=true)
 
-## Dissipative system
+## Non-conservative / Dissipative system
 
-To find this universal dynamics from the Gitzburg-Landau ansatz, let's consider a **strongly dissipative system**.
+To find this dynamics from the Gitzburg-Landau ansatz, let's consider a **strongly dissipative system**.
 
-In an overdamped oscillator, you can approximate the equation of motion, neglecting the **inertial term**
+In an **overdamped oscillator**, you can approximate the equation of motion, neglecting the **inertial term**
 
 $$M\ddot{x}=-\gamma \dot{x} - \frac{dV(x)}{dx}\rightarrow 0\simeq -\gamma\dot{x} - \frac{dV(x)}{dx}$$
 so
@@ -46,15 +66,18 @@ $$\frac{dx}{dt} = - \frac{1}{\gamma}\frac{dV}{dx}$$
 
 [The idea of the "overdamped" approximation is that the system is "driven by" the friction and the shape of the dynamics doesn't depend on the initial energy of the system. Of course $\dot{x}(t)$ depends over $\dot{x}(0)$, but just as a prefactor and **not** in the shape (the system decays without making any oscillation if it is strongly damped; otherwise the number of oscillations depends on the initial kinetic energy)]
 
-following the same idea, we can generalize this concept _naively_ as
+following the same idea, we can generalize this concept _naively_ equating the rate of change of the **order parameter** to the **thermodynamic force**
 
 $$\frac{\partial m(x,t)}{\partial t} = -\frac{\delta F}{\delta m}$$
 
 where $F = \int dx f(m(x))$ and we are performing a _functional derivative_.
 
-using the Gitzburg-Landau ansatz **and rescaling** $x$ and the order parameter $m$
+If we now use
+- the Gitzburg-Landau ansatz for the free Energy expression
+- **where we** consider the ising model simmetry
+- **and rescale** properly $x$ and the order parameter $m$
 
-[and using b = 0, up/down simmetry and neglecting higher orderds than 4th.]
+[adopting ising simetry: up/down means using b = 0, and in addition we neglect higher orderds than 4th.]
 
 $$\frac{\partial m(x)}{\partial t} = \Delta m + m(C-m^2)$$
 
@@ -67,9 +90,17 @@ This equation is called TDGL and is the equation we're working on.
 
 [At least in the d-dimensional Ising model, you can show, **by rescaling** both space $x$ and the order parameter $m(x)$, that **under the critical temperature** and **without magnetic field** the free energy functional is $f = \frac12(\nabla m)^2-\frac12 m+\frac14 m^2$. So by deriving it you get the above result (you do not have parameters $a,b,T_c$ in the f, because you made rescaling) You can choose to be under the critical temperature, because you are just constrained to have $T$ close to $T_c$ in order to use the G.L. ansatz, _but you can choose_ if $T<T_c$ or $T>T_c$]
 
+## Universal dynamics
+
+As the **shape** of the Landau Gitzburg free energy is the same for any system in the universality class of the Ising model; we **guess** that this law is an **UNIVERSAL law** for describing **non equilibrium dynamics CLOSE TO the critical point**.
+
+Same Free energy expression (Gitzburg-Landau) $\implies$ Universal law for dynamics
+
+[if two systems are in the same universality class, they have the same exponents. As you can find exponents from L.G. free energy (e.g. you can find the mean field approx ones of Ising model by using L.G. ansatz, simmetry up/down and ignoring the gradient, that means ignoring spatial fluctuation, as you do in mean field theory) this means that the L.G. free energy expressions of the two systems share similar properties; even thought the coefficients are not the same because they depend on the system. Anyway they can have similar properties because, if they are in the same class, they share common simmetries. So in both expression you will have coefficient b (CUBIC term) to be zero for example.]
+
 ## What describes the equation
 
-The TDGL equation describes **coarse grain dynamics**, that is a kind of dynamics that you see in **a lot of** systems (as the ising model) **below** the critical temperature.
+The TDGL equation describes **coarse grain dynamics**, that is a kind of dynamics that you see in some systems (as the ising model) **below** the critical temperature.
 In this dynamics, the state of the system exibiths **very sharp domains** that rise due to the **spontaneous magnetization**.
 
 ![coarseGrainedState](Plots/interface.png?raw=true)
