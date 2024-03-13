@@ -6,8 +6,6 @@
 - We were missing a factor $1/2$ in the formula for $C(t)$.
 By fixing this, we've a good match between measured and expected values of $\beta$ and $\alpha$.
 
-- 
-
 -----------------
 
 Even thought the initial state is not a function of the kind

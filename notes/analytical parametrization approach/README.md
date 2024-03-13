@@ -258,16 +258,18 @@ $$-\frac{a}{b}\chi'\partial_{\chi'}\delta u_k = -\partial_{\chi'\chi'} + 2\delta
 #### Analytical solution for $\frac{a}{b} = -2$
 
 This is a special case, because we can find that the solution is
-$$\delta u_k = c_1 x + c_2e^{-\chi'^2}(1+e^{\chi'^2}\sqrt{\pi}\chi'Erf(\chi'))$$
+$$\delta u_k = c_1 \chi' + c_2e^{-\chi'^2}(1+e^{\chi'^2}\sqrt{\pi}\chi'Erf(\chi'))$$
 
 Both the two independent solutions **diverge** when $\chi'\rightarrow \infty$.
 But both diverge **linearly in $\chi'$**, so we can make a choice of $c_1$ and $c_2$ such that the two divergencies "destroy each other".
 
-In fact, if we choose $c_1 = -\sqrt{\pi}c_2$, we find that $\delta u_k \rightarrow 0$ when $\chi'\rightarrow \infty$ and **Mathematica** tells that
-$$\delta u_k \sim e^{-\chi'^2}O[\frac{1}{\chi'^2}]$$
+This choice is $c_1 = -\sqrt{\pi}c_2$.
 
-Without using Mathematica, if you use the asymptotic expansion of $Erf(x)$ until second order, you find
- $$\delta u_k \sim e^{-\chi'^2}\frac{1}{\chi'^2}$$
+After you remove the divergence by choosing the coefficients, you have to consider the next orders of the $Erf$ expansion.
+The second order cancels with $c_1e^{-\chi'^2}$, so you have to consider the next order. Finally, when $\chi'\rightarrow\infty$
+$$\delta u_k \simeq \frac{c_2}{2}\frac{1}{\chi'^2}e^{-\chi'^2} + O[\frac{e^{-\chi'^2}}{\chi'^4}]$$
+
+where the coefficient $c_2$ must be positive if $u_k$ must be less than 1.
 
 #### It simpler when $\frac{a}{b} \neq -2$
 
