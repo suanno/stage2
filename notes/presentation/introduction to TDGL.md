@@ -46,13 +46,14 @@ The Gitzburg Landau free energy expression is used to find the **equilibrium sta
 
 But, if we consider it **even out of equilibrium**, we can look for a law that describes the **dynamics** with which **the system approaches equilibrium**.
 
-
+<!--
  we can look for **an universal law of DYNAMICS**, that hold when both 
 - the control parameter $H$
 - and the temperature $T$
 
 are close to the critical values.
 
+-->
 
 ## Non-conservative / Dissipative system
 
@@ -83,25 +84,19 @@ $$\frac{\partial m(x)}{\partial t} = \Delta m + m(C-m^2)$$
 
 where $C$ is a parameter that depends over the control parameter $H$ and the temperature $T$.
 
-This equation is called TDGL and is the equation we're working on.
+#### This equation is called TDGL and is the equation we're working on.
 
 
 [It's a functional derivative, so $\frac{\delta F}{\delta m(x)} = \frac{\partial f}{\partial m} - \nabla \cdot \frac{\partial f}{\partial \nabla m}$, as the dependance over $m$ and $\nabla m$ in the density $f$ is a power law dependance]
 
 [At least in the d-dimensional Ising model, you can show, **by rescaling** both space $x$ and the order parameter $m(x)$, that **under the critical temperature** and **without magnetic field** the free energy functional is $f = \frac12(\nabla m)^2-\frac12 m+\frac14 m^2$. So by deriving it you get the above result (you do not have parameters $a,b,T_c$ in the f, because you made rescaling) You can choose to be under the critical temperature, because you are just constrained to have $T$ close to $T_c$ in order to use the G.L. ansatz, _but you can choose_ if $T<T_c$ or $T>T_c$]
 
-## Universal dynamics
 
-As the **shape** of the Landau Gitzburg free energy is the same for any system in the universality class of the Ising model; we **guess** that this law is an **UNIVERSAL law** for describing **non equilibrium dynamics CLOSE TO the critical point**.
-
-Same Free energy expression (Gitzburg-Landau) $\implies$ Universal law for dynamics
-
-[if two systems are in the same universality class, they have the same exponents. As you can find exponents from L.G. free energy (e.g. you can find the mean field approx ones of Ising model by using L.G. ansatz, simmetry up/down and ignoring the gradient, that means ignoring spatial fluctuation, as you do in mean field theory) this means that the L.G. free energy expressions of the two systems share similar properties; even thought the coefficients are not the same because they depend on the system. Anyway they can have similar properties because, if they are in the same class, they share common simmetries. So in both expression you will have coefficient b (CUBIC term) to be zero for example.]
 
 ## What describes the equation
 
 The TDGL equation describes **coarse grain dynamics**, that is a kind of dynamics that you see in some systems (as the ising model) **below** the critical temperature.
-In this dynamics, the state of the system exibiths **very sharp domains** that rise due to the **spontaneous magnetization**.
+In this dynamics, the state of the system exibiths **very sharp domains** that rise due to the **spontaneous magnetization** effect.
 
 ![coarseGrainedState](Plots/interface.png?raw=true)
 
@@ -109,38 +104,56 @@ In this dynamics, the state of the system exibiths **very sharp domains** that r
 
 
 
-[The G.L. theory is developed _close to_ the critical point (critical values of $T$, $H$) but as experimentally we have the same dynamics for any $T < T_c$ (despite noise), the TDGL equation works at **any $T<0$**, even $T=0$ (no noise)]
+[The G.L. theory is developed _close to_ the critical point (critical values of $T$, $H$) but as **experimentally we have the same dynamics for any $T < T_c$** (despite noise), the TDGL equation works at **any $T<0$**, even $T=0$ (no noise)]
 
+The system admits uniform stationary states, but even stationary states where both the phases coexist; so there is an interface
+
+![equilibriumStates](Plots/stationary%20states.png?raw=true)
+
+When the system is far from equilibrium, it moves towards a stationary state **throught the interaction of neighboring interfaces**, that tend to **annichilate**
+
+![annichilation](Plots/annichilation.png?raw=true)
 
 ## State of the art
 
 Until now, the dynamics described by the equation has been studied intensively **only for constant** values of $C$.
-With particular focus on the mechanisms of interaction, diffusion and annichilation of domains.
 
-But no one has yet studied the dynamics when $C(t)$ has a time dependance.
+But no one has been interested in the dynamics when $C(t)$ has a time dependance.
 
 ## Our goal
-We want to **explore** the dynamics with oscillating $C(t)$ to see
+We want to **explore** the dynamics with time dependent $C(t)$ to see
 - in what sense we can control the state of the system: what properties of the system can be controlled by changing $C$ in time?
 - and understand how, and how much, we can **control** this properties, like the size and height of domain interfaces?
 
-## What we did so far
+## What we did so far (two paths)
 So far we studied states with **only one interface** and we explored dynamics with two _independent_ approaches
+- numerical
+- analytical
 
 ### Numerical exploration
-We studied numerically the dynamics with sinusoidal modulation of $C(t)$
+
+At the beginning **we really spent time** to implement an algorithm for integrating the equation; requiring that it was
+- fast and stable (long simulation)
+- correctly integrate analytical results we had
+
+and **we used end up using** a simple implicit method (Crank - Nicolson)
+
+
+After that, we integrated numerically the dynamics with sinusoidal modulation of $C(t)$
 $$C(t) = \bar{C} + A\sin(2\pi t/T)$$
 
-and we discovered there are two regimes: Adiabatic and non adiabatic.
+and we saw that there are two regimes for the dynamics
+- Adiabatic
+- Non adiabatic.
 
-We are in the **adiabatic regime** when the evolution of $C(t)$ is **slow** respect to the time the system relax with a constant $C$.
+We are in the **adiabatic regime** when the evolution of $C(t)$ is **slow** respect to the time the system takes to **relax** if $C$ is kept constant.
 
 We know the analytical solution of TDGL for constant $C$, so we can achieve control in this regime BUT
 - the control is slow
 - it's not possible if $C$ oscillates around zero, because the relaxation time $\tau \sim \frac{1}{C}$
 
 ### First analytical approach
-We tried a simple analytical approach, where we built our ansatz in order to control the width and height of interfaces.
+We tried a simple analytical approach, where we built our ansatz in order to control the width and height of interfaces (we **parametrized** the two properties).
 $$m(x,t) = \beta(t)m_k(\alpha(t)x)$$
 
 we managed to find a way of controlling those two properties in time, by changing $C(t)$ in a particular way. But we have managed only to decrease height and increase width; not the opposite.
@@ -155,8 +168,24 @@ We'll see what we can understand at first order and then we'll decide wheter to
 - take another analytical approach
 - explore more phenomenology numerically
 
+## Our Motivation: Universal dynamics
+
+As the **shape** of the Landau Gitzburg free energy is the same for any system **in the universality class** of the Ising model; we **guess** that the law is an **UNIVERSAL law** for describing **non equilibrium dynamics CLOSE TO the critical point**.
+
+
+"""Same Free energy expression (Gitzburg-Landau) $\implies$ Universal law for dynamics"""
+
+So we think that, due to this generality that rises **close to the critical point**, it's worth
+
+ #### Studying how we can control an equation that describes physics close to a critical point.
+
+
+[if two systems are in the same universality class, they have the same exponents. As you can find exponents from L.G. free energy (e.g. you can find the mean field approx ones of Ising model by using L.G. ansatz, simmetry up/down and ignoring the gradient, that means ignoring spatial fluctuation, as you do in mean field theory) this means that the L.G. free energy expressions of the two systems share similar properties; even thought the coefficients are not the same because they depend on the system. Anyway they can have similar properties because, if they are in the same class, they share common simmetries. So in both expression you will have coefficient b (CUBIC term) to be zero for example.]
+
+<!--
 ## Our motivation
 The reason why we're interested in the control of the equation is the universality of the dynamics it describes.
 
 Working close to the critical point brings, in general, to universal behaviours.
 So we think, due to this generality, it's worth controlling an equation that describes physics close to a critical point.
+-->

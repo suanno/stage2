@@ -1,4 +1,14 @@
-# What we expect
+# [OLD]What we expect
+# DISCLAIMER:
+
+**The following notes are WRONG for the following reasons**
+
+- We were missing a factor $1/2$ in the formula for $C(t)$.
+By fixing this, we've a good match between measured and expected values of $\beta$ and $\alpha$.
+
+- We studied the asymptotic regime **in the wrong** $y$ values region!
+
+--------------
 
 If $b = 1$ and $a = -2$ we expect that
 
@@ -17,16 +27,25 @@ $$\chi' = b^{\frac12}\quad \chi = \alpha(t)x$$
 
 We find
 
-$$\log(1-\frac{u(x,t)}{\beta(t)}) \sim -\chi'^2 \propto x^2$$
+$$\log(1-\frac{u(x,t)}{\beta(t)}) \sim -\chi'^2 = \alpha^2 b x^2$$
 
-So, if we plot the state $u(x,t)$ v.s. $x^2$ we expect a linear asymptotical relation
+In order to check if $u_k(\chi')$ has this asymptotic (and eventually to measure $\alpha$ thanks to this asymptotic relation) we can, **at different times**
+
+- Make an extimate of $\alpha$ and $\beta$, and use them to 
+- Extimate $u_k = u/\beta$
+- Extimate $\chi$ as $\alpha x$
+
+And then plot the extimates of $u_k(\chi)$ v.s. $\chi^2$ in the same canvas.
+If they overlap, and the plot shows a linear asymptotic, that means that the asymptotic is veryfied.
+
+Eventually we'll plot, on the same canvas, the NDSolve result for the $u_k(\chi')$ ODE.
 
 # Experimental measure
 
 ## Experimental difficulties
 - As we adopt PBC boundaries, we can simulate only 2 kinks (not just a single one!).
 
-    So we expect the asymptotic behaviour **only for certain values of x**, such that the approximation of isolated kinks holds. If $x$ increases so much that it approaches the other kink, we do not expect the asymptotic behaviour anymore.
+    So we expect the asymptotic behaviour **only for certain values of x**, such that the approximation of isolated kinks holds; **not** for any $x$ sufficiently large. If $x$ increases so much that it approaches the other kink, we do not expect the asymptotic behaviour anymore!
 
 - The kinks are centered in position different from $x=0$.
 
@@ -58,6 +77,56 @@ $$w = 2(\frac{1}{\frac{1}{\sqrt2}}) = 2\sqrt2 \simeq 2.8$$
 
 ## What we see
 
+### Extimating BOTH $\beta(t), \alpha(t)$ with the expected analytical expressions
+
+![tail_alphabeta_anal](../../Plots/analytical%20approach/measured%20and%20analytical%20alpha%20beta/saturation_beta_analytical.png?raw=true)
+
+You can see there is a saturation, instead of a linear decrease.
+
+The experimental curves overlap, but they are not compatible with the NDSolve result.
+
+The reason why there is a saturation, is that adopting this extimate of $\beta$, we have seen (other notebook on kink's shape) that **the extimate of** $u_k(\chi)$ does not converge to 1, but to a value $< 1$.
+
+As a consequence $1-u_k$ does not converge to zero at $\chi\rightarrow\infty$ and so its logarithm converges to a finite value, instead of diverging to zero. 
+
+### Extimating $\beta(t)$ evaluating $u(x)$ at the midpoints of neighboring kinks
+
+![tail_alphabeta_anal](../../Plots/analytical%20approach/measured%20and%20analytical%20alpha%20beta/tail_anal_alpha.png?raw=true)
+
+Here we have a good match between the curves and a linear decay, at least until a certain value of $\chi$.
+
+Then, we do not see anymore the asymptotic behaviour and that is due to the fact that this extimation of $\beta$ brings the divegence at $x\rightarrow \infty$ to a finite value (midpoint of two kinks).
+
+Here you can see those **non-natural** divergences
+
+![finiteDivergence](../../Plots/analytical%20approach/measured%20and%20analytical%20alpha%20beta/unnatural_divergence.png?raw=true)
+
+[Anyway, as the kink is not isolated, we cannot make a simulation where the divergence is at infinity...]
+
+But there is not a good match with the NDSolve result
+
+### Extimating $\alpha(t)$ from the slope of the decay
+
+If we measure $\alpha(t)$ by measuring the derivative of the logarithm (and so the slope of the linear decay) we can extimate $\alpha$ as
+
+$$\alpha = \sqrt{-\frac{1}{b}(\frac{\Delta g}{\Delta y}+\frac{1}{2y})}$$
+where $g(y) = \log(1-u(x,t)/\beta(t))$ and $\beta(t)$ is extimated with the "plateau value".
+
+In this way we reach a better match
+![alpha_measured_from_slope](../../Plots/analytical%20approach/measured%20and%20analytical%20alpha%20beta/tail_measured_alpha.png?raw=true)
+
+### Comparison of two methods to extimate $\alpha$
+
+We can see that there is a huge mismatch for small times.
+I think this is due to the fact that $\alpha$ does not start from $\alpha_0$ (problem due to the fact that the initial state is not compatible with $\beta^2 = b\alpha^2$).
+
+But then, for larger times, the two curves seem to merge.
+
+I think that is thanks to this matching at high times that we had a good match with the numerical solution in the notebook about "kink shape", where we extimated $\alpha$ with its analytical expression.
+
+![comparisonAlpha](../../Plots/analytical%20approach/measured%20and%20analytical%20alpha%20beta/alpha.png?raw=true)
+
+<!--
 We want to see this asymptotic behaviour
 
 $$\log(1-\frac{u(x,t)}{\beta(t)}) \sim x^2$$
@@ -96,6 +165,8 @@ We said that we expect
 $$\log(1-u_k(\chi)) \sim -\chi^2$$
 $$\log(1-\frac{u(x,t)}{\beta(t)})\sim -\alpha(t)^2x^2$$
 
+If we 
+
 So, if we plot **over** the previous figure the numerical solution $u_k(\chi)$ obtained from NDSolve (v.s. $\chi^2$) we **cannot make serious comparisons**. 
 That's because there is a factor $\alpha^2$ in one of the two cases so we expect a different inclination of the line we expect to see.
 
@@ -105,3 +176,4 @@ Anyway we report this result [Note that, for the numerical solution, you are plo
 ![kinkShapeDecayingCt=20](../../Plots/kink%20shape%20varying%20C/rescaled/C(t)%20decaying%20t-1/tail_shape_NDSolve%20comparison.png?raw=true)
 
 In order to make a serious comparison, you should **measure** the width (and so extimate $\alpha(t)$) and put on the x axis $\chi^2$ instead of $x^2$ **even for** the simulation data.
+-->
