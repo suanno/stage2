@@ -1,8 +1,14 @@
 # Checking the analytical ansatz for Kink's evolution
 
-Modulating $C(t)=-(t-t_0)^{-1}(1+\frac{b}{a})$ we want to check if the system evolves according to
+**Data**: ./saves/C decaying driving a=-2 b=1 beta0 = 1 L = 1000/
+
+Modulating 
+$$C(t)=-(t-t_0)^{-1}(1+\frac{b}{a})$$
+we want to check if the system evolves according to
 
 $$u(x,t) = \beta(t)u_k(\alpha(t) x)$$
+
+The **initial state** is prepared by keeping $C$ to a **constant value** $C=1$ for a long time ($\Delta t = 10$).
 
 ## How we check the above relation
 Checking the above relation means checking two properties:
@@ -125,3 +131,14 @@ The little mismatch in $\alpha$ is the one that causes little mismatch in the ra
 
 ![ratioBetaAlpha](Plots/measured%20and%20analytical%20alpha%20beta/ratio.png?raw=true)
 
+### Rescaled shape of the tail
+By using the expected aalytical expresions for $\alpha(t)$ and $\beta(t)$ we can extimate $u_k(\chi)$.
+
+We expect this function to be the same at any time, as the analytical shape of the kink doesn't change in time (only height and width do)
+
+![rescaledTail](Plots/measured%20and%20analytical%20alpha%20beta/tail%20rescaled.png?raw=true)
+
+In NDSolve we used a value for the derivative at $\chi' = 0$ that is very close to the critical value for which $u_k(\chi\rightarrow\infty)=1$ and not $0$ or $\infty$ (in the physical analogy it is a critical velocity).
+
+$$v = 1.321043(5)$$
+We are sure on the value of the critical velocity until the cifer in brakets.

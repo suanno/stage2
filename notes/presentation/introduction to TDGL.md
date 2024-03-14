@@ -170,7 +170,7 @@ We'll see what we can understand at first order and then we'll decide wheter to
 
 ## Our Motivation: Universal dynamics
 
-As the **shape** of the Landau Gitzburg free energy is the same for any system **in the universality class** of the Ising model; we **guess** that the law is an **UNIVERSAL law** for describing **non equilibrium dynamics CLOSE TO the critical point**.
+As the **shape** of the Landau Gitzburg free energy is the same for many systems that **share the same simmetries** of the Ising model; we **guess** that the law is an **UNIVERSAL law** for describing **non equilibrium dynamics CLOSE TO the critical point**.
 
 
 """Same Free energy expression (Gitzburg-Landau) $\implies$ Universal law for dynamics"""
