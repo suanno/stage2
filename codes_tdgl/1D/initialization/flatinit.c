@@ -43,13 +43,13 @@ if (argc > 2){
 
 FILE *fileinit;
 
-fileinit = fopen("fileinit.dat", "w");
+<fileinit = fopen("fileinit.dat", "w");
 fprintf(fileinit, "%d %d\n", seed, N);
 #pragma omp parallel for
 for (i=0; i<N; i++){
     fprintf(fileinit, "%.20f\n", u0);
 }
-
+>
 fclose(fileinit);
 
 /*Recreate fileCout of values of C(t) [Progressive

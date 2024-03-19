@@ -16,26 +16,35 @@ randU1 = randmin*(1-rand()/(float)RAND_MAX)+randmax*rand()/(float)RAND_MAX;
 return randU1;
 }
 
-int main(){
+int main(int argc, char  *argv [ ]){
 
 int i;
 int j;
 
-int N=2500;
+int N;
 double deca;
-double hmoy=0.0;
+double u0;
+double hmoy = 0.0;
+
+char *ptr;
+int n_args = 2;     /*Number of required arguments*/
+if (argc <= n_args){
+    printf("Not enought arguments");
+    return 0;
+}
+
+N = (int)strtod(argv[1], &ptr);
+u0 = strtod(argv[2], &ptr);
 
 FILE *fileinit;
-
-fileinit = fopen("file0init.dat", "w");
+fileinit = fopen("fileinit.dat", "w");
 #pragma omp parallel for
 for (i=0; i<N; i++){
-for (j=0; j<N; j++){
-deca=randU(-0.1, 0.1)+hmoy;
-fprintf(fileinit, "%.20f\n", deca);
+    for (j=0; j<N; j++){
+        deca=u0*randU(-1, 1) + hmoy;
+        fprintf(fileinit, "%.20f\n", deca);
+    }
 }
-}
-
 fclose(fileinit);
 
 }

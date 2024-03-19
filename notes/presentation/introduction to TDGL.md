@@ -6,7 +6,10 @@ We know that, **at thermodynamic equilibrium**, many systems, that look very dif
 - the Ising model
 - the Gas / Liquid system
 
-show the **same behaviour** **near the critical point**. In fact we find the same critical exponents for any system in the universality class.
+show the **same behaviour** **near the critical point**, _in the sense that_ we find the same critical exponents.
+
+In fact, the **velocity** with which the _average_ magnetization of the 3D ising model decays at the critical point, is the same of the decay of the difference in densities in a Gas/Liquid system.
+[STOP]
 
 - In a magnetic system (Ising model)
 $$m\sim (T_c - T)^{\beta}\quad\text{when } T\rightarrow T_C, H=0$$
@@ -17,9 +20,9 @@ where the exponent $\beta$ **is the same**.
 
 ## Introducing the Gitzburg-Landau ansatz
 
-A way **of describing** this universal behaviour is to **make** the Gitzburg-Landau free energy **ansatz**.
+A way **of describing** this universal behaviour is to **make** the Gitzburg-Landau **ansatz** for the free energy formula.
 
-**Close to the critical point**, you assume that the free energy of **any system** can be written as this functional. 
+**Close to the critical point**, we assume that the free energy of **any system** can be written as this functional. 
 
 <!---
 A way of finding the critical exponents consists in minimizing the gitzburg landau free energy density **anstatz** $\frac{\partial f}{\partial t} = 0$
@@ -28,23 +31,35 @@ A way of finding the critical exponents consists in minimizing the gitzburg land
 -->
 
 $$f(m,T,H) = \frac12|\nabla m(x)|^2-Hm(x)+\frac12am^2(x)+bm^3(x)+...$$
-where $a = a_0 \frac{(T-T_c)}{T}$
-and the coefficients **depend on the simmetries** of the system.
+where $a = a_0 \frac{(T-T_c)}{T}$, $m$ is the order parameter (as the magnetization) and $H$ is an external field (as the magnetic field).
+
+The coefficients (like $a$ and $b$) **depend on the simmetries** of the system.
 
 [This means that, if two systems have the same simmetries, the predicted behaviour close to the critical point is the same.]
 
-**For example**, if we consider uniform states and up/down simmetry, the free energy will be this potential.
-When temperature goes under the critical value, you **predit** a spontaneous breaking of the simmetry.
+### To make an example
+If we consider 
+- up/down simmetry
+- no magnetic field
+- and uniform states
+
+### Spontaneous magnetization
+The free energy will be this potential.
+When temperature goes under the critical value, you **predit** a spontaneous breaking of the up/down simmetry.
 
 ![doubleWellPotential](Plots/universal%20V(x).png?raw=true)
 
 [where the coefficients $a_0$, b, $T_c$ are different among the systems in the universality class, but the order parameter $m(x)$ can be rescaled respect to its equilibrium value (that depends over the parameters) and so get an universal expression]
 
-## Out of equilibrium dynamics
 
-The Gitzburg Landau free energy expression is used to find the **equilibrium states** of the system from simmetry consideration.
+So we see that we can use the Gitzburg Landau ansatz to find the **equilibrium states** of the system;
 
-But, if we consider it **even out of equilibrium**, we can look for a law that describes the **dynamics** with which **the system approaches equilibrium**.
+
+## Dynamics while reaching equilibrium states
+
+But, can we say something about how the system reaches equilibrium?
+
+The answer is yes, because we can say something, by exploiting the ansatz **even out of equilibrium**.
 
 <!--
  we can look for **an universal law of DYNAMICS**, that hold when both 
@@ -57,7 +72,7 @@ are close to the critical values.
 
 ## Non-conservative / Dissipative system
 
-To find this dynamics from the Gitzburg-Landau ansatz, let's consider a **strongly dissipative system**.
+To find a **law of dynamics** from the Gitzburg-Landau ansatz, we _have to_ consider a **strongly dissipative system**. So let's consider an overdamped oscillator.
 
 In an **overdamped oscillator**, you can approximate the equation of motion, neglecting the **inertial term**
 
@@ -82,7 +97,7 @@ If we now use
 
 $$\frac{\partial m(x)}{\partial t} = \Delta m + m(C-m^2)$$
 
-where $C$ is a parameter that depends over the control parameter $H$ and the temperature $T$.
+where $C$ is a parameter that depends over the external field $H$ and the temperature $T$.
 
 #### This equation is called TDGL and is the equation we're working on.
 
@@ -110,23 +125,30 @@ The system admits uniform stationary states, but even stationary states where bo
 
 ![equilibriumStates](Plots/stationary%20states.png?raw=true)
 
-When the system is far from equilibrium, it moves towards a stationary state **throught the interaction of neighboring interfaces**, that tend to **annichilate**
+When the system is far from equilibrium, it moves towards a stationary state **throught the interaction of neighboring interfaces**, that tend to **annichilate**.
+And at the end you have only one phase.
 
 ![annichilation](Plots/annichilation.png?raw=true)
 
-## State of the art
+## What do we know ALREADY about this dynamics?
 
 Until now, the dynamics described by the equation has been studied intensively **only for constant** values of $C$.
+
+### Driving C(t)
 
 But no one has been interested in the dynamics when $C(t)$ has a time dependance.
 
 ## Our goal
-We want to **explore** the dynamics with time dependent $C(t)$ to see
+So we want to **explore** the dynamics with time dependent $C(t)$ to see
 - in what sense we can control the state of the system: what properties of the system can be controlled by changing $C$ in time?
 - and understand how, and how much, we can **control** this properties, like the size and height of domain interfaces?
 
 ## What we did so far (two paths)
-So far we studied states with **only one interface** and we explored dynamics with two _independent_ approaches
+So far we studied the equation 
+- in one dimension 
+- and states with **only one interface**
+
+and we explored dynamics with two _independent_ approaches
 - numerical
 - analytical
 
@@ -139,24 +161,41 @@ At the beginning **we really spent time** to implement an algorithm for integrat
 and **we used end up using** a simple implicit method (Crank - Nicolson)
 
 
-After that, we integrated numerically the dynamics with sinusoidal modulation of $C(t)$
+After that, we considered a sinusoidal modulation of $C$ and we integrated numerically the dynamics 
 $$C(t) = \bar{C} + A\sin(2\pi t/T)$$
 
-and we saw that there are two regimes for the dynamics
+
+## Two time scales
+
+As in the system there are two timescales
+- the period of the modulation of $C$
+- and the time the system takes to reach a stationary state, when $C$ is constant
+
+We expect to see two regimes of dynamics, depending on wether the two timescales are close or far.
+
+## Two kinds of dynamics
+
+In fact we saw that there are two regimes for the dynamics
 - Adiabatic
 - Non adiabatic.
 
-We are in the **adiabatic regime** when the evolution of $C(t)$ is **slow** respect to the time the system takes to **relax** if $C$ is kept constant.
+In the **adiabatic regime**, the evolution of $C$ is **slow** respect to the relaxation time, so the evolotuion of the system follows the evolution of $C$, because the system "has time to relax after $C$ is changed".
 
-We know the analytical solution of TDGL for constant $C$, so we can achieve control in this regime BUT
-- the control is slow
-- it's not possible if $C$ oscillates around zero, because the relaxation time $\tau \sim \frac{1}{C}$
+While, in the other regime, this is not the case.
+
+As we know the analytical solution of TDGL for constant $C$, we can **easily** achieve control in this regime BUT
+- the control is slow if $C$ oscillates close to zero, as the relaxation time diverges.
 
 ### First analytical approach
-We tried a simple analytical approach, where we built our ansatz in order to control the width and height of interfaces (we **parametrized** the two properties).
+We tried a simple analytical approach, where we built our ansatz in order to control the width and height of interfaces (so we **parametrized** the two properties).
 $$m(x,t) = \beta(t)m_k(\alpha(t)x)$$
 
-we managed to find a way of controlling those two properties in time, by changing $C(t)$ in a particular way. But we have managed only to decrease height and increase width; not the opposite.
+we managed to find a way of controlling the properties in time, by changing $C(t)$ in a particular way. 
+
+
+### Result of height/width control
+
+But we have managed only to decrease height and increase width; not the opposite.
 
 Despite this, this approach gave us a better understanding of the **functional shape** that the interfaces get when we control their properties.
 

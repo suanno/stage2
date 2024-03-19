@@ -62,7 +62,7 @@ fprintf(file, "%d %d\n", seed, N);
 #pragma omp parallel for
 for (i=0; i<N; i++){
     x = i*dx;
-    u[i] = u0 + eps*sin(2*pi*x/lamb);
+    u[i] = u0 + -eps*sin(2*pi*x/lamb);  /*The minus make the sine like tanh instead of -tanh=tanh(-x)*/
     //printf("\nlambda = %lf; x = %lf", lambda, i*dx);
     fprintf(file, "%.20f\n", u[i]);
 }

@@ -5,106 +5,45 @@
 //#include </opt/intel/composer_xe_2013_sp1.3.174/mkl/include/fftw/fftw3.h>
 #include <fftw3.h>
 #include <math.h>
+#define N 10
 
 #define pi  4*atan(1.0)
-#define N 10
-int main(int argc, char  *argv [ ]){
+int main(){
 
 
-/*Parameters: They are read from previous simulation .dat file*/
 
-int N_;
-double dx;                          /*  Lattice (space) parameters */
-double dt, tmin, tmax, tspan;      /*  tmin: Initial time(of the initial state)
-                                    tmax: Final time (of the final state)
-                                */
-int read_from_top = 0;          /*Read fileCin.dat from t = 0 instead of t = tmin*/
-int loop_read = 0;              /*If fileCin.dat is finished, it continues reading it from top*/
 
-/*  Read Lattice (space) parameters from last simulation
-    [They must be the same for consecutive simulations (for consistency) while dt can change] */
-FILE *fileinit;
-int seed;
-fileinit = fopen("tdgl_result.dat", "r");
-/*First line is for parameters and seed
-  tdgl adopts THE SAME parameters (N,dx, dt) that were used in the
-  previous evolution with tdglfd or tdgl, unless specified in the command prompt.
-*/
-fscanf(fileinit, "%d %lf %lf\n", &N_, &tmin, &dx);
-fclose(fileinit);
+double h[N][N];
+double hfr[N][N];
+double hfi[N][N];
+double hdt[N][N];
+double hdtfr[N][N];
+double hdtfi[N][N];
+double coeffr[N][N];
+double hc[N][N]; // h^3
+double hcfr[N][N];
+double hcfi[N][N];
+double q2[N][N]; // qx^2 + qy^2
 
-/* Get inputs from the terminal */
-char* fileCinName;
-char* ptr;
-int min_args = 2;     /* Minimum Number of required arguments*/
-if (argc <= min_args){
-    printf("Not enought arguments");
-    return 0;
-}
-tspan = (double)strtod(argv[1], &ptr);
-fileCinName = argv[2];
-if (argc > min_args + 1)
-    read_from_top = (int)strtod(argv[3], &ptr);
+double lapfrcoef[N][N];
+double integ_coef[N][N];
 
-/* Time parameters */
-tmax = tmin + tspan;
-double ttime=0;
-int nloop = (tspan)/dt;
-int loop;
+//static double areaar[N][N];
+//static double Aarr[N][N];
+//static double Barr[N][N];
+//static double Carr[N][N];
 
-/* Allocation */
-int i;
-double** x = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		x[i] = malloc(N * sizeof(double));
-double** h = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		h[i] = malloc(N * sizeof(double));
-double** hfr = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		hfr[i] = malloc(N * sizeof(double));
-double** hfi = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		hfi[i] = malloc(N * sizeof(double));
-double** hdt = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		hdt[i] = malloc(N * sizeof(double));
-double** hdtfr = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		hdtfr[i] = malloc(N * sizeof(double));
-double** hdtfi = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		hdtfi[i] = malloc(N * sizeof(double));
-double** coeffr = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		coeffr[i] = malloc(N * sizeof(double));
-double** hc = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		hc[i] = malloc(N * sizeof(double));
-double** hcfr = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		hcfr[i] = malloc(N * sizeof(double));
-double** hcfi = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		hcfi[i] = malloc(N * sizeof(double));
+//double A;
+//double B;
+//double C;
 
-double** lapfrcoef = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		lapfrcoef[i] = malloc(N * sizeof(double));
-double** q2 = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		q2[i] = malloc(N * sizeof(double));
-double** integ_coef = malloc(N*sizeof(double*));
-for(i = 0; i < N; i++)
-		integ_coef[i] = malloc(N * sizeof(double));
-
-double* ffr = malloc(N*sizeof(double));
-double* qfr = malloc(N*sizeof(double));
-double L = N*dx; // data for x is [0, L]x[0, L]
-
+double ffr[N];
+double qfr[N];
+double dx=0.1;
+double L=N*dx; // data for x is 0 to L
 double z;
 double Hm2=1;
-//int i;
+int i;
 int j;
 int k;
 
@@ -114,44 +53,20 @@ double decaoutq2mean=0.0;
 double q2meannum=0.0;
 double q2meandenom=0.0;
 
-/*
+int loop;
+double dt=0.01; // note: stable upto dt=0.6
 int Nst=8;
 double savetimes[8]={1,2,3,4,4000,6000,8000,10000};
-*/
-
 double time;
-int loops= nloop;
+double tmin=0;
+double tmax=10000;
+int loops=(tmax-tmin)/dt;
 double q2mean[loops];
 static double q2meannumar[N][N];
 static double q2meandenomar[N][N];
 
 int q2loop=0;
 double qtime=0.0;
-
-/*Read C(t) from file*/
-FILE* fileCin;
-double* C = malloc(nloop*sizeof(double));
-double decatime = -1;
-double decainC;
-fileCin = fopen(fileCinName, "r");
-loop = 0;
-while (decatime < tmax*(1-read_from_top) + tspan*read_from_top){
-    /*If you reach the end of fileCin [if t_state > t_finalC]*/
-    if(fscanf(fileCin, "%lf %lf \n", &decatime, &decainC) == EOF){
-		fclose(fileCin);
-		if (loop_read == 1){
-        	fileCin = fopen(fileCinName, "r");
-			fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
-        }else{
-            printf("fileCin.dat is too short! Think to enable the loop reading of fileCin.dat");
-            return 0;
-        }
-	}
-    if (decatime >= tmin*(1-read_from_top) + 0*read_from_top)
-        C[loop]=decainC;
-        loop = loop + 1;
-}
-fclose(fileCin);
 
 double* C = malloc(loops*sizeof(double));
 double Thalf = 0.5;
@@ -178,7 +93,7 @@ if(Thalf > 0){
 }
 */
 
-//FILE *fileinit;
+FILE *fileinit;
 FILE *filenonconserve2dh;
 FILE *fileq2mean;
 FILE *fileAveout;
