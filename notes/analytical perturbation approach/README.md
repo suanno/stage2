@@ -54,7 +54,7 @@ so it goes to zero when the variation of $C(t)$ in time is extremely slow.
 Then, to take into account the fact that the adiabatic dynamics is true only when $\tau_C << \tau_{relax}$, we **expect that** our expansion **can be truncated** at first order when
 $$C(t) >> \frac{\epsilon}{2}$$
 
-If $C(t) = \bar{C} + A\sin(2\pi t/T)$ we can adopt the rule of thumb
+If $C(t) = \bar{C} + A\sin(2\pi t/T)$ we can adopt the **rule of thumb**
 $$\epsilon << 2(\bar{C}-A)$$
 
 
@@ -103,6 +103,12 @@ $$\beta_1(\tau) = \frac12 C'(\tau)C^{-\frac32}$$
 $$u_{k_0} + u'_{k_0}\chi = u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}'$$
 
 So we can solve numerically the last equation and find a numerical solution for $u_{k_1}(\chi)$.
+
+**NOTICE THAT**: We've imposed a lot of constraints, so we do not know if what we found is the way the system will evolve.
+We simply found a solution of the TDGL equation that satisfies the required properties, but maybe it is not unique!
+
+So we **have to** check numerically if the system evolves like this and not according to "another solution". If it is the case, this means that the analytical solution we found is right and so **we know analytically how the system evolves**, at least when $\epsilon$ is sufficiently small ($\epsilon << 2C(t)$)
+
 ## Measure deviation form stationary state $\Delta u = u - u_0$
 
 Let's consider the quantity
@@ -130,6 +136,83 @@ So we can extimate $\epsilon\beta_1$, by measuring the plateau value of the devi
 
 $$\epsilon\beta_1 \simeq - 2\tilde{\Delta u}$$
 
-By using
-- $\beta_1 = \frac12 C'(\tau)C^{-\frac32}$
-- $\alpha = \sqrt{C}$
+#### The experiment
+We choose $C(t)$ to change in time as a sine, so it is easy to recognize the timescale of its variation
+
+$$C(t) = \bar{C} + A\sin(2\pi t/T)$$
+
+So the small parameter in this case is $$\epsilon = 2\pi/T$$
+
+Now we know the analytical expression for $\beta_1$
+
+$$\beta_1(\tau) = \frac12C^{-\frac32}\partial_{\tau}C$$
+
+So we have the expected analytical expression of $\epsilon\beta_1(t)$ **and we can measure it** as 
+$$\epsilon\beta_1 \simeq - 2\tilde{\Delta u}$$
+
+<!--
+    ![deviationT=100](Plots/T=100%20Cave=1%20A=0.2/deltau.png?raw=true)
+
+     [In the first plot we checked if there is any difference in the evolution of the system if we start with a state prepared by keeping $C$ constant for a long time or by defining it as the stationary state for contant $C$ (in the second case the initial state does not satisfy PBC, this is the main reason of this check)]
+-->
+- $C\in (1\pm0.2), \epsilon = 0.06$
+
+    ![beta1extT=100](Plots/T=100%20Cave=1%20A=0.2/beta1_extimation_analytical.png?raw=true)
+
+
+    Then we can use the analytical expression for $\epsilon\beta_1(t)$ and $\alpha = \sqrt{C}$ to extimate $u_{k_1(\chi)}$ from $\Delta u$ as
+
+    $$\Delta u \simeq \epsilon\beta_1(t)u_{k_1}(\alpha x)$$
+
+    ![uk1T=100](Plots/T=100%20Cave=1%20A=0.2/uk1.png?raw=true)
+
+- $C\in (0.3\pm0.2), \epsilon = 0.06$
+    ![uk1T=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/uk1.png?raw=true)
+    ![beta1extT=10Cave=1](Plots/T=10%20Cave=0.3%20A=0.2/beta1_extimation_plateau.png?raw=true)
+    
+  
+- $C\in (1\pm0.2), \epsilon = 0.6$
+    ![uk1=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/uk1.png?raw=true)
+
+    ![beta1extT=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/beta1_extimation_plateau.png?raw=true)
+
+
+## Check the consistency of this perturbative method
+
+### Removing the time from the differential equation
+When we put a constraint to remove the time dependence, we asked
+
+$$\alpha' = C\beta_1$$
+anyway we can remove the time dependence in a more general way
+$$k\alpha' = C\beta_1$$
+where $k$ is an arbitrary number.
+
+Anyway the choice of $k$ does not affect the **first order correction** 
+$$\epsilon\beta_1(t)u_{k_1}$$
+
+as the new analytical expression for $\beta_1$ is $\beta_1 = k\beta_1^{OLD}$, while the new ODE for $u_{k_1}$ is solved by $u_{k_1}$ such that
+
+$$u_{k_1} = ku_{k_1}^{OLD}$$
+so the product of the two terms does not depend on $k$.
+
+### Choose $\epsilon/2$ instead of $\epsilon$
+
+The **first order** correction **must NOT depend** on the choice of the small parameter $\epsilon$ up to a multiplicative coefficient.
+That must hold, because if $1/\epsilon$ is a timescale for $C(t)$, then why $1/2\epsilon$ shouldn't be so?
+In addition, for practical purposes, it is better if you do not have to find the "right multiplicative coefficient".
+
+We see in an example that we can multiply $\epsilon$ by a number, without modifying the first order correction.
+
+Let's consider 
+$$C(t) = \bar{C} + A\sin(2\pi t/T)$$
+
+And make the different choices
+- $\epsilon = 2\pi/T$
+    
+    $\partial_{\tau} = \epsilon^{-1}\partial_t = T/2\pi \partial_t$
+- $\epsilon = \pi/T$
+    
+    $\partial_{\tau} = \epsilon^{-1}\partial_t = T/\pi \partial_t$
+
+As
+$$\beta_1(t) = \frac12\partial_{\tau}C C^{-\frac32}$$
