@@ -2,69 +2,97 @@
 //#include <fstream.h>
 #include <string.h>
 #include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <omp.h>
+#include<math.h>
+#include<stdlib.h>
+#include<omp.h>
 #include <time.h>
 
 #define pi  4*atan(1.0)
 
-double singlekink(double x, double xc, double alpha, double beta){
-    //printf("x = %lf, xc = %lf\n", x, xc);
-    return beta*tanh((x-xc)*alpha);
-}
+/* Generate a flat profile with added a sine wave
+    of the specified wavelenght
+    u(x) = u0 + eps*sin(2pi x/lamb)
+
+    NOTE: You have to specify the dx
+    when calling the file, and it
+    MUST be the SAME of the evolution!
+*/
 
 int main(int argc, char  *argv [ ]){
 
 int i;
 
-int N = 100;
-double alpha, beta, xc;
-double x, dx;
+double L = 1000;
+double dx = 0.1;
 int seed;
-double hmoy = 0;
 
+/* u(x) = u0 + eps*sin(2pi x/lamb) */
+double C = 1;           /*Constant C value [the kink solution is the stationary state for THIS constant C value]*/
+double xc = L/2;        /*Kink center*/
 
 seed = time(NULL);
 srand(seed);
 
 char *ptr;
 if (argc > 1)
-	N = (int)strtod(argv[1], &ptr);
-if (argc > 2){
-  	alpha = strtod(argv[2], &ptr);
-    if (argc > 3){
-  	    beta = strtod(argv[3], &ptr);
-    }
-    else{
-        beta = 1;
-    }
-}
-else{
-    alpha = 1;
-}
+	L = strtod(argv[1], &ptr);
+if (argc > 2)
+	dx = strtod(argv[2], &ptr);
+if (argc > 3)
+  	C = strtod(argv[3], &ptr);
+if (argc > 4)
+    xc = strtod(argv[4], &ptr);
 
+int N = (int)(L/dx);
+dx = L/((double)N);   /*Recalculate dx*/
+printf("New dx = %lf\n", dx);
 
-dx = 0.1;
-double L = (double)N*dx;
-printf("L = %lf", L);
+FILE *file;
+double* u = malloc(N*sizeof(double));
 
-FILE *fileinit;
-
-fileinit = fopen("fileinit.dat", "w");
-fprintf(fileinit, "%d %d\n", seed, N);
+/*Generate the profile*/
+file = fopen("fileinit.dat", "w");
+fprintf(file, "%d %d\n", seed, N);
+double x;
 #pragma omp parallel for
 for (i=0; i<N; i++){
     x = i*dx;
-    fprintf(fileinit, "%.20f\n", singlekink(x, L/2, alpha, beta));
+    u[i] = sqrt(C)*tanh((x-xc)*sqrt(C/2));   /*Stationary state*/
+    fprintf(file, "%.20f\n", u[i]);
 }
+fclose(file);
 
-fclose(fileinit);
+
+/*Prepare the tdgl_result.dat file*/
+/*Read evolution parameters from parameters.txt.
+  Those are the used parameters, unless specified in the prompt
+*/
+double dt;
+double Cave = 0;
+double Ampl = 1;
+double Thalf = -1;  // T/2; If Thalf < 0, then C(t) will be constantly +Cave
+double not_dx = 0;
+
+file = fopen("parameters.dat", "r");
+fscanf(file, "dx %lf\ndt %lf\nA %lf\nT %lf\nCave %lf", &not_dx, &dt, &Ampl, &Thalf, &Cave);
+fclose(file);
+
+/*Save the initial state*/
+//filetdglinit = fopen("tdgl_init.dat", "w");
+file = fopen("tdgl_result.dat", "w");
+/*Save parameters N, tmax, dx, dt, seed*/
+double tmax = 0; // So we save the TOTAL time of the dynamics
+fprintf(file, "%d %.10lf %.10lf %.10lf %d %lf %lf %lf\n", N, tmax, dx, dt, seed, Ampl, Thalf, Cave);
+for(i=0;i<N;i++) {
+    x = i*dx;
+    fprintf(file, "%.5f %.20f\n", x, u[i]);
+}
+fclose(file);
 
 /*Recreate fileCout of values of C(t) [Progressive
 executions of the dynamics will APPEND info]*/
-FILE *file;
 file = fopen("fileCout.dat", "w");
+fprintf(file, "0 %.20f\n", C);
 fclose(file);
 file = fopen("fileAveout.dat", "w");
 fclose(file);
