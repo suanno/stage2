@@ -92,7 +92,8 @@ By putting the above constraints and
 - equating the first order in $\epsilon$ of the TDGL equation
 
  you find this equation
-$$\alpha'(u_{k_0} + u'_{k_0}\chi) = C\beta_1(u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}')$$
+
+$$`\alpha'(u_{k_0} + u'_{k_0}\chi) = C\beta_1(u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}')`$$
 
 Now, in order to recover an ODE, you **add an additional constraint** to remove the time dependance
 
@@ -100,7 +101,8 @@ $$C\beta_1 = \alpha' = \partial_{\tau}\sqrt{C} = \frac12 C'C^{-\frac12}$$
 
 So
 $$\beta_1(\tau) = \frac12 C'(\tau)C^{-\frac32}$$
-$$u_{k_0} + u'_{k_0}\chi = u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}'$$
+
+$$`u_{k_0} + u'_{k_0}\chi = u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}'`$$
 
 So we can solve numerically the last equation and find a numerical solution for $u_{k_1}(\chi)$.
 
