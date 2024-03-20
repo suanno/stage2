@@ -172,7 +172,7 @@ $$\Delta u \simeq \epsilon\beta_1(t)u_{k_1}(\alpha x)$$
 
 ![CT=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/C.png?raw=true)
 ![uk1T=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/uk1.png?raw=true)
-![beta1extT=10Cave=1](Plots/T=10%20Cave=0.3%20A=0.2/beta1_extimation_plateau.png?raw=true)
+![beta1extT=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/beta1_extimation_plateau.png?raw=true)
     
   
 - $C\in (1\pm0.2), \epsilon = 0.6$
