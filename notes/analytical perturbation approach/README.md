@@ -157,31 +157,31 @@ $$\epsilon\beta_1 \simeq - 2\tilde{\Delta u}$$
 -->
 - $C\in (1\pm0.2), \epsilon = 0.06$
 
-    ![CT=100](Plots/T=100%20Cave=1%20A=0.2/C.png?raw=true)
+![CT=100](Plots/T=100%20Cave=1%20A=0.2/C.png?raw=true)
 
-    ![beta1extT=100](Plots/T=100%20Cave=1%20A=0.2/beta1_extimation_analytical.png?raw=true)
+![beta1extT=100](Plots/T=100%20Cave=1%20A=0.2/beta1_extimation_analytical.png?raw=true)
 
 
-    Then we can use the analytical expression for $\epsilon\beta_1(t)$ and $\alpha = \sqrt{C}$ to extimate $u_{k_1(\chi)}$ from $\Delta u$ as
+Then we can use the analytical expression for $\epsilon\beta_1(t)$ and $\alpha = \sqrt{C}$ to extimate $u_{k_1(\chi)}$ from $\Delta u$ as
 
-    $$\Delta u \simeq \epsilon\beta_1(t)u_{k_1}(\alpha x)$$
+$$\Delta u \simeq \epsilon\beta_1(t)u_{k_1}(\alpha x)$$
 
-    ![uk1T=100](Plots/T=100%20Cave=1%20A=0.2/uk1.png?raw=true)
+![uk1T=100](Plots/T=100%20Cave=1%20A=0.2/uk1.png?raw=true)
 
 - $C\in (0.3\pm0.2), \epsilon = 0.06$
 
-    ![CT=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/C.png?raw=true)
-    ![uk1T=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/uk1.png?raw=true)
-    ![beta1extT=10Cave=1](Plots/T=10%20Cave=0.3%20A=0.2/beta1_extimation_plateau.png?raw=true)
+![CT=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/C.png?raw=true)
+![uk1T=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/uk1.png?raw=true)
+![beta1extT=10Cave=1](Plots/T=10%20Cave=0.3%20A=0.2/beta1_extimation_plateau.png?raw=true)
     
   
 - $C\in (1\pm0.2), \epsilon = 0.6$
 
-    ![CT=10](Plots/T=10%20Cave=1%20A=0.2/C.png?raw=true)
+![CT=10](Plots/T=10%20Cave=1%20A=0.2/C.png?raw=true)
 
-    ![uk1=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/uk1.png?raw=true)
+![uk1=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/uk1.png?raw=true)
 
-    ![beta1extT=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/beta1_extimation_plateau.png?raw=true)
+![beta1extT=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/beta1_extimation_plateau.png?raw=true)
 
 
 ## Check the consistency of this perturbative method
