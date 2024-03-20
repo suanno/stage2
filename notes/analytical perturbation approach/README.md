@@ -157,6 +157,8 @@ $$\epsilon\beta_1 \simeq - 2\tilde{\Delta u}$$
 -->
 - $C\in (1\pm0.2), \epsilon = 0.06$
 
+    ![CT=100](Plots/T=100%20Cave=1%20A=0.2/C.png?raw=true)
+
     ![beta1extT=100](Plots/T=100%20Cave=1%20A=0.2/beta1_extimation_analytical.png?raw=true)
 
 
@@ -167,11 +169,16 @@ $$\epsilon\beta_1 \simeq - 2\tilde{\Delta u}$$
     ![uk1T=100](Plots/T=100%20Cave=1%20A=0.2/uk1.png?raw=true)
 
 - $C\in (0.3\pm0.2), \epsilon = 0.06$
+
+    ![CT=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/C.png?raw=true)
     ![uk1T=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/uk1.png?raw=true)
     ![beta1extT=10Cave=1](Plots/T=10%20Cave=0.3%20A=0.2/beta1_extimation_plateau.png?raw=true)
     
   
 - $C\in (1\pm0.2), \epsilon = 0.6$
+
+    ![CT=10](Plots/T=10%20Cave=1%20A=0.2/C.png?raw=true)
+
     ![uk1=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/uk1.png?raw=true)
 
     ![beta1extT=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/beta1_extimation_plateau.png?raw=true)
@@ -195,6 +202,9 @@ as the new analytical expression for $\beta_1$ is $\beta_1 = k\beta_1^{OLD}$, wh
 $$u_{k_1} = ku_{k_1}^{OLD}$$
 so the product of the two terms does not depend on $k$.
 
+**Notice**: If you want to consider separatley $\beta_1$ and $u_{k_1}$ you need to **be consistent**. This means that you have to choose the same number $k$ in both the equations for $\beta_1$ and $u_{k_1}$. We set from the beginning $k=1$ so we do not have to think about it.
+It is relevant to be consistent (in the above sense) when you compare extimates of $u_{k_1}$ (obtained by using the anlytical expression of $\beta_1$) with the NDSolve numerical solution of the ODE of $u_{k_1}$.
+
 ### Choose $\epsilon/2$ instead of $\epsilon$
 
 The **first order** correction **must NOT depend** on the choice of the small parameter $\epsilon$ up to a multiplicative coefficient.
@@ -216,3 +226,6 @@ And make the different choices
 
 As
 $$\beta_1(t) = \frac12\partial_{\tau}C C^{-\frac32}$$
+
+**Notice**: If you consider $\beta_1$ alone, it is dependent on the choice of $\epsilon$ (the multiplicative coefficient)!!!
+So, when you make tests/cheks it is better to look at the product $\epsilon \beta_1$.
