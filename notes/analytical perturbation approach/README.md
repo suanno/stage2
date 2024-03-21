@@ -12,8 +12,8 @@ But the system evolves **exactly** adiabatically only when
 $$\tau_C / \tau_{relax}\rightarrow \infty$$
 if the ratio is finite, we have **corrections** to the **ideal** adiabatic dynamics.
 
-We want to find those corrections, with the idea of writing $u(x,t)$ as a serie of a **small** parameter $\epsilon$, that describes **how much we are close** to the adiabatic dynamics.
-As we know what happens in the adiabatic dynamics, we **hope that we can neglect** the higher order terms and study **up to first order** in $\epsilon$.
+We want to find those corrections, with the idea of writing $u(x,t)$ as a sum of powers of a **small** parameter $\epsilon$, that describes **how much we are close** to the adiabatic dynamics.
+Then, if $\tau_C >> \tau_{relax}$, we **hope we can neglect** the higher order terms and study **up to first order** in $\epsilon$.
 
 ## Two timescales $\tau_C$, $\tau_{relax}$
 Before looking for a suitable small parameter $\epsilon$, we calculate the two relevant timescales.
@@ -159,8 +159,6 @@ $$\epsilon\beta_1 \simeq - 2\tilde{\Delta u}$$
 -->
 - $C\in (1\pm0.2), \epsilon = 0.06$
 
-![CT=100](Plots/T=100%20Cave=1%20A=0.2/C.png?raw=true)
-
 ![beta1extT=100](Plots/T=100%20Cave=1%20A=0.2/beta1_extimation_analytical.png?raw=true)
 
 
@@ -172,14 +170,13 @@ $$\Delta u \simeq \epsilon\beta_1(t)u_{k_1}(\alpha x)$$
 
 - $C\in (0.3\pm0.2), \epsilon = 0.06$
 
-![CT=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/C.png?raw=true)
 ![uk1T=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/uk1.png?raw=true)
 ![beta1extT=100Cave=0.3](Plots/T=100%20Cave=0.3%20A=0.2/beta1_extimation_plateau.png?raw=true)
     
   
 - $C\in (1\pm0.2), \epsilon = 0.6$
 
-![CT=10](Plots/T=10%20Cave=1%20A=0.2/C.png?raw=true)
+
 
 ![uk1=10Cave=1](Plots/T=10%20Cave=1%20A=0.2/uk1.png?raw=true)
 
