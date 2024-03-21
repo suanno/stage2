@@ -235,8 +235,6 @@ for (loop=0; loop < nloop; loop++){
 	ufi[i]=out[i][1];
 	}
 
-	// ********** begin of main algorithm **********
-
 	/*Compute FFT of u(x)^3 (u^3 is called NL: Non Linear term)*/
 	for (i=0; i<N; i++){
 	NL[i]=u[i]*u[i]*u[i];
@@ -263,8 +261,6 @@ for (loop=0; loop < nloop; loop++){
 		udtfr[i]=(ufr[i]*(1+dt*Cprev/2+dt*d2coef[i]/2)-dt*NLfr[i])/integ_coef[i];
 		udtfi[i]=(ufi[i]*(1+dt*Cprev/2+dt*d2coef[i]/2)-dt*NLfi[i])/integ_coef[i];	
 	}
-
-	// ********** end of main algorithm **********
 
 	/*INVERSE FFT*/
 	for(i=0; i<N; i++) {

@@ -7,11 +7,12 @@
 #include <math.h>
 
 #define pi  4*atan(1.0)
+#define N 10
 int main(int argc, char  *argv [ ]){
 
 double temp;
 /*Space Parameters: From previous simulation*/
-int N; double dx;
+int N_; double dx;
 /*Time Parameters: From params.txt*/
 double dt, tmin, tmax, tspan;      /*   tmin: Initial time(of the initial state)
                                         tmax: Final time (of the final state)
@@ -26,7 +27,7 @@ FILE *fileinit;
 int seed;
 fileinit = fopen("state.dat", "r");
 /*First line contains parameters*/
-fscanf(fileinit, "%d %lf %lf\n", &N, &tmin, &dx);
+fscanf(fileinit, "%d %lf %lf\n", &N_, &tmin, &dx);
 //fclose(fileinit);                 /*NOT close, we will read the state!*/
 
 /*  Read Time parameters (only dt) from params.txt*/
@@ -45,22 +46,20 @@ if (argc <= min_args){
 }
 tspan = (double)strtod(argv[1], &ptr);
 fileCinName = argv[2];
-int extra_args = 1;
-if (argc > min_args + extra_args)
-    read_from_top = (int)strtod(argv[min_args + extra_args], &ptr);
-extra_args = extra_args + 1;
-if (argc > min_args + extra_args)
-    loop_read = (int)strtod(argv[min_args + extra_args], &ptr);
-extra_args = extra_args + 1;
+if (argc > min_args + 1)
+    read_from_top = (int)strtod(argv[3], &ptr);
 
 /* Time parameters */
 tmax = tmin + tspan;
 double ttime=0;
 int nloop = (tspan)/dt;
-int loop = 0;
+int loop;
 
 /* Allocation */
 int i;
+double** x = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		x[i] = malloc(N * sizeof(double));
 double** h = malloc(N*sizeof(double*));
 for(i = 0; i < N; i++)
 		h[i] = malloc(N * sizeof(double));
@@ -79,6 +78,9 @@ for(i = 0; i < N; i++)
 double** hdtfi = malloc(N*sizeof(double*));
 for(i = 0; i < N; i++)
 		hdtfi[i] = malloc(N * sizeof(double));
+double** coeffr = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		coeffr[i] = malloc(N * sizeof(double));
 double** hc = malloc(N*sizeof(double*));
 for(i = 0; i < N; i++)
 		hc[i] = malloc(N * sizeof(double));
@@ -89,6 +91,9 @@ double** hcfi = malloc(N*sizeof(double*));
 for(i = 0; i < N; i++)
 		hcfi[i] = malloc(N * sizeof(double));
 
+double** lapfrcoef = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		lapfrcoef[i] = malloc(N * sizeof(double));
 double** q2 = malloc(N*sizeof(double*));
 for(i = 0; i < N; i++)
 		q2[i] = malloc(N * sizeof(double));
@@ -100,14 +105,17 @@ double* ffr = malloc(N*sizeof(double));
 double* qfr = malloc(N*sizeof(double));
 double L = N*dx; // data for (x,y) is [0, L]x[0, L]
 
-
-
-double x, y, z;     /*For reading and printing the values of x,y,h*/
+double z;
+double Hm2=1;
 //int i;
 int j;
 int k;
 
 double deca;
+double decaoutq2mean=0.0;
+
+double q2meannum=0.0;
+double q2meandenom=0.0;
 
 /*
 int Nst=8;
@@ -116,40 +124,22 @@ double savetimes[8]={1,2,3,4,4000,6000,8000,10000};
 
 double time;
 int loops= nloop;
+double q2mean[loops];
+static double q2meannumar[N][N];
+static double q2meandenomar[N][N];
 
+int q2loop=0;
+double qtime=0.0;
 
 /*Read C(t) from file*/
 FILE* fileCin;
 double* C = malloc(nloop*sizeof(double));
-double Cprev;
 double decatime = -1;
 double decainC;
 fileCin = fopen(fileCinName, "r");
 loop = 0;
-
-/*CHECK IF dt is the SAME in params.txt and in fileCin.dat*/
-fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
-fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
-if (fabs(dt - decatime) > dt/10){
-    printf("The time step dt is different in 'fileCin.dat' (%lf) and 'params.txt' (%lf))", decatime, dt);
-    return 0;
-}
-
-while (decatime < tmax){
-    if (decatime > tmin){
-        C[loop] = decainC;
-        //printf("C(%lf) = %lf\n", decatime, decainC);
-        loop = loop + 1;
-    }
-    fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
-}
-fclose(fileCin);
-
-
-/*
-fileCin = fopen(fileCinName, "r");
 while (decatime < tmax*(1-read_from_top) + tspan*read_from_top){
-    //If you reach the end of fileCin [if t_state > t_finalC]
+    /*If you reach the end of fileCin [if t_state > t_finalC]*/
     if(fscanf(fileCin, "%lf %lf \n", &decatime, &decainC) == EOF){
 		fclose(fileCin);
 		if (loop_read == 1){
@@ -159,16 +149,12 @@ while (decatime < tmax*(1-read_from_top) + tspan*read_from_top){
             printf("fileCin.dat is too short! Think to enable the loop reading of fileCin.dat");
             return 0;
         }
-	}else{
-        printf("t = %.20f\n",decatime);
-    }
-    if (decatime >= tmin*(1-read_from_top) + 0*read_from_top){
+	}
+    if (decatime >= tmin*(1-read_from_top) + 0*read_from_top)
         C[loop]=decainC;
         loop = loop + 1;
-    }
 }
 fclose(fileCin);
-*/
 
 
 /*Define observables to track in time*/
@@ -213,19 +199,20 @@ qfr[i]=ffr[i]*2*pi/N;
 
 /*Load initial state*/
 for (i=0; i<N; i++){
-    for (j=0; j<N; j++){
-        fscanf(fileinit, "%lf %lf %lf\n", &x, &y, &z);
-        h[i][j]=z;
-        /*printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);*/
-    }
+for (j=0; j<N; j++){
+fscanf(fileinit, "%lf %lf %lf\n", &temp, &temp, &z);
+h[i][j]=z;
+/*printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);*/
+}
 }
 fclose(fileinit);   /*Only Now: you can eventually close the state file*/
 
 // coefficients for implicit scheme
 for (i=0; i<N; i++){
-    for (j=0; j<N; j++){
-        q2[i][j]=- (qfr[i]*qfr[i]+qfr[j]*qfr[j])/(dx*dx);
-    }
+for (j=0; j<N; j++){
+q2[i][j]=(qfr[i]*qfr[i]+qfr[j]*qfr[j]);
+lapfrcoef[i][j]=-(qfr[i]*qfr[i]+qfr[j]*qfr[j])/(dx*dx);
+}
 }
 
 /* EVOLUTION CODE */
@@ -236,89 +223,96 @@ for(loop=0;loop<loops;loop++) {
     printf("h[%d][%d]*dt = %.2lf\n", i, j, h[i][j]);
     */
     for (i=0; i<N; i++){
-        for (j=0; j<N; j++){
-            integ_coef[i][j]=1-dt*C[loop]/2-dt*q2[i][j]/2;
-        }
+    for (j=0; j<N; j++){
+    integ_coef[i][j]=1-dt*C[loop]-dt*lapfrcoef[i][j];
+    }
     }
 
-    /*FFT of h(x,y)->H(qx,qy)*/
-    #pragma omp parallel for //seulement pour les grands systèmes
-    for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            in[i*N+j][0] = h[i][j];
-            in[i*N+j][1] = 0.0;
-        }
+    // inside big loops
+    //#pragma omp parallel for //seulement pour les grands systèmes
+    for(i=0; i<N; i++) {
+    for(j=0; j<N; j++) {
+    hc[i][j] = h[i][j]*h[i][j]*h[i][j];
     }
+    }
+
+    // h to hfr, hfi
+    //#pragma omp parallel for //seulement pour les grands systèmes
+    for(i=0;i<N;i++) {
+    for(j=0;j<N;j++) {
+    in[i*N+j][0] = h[i][j];
+    in[i*N+j][1] = 0.0;
+    }
+    }
+    // backward transform
     fftw_execute(pf);
-    #pragma omp parallel for //seulement pour les grands systèmes
+    // copy output vector
+    //#pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            hfr[i][j] = out[i*N+j][0];
-            hfi[i][j] = out[i*N+j][1];
-        }
+    for(j=0;j<N;j++) {
+    hfr[i][j] = out[i*N+j][0];
+    hfi[i][j] = out[i*N+j][1];
+    }
     }
 
-    /*FFT of h3(x,y)->H3(qx,qy)*/
-    #pragma omp parallel for //seulement pour les grands systèmes
+    // hc to hcfr, hcfi
+    //#pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            hc[i][j] = h[i][j]*h[i][j]*h[i][j];
-            in[i*N+j][0] = hc[i][j];
-            in[i*N+j][1] = 0.0;
-        }
+    for(j=0;j<N;j++) {
+    in[i*N+j][0] = hc[i][j];
+    in[i*N+j][1] = 0.0;
     }
+    }
+    // backward transform
     fftw_execute(pf);
-    #pragma omp parallel for //seulement pour les grands systèmes
+    // copy output vector
+    //#pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            hcfr[i][j] = out[i*N+j][0];
-            hcfi[i][j] = out[i*N+j][1];
-        }
+    for(j=0;j<N;j++) {
+    hcfr[i][j] = out[i*N+j][0];
+    hcfi[i][j] = out[i*N+j][1];
+    }
     }
 
-    /*C[loop] = C(t+dt) but we need even C(t)=Cprev for Cranck-Nicolson*/
-	if (loop == 0)
-		Cprev = 0;
-	else
-		Cprev = C[loop-1];
-
-    /* Crank-Nicolson */
+    // implicit scheme
     //#pragma omp parallel for //seulement pour les grands systèmes
     for (i=0; i<N; i++){
-        for (j=0; j<N; j++){
-            hdtfr[i][j]=(hfr[i][j]*(1+dt*Cprev/2+dt*q2[i][j]/2)-dt*hcfr[i][j])/integ_coef[i][j];
-            hdtfi[i][j]=(hfi[i][j]*(1+dt*Cprev/2+dt*q2[i][j]/2)-dt*hcfi[i][j])/integ_coef[i][j];
-        }
+    for (j=0; j<N; j++){
+    //if(lapfrcoef[i][j] != 0.0) {
+    hdtfr[i][j] = (hfr[i][j]-dt*hcfr[i][j])/integ_coef[i][j];
+    hdtfi[i][j] = (hfi[i][j]-dt*hcfi[i][j])/integ_coef[i][j];
+    //}
+    }
     }
 
-    /*INVERSE FFT*/
-    #pragma omp parallel for //seulement pour les grands systèmes
+    // initialize input vector in for backward transform
+    //#pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            in[i*N+j][0] = hdtfr[i][j];
-            in[i*N+j][1] = hdtfi[i][j];
-        }
+    for(j=0;j<N;j++) {
+    in[i*N+j][0] = hdtfr[i][j];
+    in[i*N+j][1] = hdtfi[i][j];
     }
+    }
+    // backward transform
     fftw_execute(pb);
-    #pragma omp parallel for //seulement pour les grands systèmes
+    // copy output vector
+    //#pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            hdt[i][j] = out[i*N+j][0]/(N*N);
-        }
+    for(j=0;j<N;j++) {
+    hdt[i][j] = out[i*N+j][0]/(N*N);
+    }
     }
 
-    /* Measure Observables (instantaneous value) */
+    //#pragma omp parallel for //seulement pour les grands systèmes
     Ave[loop] = 0;
-    #pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-        h[i][j] = hdt[i][j];
-        Ave[loop] = Ave[loop] + h[i][j];
-        //printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);
-        }
+    for(j=0;j<N;j++) {
+    h[i][j] = hdt[i][j];
+    Ave[loop] = Ave[loop] + h[i][j];
+    //printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);
+    }
     }
     Ave[loop] = Ave[loop]/(N*N);
-
     //if(fmod(time,15.) ==0) {
     //printf("%.1f\n", time);
     //}
@@ -337,42 +331,13 @@ for(loop=0;loop<loops;loop++) {
     //}
 
 }
-
-/*Save the final state*/
-FILE* filefinalstate;
-filefinalstate = fopen("state.dat", "w");
-/*Save parameters N, tmax, dx, dt, seed, Ampl, Thalf*/
-fprintf(filefinalstate, "%d %lf %lf\n", N, tmax, dx);
-for (i=0; i<N; i++){
-    for (j=0; j<N; j++){
-        x = i*dx;
-        y = j*dx;
-        z = h[i][j];
-        fprintf(filefinalstate, "%.10f %.10f %.20f\n", x, y, z);
-    }
-}
-fclose(filefinalstate);
-
-/*Save the values taken by C(t) in time.
-  They are appendend, so you save its values from t=0
-*/
-FILE* fileCout;
-double decaout;
-fileCout = fopen("fileCout.dat", "a");
-for (loop=0; loop<nloop; loop++){
-    ttime = tmin + (loop+1)*dt;
-    decaout = C[loop];
-    /*printf("C[%d] = %lf\n", loop, C[loop]);*/
-    fprintf(fileCout, "%.5f %.20f\n", ttime, decaout);
-}
-fclose(fileCout);
-
 /*Save values of Space average in different times*/
+double decaoutC;
 fileAveout = fopen("fileAveout.dat", "a");
 for (loop=0; loop<loops; loop++){
-    time = tmin + (loop+1)*dt;
-    decaout = Ave[loop];
-    fprintf(fileAveout, "%.5f %.20f\n", time, decaout);
+time = tmin + (loop+1)*dt;
+decaoutC = Ave[loop];
+fprintf(fileAveout, "%.5f %.20f\n", time, decaoutC);
 }
 fclose(fileAveout);
 
@@ -384,23 +349,6 @@ fftw_free(in);
 fftw_free(out);
 // clean up threads
 fftw_cleanup_threads();
-
-free(C);
-free(h);
-free(hc);
-free(hfr);
-free(hfi);
-free(hcfr);
-free(hcfi);
-free(hdt);
-free(hdtfr);
-free(hdtfi);
-free(q2);
-free(qfr);
-free(ffr);
-free(integ_coef);
-
-
 return 0;
 }
 
