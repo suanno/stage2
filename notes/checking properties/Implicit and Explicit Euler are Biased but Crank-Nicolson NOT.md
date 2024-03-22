@@ -1,6 +1,8 @@
-# $C(t) = \bar{C} + \sin(2\pi t)$
+# Why Explicit and Implicit Euler are both Biased and we should use Crank-Nicolson
 
-Let's consider, for simplicity, the equation without the non-linear term.
+$$C(t) = \bar{C} + \sin(2\pi t)$$
+
+Let's consider, for **simplicity**, the equation **without the non-linear term**.
 If $u(t)$ is close to zero, this is a good approximation of the TDGL eq., because $u^3 << Cu$.
 
 ## What we expect
@@ -17,13 +19,13 @@ So **we expect that** $u(t)$ explodes (if $\bar{C}>0$) or decays (if $\bar{C} <0
 ## What happens
 - Implicit Euler
 $$u(t+dt) = \frac{u(t)}{1-C(t+dt)dt}$$
-![implicitExplosion](../Plots/no%20cubic%20term/Implicit%20Euler%20explosion.png?raw=true)
+![implicitExplosion](../../Plots/no%20cubic%20term/Implicit%20Euler%20explosion.png?raw=true)
 
 Notice that, even if for $\bar{C}=0$ we don't expect an explosion, we see that using Implicit Euler.
 
 - Explicit Euler
 $$u(t+dt) = u(t) + C(t)u(t)dt$$
-![explicitExplosion](../Plots/no%20cubic%20term/Explicit%20Euler%20explosion.png?raw=true)
+![explicitExplosion](../../Plots/no%20cubic%20term/Explicit%20Euler%20explosion.png?raw=true)
 
 Using Explicit Euler we do not have an explosion for $\bar{C} = 0$, **but** we have a decay that we do not expect neither.
 
@@ -75,7 +77,7 @@ Notice that, in the previous methods, you keep just one of the two terms in the 
 It follows the Crank-Nicolson scheme
 $$u(t+dt) = u(t)\frac{(1+\frac{dt}{2}C(t))}{(1-\frac{dt}{2}C(t))}$$
 
-![noexplosionCrank-Nicolson](../Plots/no%20cubic%20term/Crank-Nicolson.png?raw=true)
+![noexplosionCrank-Nicolson](../../Plots/no%20cubic%20term/Crank-Nicolson.png?raw=true)
 
 This scheme seems to be a successfull way of removing the bias.
 It seems that, if you choose $\bar{C}=0$, **you can suppress** the exponential increase/decay (absent in the analytical solution) by adopting the Crank-Nicolson method.
@@ -86,7 +88,7 @@ $$u(t+dt) = u(t)\frac{(1+\frac{dt}{2}C(t))}{(1-\frac{dt}{2}C(t))}-\frac{u^3dt}{(
 
 Now we expect, for $\bar{C}=0$, to have a **power law decay** $u(t)\sim t^{-\frac12}$
 
-![nosaturationordecaysWithCrank-Nicolson](../Plots/saturation%20plots/Crank-Nicolson%20no%20saturation.png?raw=true)
+![nosaturationordecaysWithCrank-Nicolson](../../Plots/saturation%20plots/Crank-Nicolson%20no%20saturation.png?raw=true)
 
 We can see there is nor a saturation nor an exponential decay after the expected asymptotical behaviour!
 

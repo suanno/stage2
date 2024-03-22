@@ -135,13 +135,26 @@ if (fabs(dt - decatime) > dt/10){
     return 0;
 }
 
-while (decatime < tmax){
-    if (decatime > tmin){
+double real_time = 0;       /*decatime is not the real time, as when fileCin finishes, then you start reading another time the file from the top, so decatime goes back to 0!!!*/
+while (real_time < tmax){
+    if (real_time > tmin){
         C[loop] = decainC;
         //printf("C(%lf) = %lf\n", decatime, decainC);
         loop = loop + 1;
     }
-    fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
+    /*If you reach the end of fileCin [if t_state > t_finalC]*/
+    if(fscanf(fileCin, "%lf %lf \n", &decatime, &decainC) == EOF){
+		if (loop_read == 1){
+            //fclose(fileCin);
+        	//fileCin = fopen(fileCinName, "r");
+			rewind(fileCin);
+            fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
+        }else{
+            printf("fileCin.dat is too short! Think to enable the loop reading of fileCin.dat");
+            return 0;
+        }
+	}
+    real_time = real_time + dt;
 }
 fclose(fileCin);
 
@@ -309,7 +322,7 @@ for(loop=0;loop<loops;loop++) {
 
     /* Measure Observables (instantaneous value) */
     Ave[loop] = 0;
-    #pragma omp parallel for //seulement pour les grands systèmes
+    //#pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
         for(j=0;j<N;j++) {
         h[i][j] = hdt[i][j];
