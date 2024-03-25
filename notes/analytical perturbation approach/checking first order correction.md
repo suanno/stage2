@@ -29,6 +29,9 @@ So we can extimate $\epsilon\beta_1$, by measuring the plateau value of the devi
 $$\epsilon\beta_1 \simeq - 2\tilde{\delta u}$$
 
 ## The experiment
+
+Code for data analysis: "plot/second analytical approach/distance from stationary state.ipynb"
+
 We choose $C(t)$ to change in time as a sine, so it is easy to recognize the timescale of its variation
 
 $$C(t) = \bar{C} + A\sin(2\pi t/T)$$
