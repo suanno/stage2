@@ -71,7 +71,7 @@ $$u(x, t) = u_0(x,t) + \epsilon u_1(x,t) + O(\epsilon^2)$$
 
 where **we require that**
 
-$$u_0(x,t) = \sqrt{C(t)}u_{k_0}(x\sqrt{C(t)})$$
+$$u_0(x,t) = \beta_0u_{k_0}(\alpha_0 x) = \sqrt{C(t)}u_{k_0}(x\sqrt{C(t)})$$
 $$u_{k_0}(\chi) = \tanh(\chi/\sqrt{2})$$
 as we know that if $C(t)$ is extremely slow varying ($\epsilon\rightarrow 0$) then this is the state.
 
@@ -83,15 +83,26 @@ It is not granted that you will find a solution and wether this will be unique; 
 
 ## Assumptions
 - $u_1(x, t) = \beta_1(t)u_{k_1}(\alpha_1(t)x)$
-- $\alpha_1 = \alpha_0 = \sqrt{C(t)}$, that we call simply $\alpha$
+- $\alpha_1 = \alpha_0 = \sqrt{C(t)}$, **that we call simply $\alpha$**
 
 By putting the above constraints and
 - defining $\chi = \alpha x$, so $\partial_x = \alpha \partial_{\chi}, \partial_{xx} = \alpha^2\partial_{\chi\chi}$
 - defining $\tau = \epsilon t$, so $\partial_t = \epsilon\partial_{\tau}$
 - considering $\alpha' = \partial_{\tau}\alpha$ and $u_k' = \partial_{\chi}u_k$
-- equating the first order in $\epsilon$ of the TDGL equation
 
- you find this equation
+
+$$\partial_t u = \epsilon(\beta_0' u_{k_0} + \beta_0 u_{k_0}'\chi\frac{\alpha'}{\alpha})$$
+
+$$\partial_{xx} u = \beta_0\alpha^2u_{k_0}'' + \epsilon\beta_1\alpha^2 u_{k_1}''$$
+
+$$u^3 = \beta_0^3 u_{k_0^3}+ 3\epsilon\beta_0^2 u_{k_0}^2\beta_1 u_{k_1}$$
+
+Putting those expression in TDGL
+
+$$\epsilon\partial_{\tau} u = \partial_{xx}u + Cu - u^3$$
+
+
+and by Equating the first order in $\epsilon$ of the TDGL equation, you find this equation
 
 $$`\alpha'(u_{k_0} + u'_{k_0}\chi) = C\beta_1(u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}')`$$
 
