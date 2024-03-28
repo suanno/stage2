@@ -6,14 +6,22 @@ Anyway, after the assumptions we make, $C(t)$ has **NOT arbitrary** time dependa
 ## Assumptions
 **Assumptions** (statements that must be true to be able to truncate the expansion at 1st order)
 
-- [NO!] The interface curvature is slowly varying
 - The interface curvature is small (large curvature radius)
 - The field $u(\xi, s)$ slowly varying changing $s$, respect on changing $\xi$.
+
+    **Notice that**: Experimentally you can see that, after a transient, **there is only one lenghtscal in the system** (maybe this can be described with scaling theory ideas, but let's keep the reasoning **intuitive**).
+    So you **intuitively expect** that the lenghtscale for **curvature $\kappa$ changes** by changing $s$, is the same of $u$.
+    So assuming $u$ depends slowly on $s$ (fixed $\xi$) _brings to_ **intuitively expect** that even $\kappa$ depends slowly on $s$, _and with the same lenghtscale_.
+
 - Slow dynamics, such slow that
     - Interfaces (normal) velocity is slow varying in time (_about constant_ velocity).
     - Interface's shape is slow varying in time.
 
-    [!!!] As the dynamics is controlled by **$C(t)$, we need it to be slowly varying in time to have a slow dynamics**.
+    The dynamics is controlled by **$C(t)$, SO we need it to be slowly varying in time to have a slow dynamics**.
+    BUT this does **NOT necessarly** mean that the **timescale of $C(t)$** variations **is the same** timescale of interface shape change / interface speed.
+    
+    [Maybe the timescale of $C(t)$ has to be **equal or less** the one of interface shape/speed **???**]
+
     Additionally, we have to focus on coarsening dynamics, so we work at times not so large to see extremal dynamics.
 
 ## Make the problem Simple
@@ -33,7 +41,7 @@ This means that
     So it follows that
     $$\partial_s = \epsilon\partial_{S} \quad\text{ with } \quad\partial_S \sim \partial_{\xi}$$
 
-- $v = C_1\epsilon$, with $C_1\sim 1$
+- $v = V_1\epsilon$, with $V_1\sim 1$
 
 Where **the $\epsilon$ is the same**!
 
@@ -48,7 +56,7 @@ have weak time dependance (about constant in time), you can say that
 $$u(\xi,s,t) = u(\xi-vt, s)$$
 That is the solution of the 1D **half**-wave equation (half because the interface moves in one direction, while the 1D wave equation has solution for wave propagating in both directions)
 
-$$\partial_t = -v\partial_{\xi} = -\epsilon C_1\partial_{\xi}$$
+$$\partial_t = -v\partial_{\xi} = -\epsilon V_1\partial_{\xi}$$
 the spatial derivative is in $\xi$ because the interface has only normal velocity (for an interface, that is not a particle/flow of particles, **is NOT POSSIBLE to define a _tangential_ velocity**).
 Anyway, the interface propagate normally, so along $\xi$.
 
@@ -58,11 +66,11 @@ So we have the following relations:
 
 $$\Delta u = \partial_{\xi\xi} + \epsilon K_1\partial_{\xi} + \epsilon^2\partial_{SS}$$
 where the derivative have the same order, so we can neglect higher powers in $\epsilon$.
-$$\partial_t = -\epsilon C_1 \partial_{\xi}$$
+$$\partial_t = -\epsilon V_1 \partial_{\xi}$$
 so we can get rid of the time derivative from the differential equation.
 
 TDGL becomes, **up to first order** in $\epsilon$
-$$-\epsilon C_1\partial_{\xi} u= \partial_{\xi\xi} u+ \epsilon K_1\partial_{\xi} u+ Cu - u^3$$
+$$-\epsilon V_1\partial_{\xi} u= \partial_{\xi\xi} u+ \epsilon K_1\partial_{\xi} u+ Cu - u^3$$
 
 **Notice that**: there are no $s$ derivatives, so $u = u(\xi, t)$ **at least up to first order**. 
 
@@ -73,11 +81,11 @@ You find
 
 $$u_0(\xi, t) = C(t)^{\frac12}\tanh(\xi C(t)^{\frac12}2^{-\frac12})$$
 
-**Notice that**: We're not assuming $C$ to be constant.
+**Notice that**: We're not assuming $C$ to be constant; but just that it is slowly varying, to have a slow dynamic and so slow variation of interface shape and slow and slow varying speed.
 
 - Order $\epsilon^1$
 
-$$(\partial_{\xi\xi} + C -3u_0^2)u_{1} = -(C_1 + K_1)u_{1}$$
+$$(\partial_{\xi\xi} + C -3u_0^2)u_{1} = -(V_1 + K_1)u_{1}$$
 
 That, by using the **Fredolm Alternative** and **assuming** that
 $$[\partial_{\xi}u v - u\partial_{\xi}v]_{\partial\Omega} = 0$$
@@ -86,12 +94,12 @@ where the evaluation is at the borders of the whole space you describe with $\xi
 The derivative in $\xi$ at the borders will not depend on the direction you approach the borders, **if the interface(s) are far from the borders**.
 
 You find the "Motion by curvature"
-$$C_1 = -K_1$$
+$$V_1 = -K_1$$
 
 So the interface (front) propagates with a speed that is $v = -\epsilon K_1$.
 
 
-# Pointing out problems
+# Pointing out problems (now I added answers in the text above)
 ## About requiring the curvature is slow varying in $s$
 
 The only place in the **Lecture 3** where I find this statement used, is when you calculate the laplacian in the curvilinear coordinates by starting from the **polar coordiantes** expression.

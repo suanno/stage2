@@ -6,11 +6,25 @@ Here we **mix**
 
 ## Difference with the approach used to find "Motion by curvature"
 
-When we say that **the dynamics is slow** (because $C(t)$ is slowly varying [???]), instead of using that "interface shape and velocity slowly vary in time"
-$$\partial_t = -\epsilon C1 \partial_{\xi}$$
-we use that
+When we say that **the dynamics is slow** (such that the shape of the interface and its velocity have weak time dependance), we have the "_one direction_ wave equation"
+$$\partial_t = -\epsilon V_1 \partial_{\xi}\quad V_1\sim 1$$
+
+But, as $C(t)$ is slowly varying (to have a slow dynamic it must be so. Anyway we're intersted in this case)
 $$C(t) = \tilde{C}(\epsilon t)\quad\text{where}\quad \delta\tau\sim1\implies\delta\tilde{C}(\tau)\sim1$$
 $$\text{so}\qquad \partial_t = \epsilon\partial_{\tau}$$
+
+In principle this second epsilon is different from the other (we have **two** timescales).
+But assume, to simplify calculations, that they are the same (we **can tune** $C(t)$ as we want, so we can tune it to be in this regime).
+Remember we're also assuming that this is the same $\epsilon$ that describes the lenghtscale of $u$ variations by changing $s$ (respect to the interface width, that is the lenghtscale for variation of $u$ by changing $\xi$, but we're assuming $W\sim 1$).
+
+
+
+To take into account **both** the _slow behaviours_, we say that
+
+$$\partial_t = \epsilon\partial_{\tau} - \epsilon V_1\partial_{\xi}$$
+
+We just take a sum of the two expressions, because we are thiking to the chain rule of derivatives.
+[YOU SHOULD THINK MORE ABOUT THIS, WHY YOU TAKE SIMPLY THE SUM???]
 
 -------------
 
@@ -26,28 +40,30 @@ $$\alpha_1 = \alpha_0 = \alpha \qquad \beta_0 = \alpha\qquad C = \alpha^2$$
 
 TDGL becames
 
-$$\epsilon\partial_{\tau} u = \partial_{\xi\xi}u + \epsilon K_1\partial_{\xi} u + Cu - u^3$$
+$$\epsilon\partial_{\tau} u = \partial_{\xi\xi}u + \epsilon (K_1+V_1)\partial_{\xi} u + Cu - u^3$$
 
 That is **the same** equation we had in the 1D perturbative approach
 
 $$\epsilon\partial_{\tau} u = \partial_{xx}u + \epsilon + Cu - u^3$$
 
-**except for** the **new** term with $K_1$
+**except for** the **new** term with $K_1+V_1$
 
 - Order $\epsilon^0$
 
-$$u_{k_0} = \sqrt{C(t)}\tanh(\xi\sqrt{C(t)/2})$$
+    $$u_{k_0}'' + u_{k_0} - u_{k_0}^3 = 0$$
+
+    $$u_{k_0} = \tanh(\chi\sqrt{2})$$
+    where $u_{k_0}' = \partial_{\chi}u_{k_0}$ and $\chi = \alpha\xi$.
 
 - Order $\epsilon^1$
 
-$$\alpha^2\beta_1(u_{k_1}'' + u_{k_1} - 3u_{k_0}^2u_{k_1}) = \alpha'(u_{k_0} + u'_{k_0}\chi)-K_1\alpha^2u_{k_0}'$$
-where the derivatives are respect to $\chi = \alpha\xi$
+$$\alpha^2\beta_1(u_{k_1}'' + u_{k_1} - 3u_{k_0}^2u_{k_1}) = \alpha'(u_{k_0} + u'_{k_0}\chi)-(K_1+V_1)\alpha^2u_{k_0}'$$
 
-## Big problems!
+## An apparent big problem
 
-That is **the same** equation we get in the 1D perturbative approach, **except for** the term with $K_1$.
+That is **the same** equation we get in the 1D perturbative approach, **except for** the term with $K_1+V_1$.
 
-That terms makes things difficult, as we cannot get rid of the time derivatives as easy as before.
+That terms makes things difficult, as we cannot get rid of the **time dependent terms** in the differential equation as easy as before (we want an ODE in $\chi$ with coefficients not depending on time).
 
 In fact, requiring that
 $$\alpha^2\beta_1 = a\alpha' = b\alpha^2$$
@@ -55,13 +71,50 @@ determines the shape of $\alpha = \sqrt{C}$ and so of $C(t)$. **That's BAD!**
 
 -------------------
 
-In addition, as the _Homogeneous equation_ is the same we have in the approach followed to find "Motion by curvature", then we can use the _Fredholm alternative_.
-That gives a relation that determines $K_1$, so it is not arbitrary! **That is BAD!**
+Anyway, if you use the **Fredholm alternative**, you will find the "Motion by curvature" condition
+$$K_1 + V_1 = 0$$
+
+so the uncomfortable term in the differential equation will disappear!
+
+You find Motion by curvature, because the Homogeneous equation is
+
+$$u_{k_1}''+(1-3u_{k_0}^2)u_{k_1} = 0$$
+
+That has solution $\partial_{\chi}u_{k_0}$ as you can see that, if you derive the equation for order $\epsilon^0$ respect to $\chi$, you find the above equation where you plug $u_{k_1} = u_{k_0}'$ inside.
+
+Then, you can use the Fredholm aletrnative **neglecting boundary terms**
+$$<f,v> = \int d\chi\quad fv = 0$$
+
+where 
+$$f(\chi) = \alpha'(u_{k_0} + \partial_{\chi}u_{k_0}\chi) - \alpha^2(K_1+V_1)\partial_{\chi}u_{k_0}$$
+$$v(\chi) = \partial_{\chi}u_{k_0}$$
+
+By using the facts that
+- $u_{k_0}$ is odd (we found it is $\tanh$), so $\partial_{\chi}u_{k_0}$ is even
+- $(\partial_{\chi}u_{k_0})^2$ is always positive (or at least its integral is **strictly** positive)
+- the integration domain is symmetric [??? We do not even know what is this domain!!!]
+
+Then you find the "Motion by curvature" $V_1 = - K_1$.
 
 
-## What we can try
-We can try to follow the same approach, but **changing the ansatz**.
+-------------------
 
-If we just let $\alpha_1$ differ from $\alpha_0 = \sqrt{C(t)}$, it won't change the complexity of getting rid of time derivatives.
+By using motion by curvature, the differential equation becames
 
-We should radically change the ansatz shape (from second order, because the zeroth order is the solution in the limit **adiabatic and low curvature**)
+$$\alpha^2\beta_1(u_{k_1}'' + u_{k_1} - 3u_{k_0}^2u_{k_1}) = \alpha'(u_{k_0} + u'_{k_0}\chi)$$
+
+So the uncomfortable term disappeared and we recover **the same** ODE in $\chi$ that we found in the "**1D** perturbation approach".
+
+So we already know that, in order to eliminate the time dependance, we require
+
+$$\beta_1(\tau) = \frac12 C'(\tau)C^{-\frac32}$$
+
+So we are left with this ODE
+
+$$`u_{k_0} + u'_{k_0}\chi = u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}'`$$
+
+## Conclusions
+
+We found that, **up to first order** in $\epsilon$ we have
+- Motion by curvature [maybe you have corrections to the velocity at higher orders, or maybe it is right at any order **???**]
+- The **same** analytical shape of $u$ we got in **1D**, where $$x \rightarrow \xi$$
