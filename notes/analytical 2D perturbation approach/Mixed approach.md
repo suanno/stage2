@@ -57,7 +57,7 @@ $$\epsilon\partial_{\tau} u = \partial_{xx}u + \epsilon + Cu - u^3$$
 
 - Order $\epsilon^1$
 
-`$$\alpha^2\beta_1(u_{k_1}'' + u_{k_1} - 3u_{k_0}^2u_{k_1}) = \alpha'(u_{k_0} + u'_{k_0}\chi)-(K_1+V_1)\alpha^2u_{k_0}'$$`
+$$`\alpha^2\beta_1(u_{k_1}'' + u_{k_1} - 3u_{k_0}^2u_{k_1}) = \alpha'(u_{k_0} + u'_{k_0}\chi)-(K_1+V_1)\alpha^2u_{k_0}'`$$
 
 ## An apparent big problem
 
