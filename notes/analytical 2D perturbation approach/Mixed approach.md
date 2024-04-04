@@ -4,6 +4,10 @@ Here we **mix**
 - the approach followed to find "Motion by curvature"
 - and the one where $C(t)$ is slow varying (that we used in **1D**)
 
+## Assumptions
+Here we make the **same assumptions** we made to find "Motion by curvature".
+Then we ask _additionally_ $C(t)$ to be slowly varying (to be fair we did that also before, but now we _quantify_ the slowness).
+
 ## Difference with the approach used to find "Motion by curvature"
 
 When we say that **the dynamics is slow** (such that the shape of the interface and its velocity have weak time dependance), we have the "_one direction_ wave equation"
@@ -35,7 +39,7 @@ and we adopt the Ansatz used in the perturbative approach (1D)
 
 $$u(\xi,s,t) = \beta_0(t) u_{k_0}(\alpha_0(t)\xi) + \epsilon\beta_1(t) u_{k_1}(\alpha_1(t)\xi) + ...$$
 
-**and we assume**, as we find out is like this in the 1D case, so we try like that
+**and we assume**, as we find out is like this in the 1D case (so we try like that)
 $$\alpha_1 = \alpha_0 = \alpha \qquad \beta_0 = \alpha\qquad C = \alpha^2$$
 
 TDGL becames
@@ -57,7 +61,7 @@ $$\epsilon\partial_{\tau} u = \partial_{xx}u + \epsilon + Cu - u^3$$
 
 - Order $\epsilon^1$
 
-$$`\alpha^2\beta_1(u_{k_1}'' + u_{k_1} - 3u_{k_0}^2u_{k_1}) = \alpha'(u_{k_0} + u'_{k_0}\chi)-(K_1+V_1)\alpha^2u_{k_0}'`$$
+$$``\alpha^2\beta_1(u_{k_1}'' + u_{k_1} - 3u_{k_0}^2u_{k_1}) = \alpha'(u_{k_0} + u'_{k_0}\chi)-(K_1+V_1)\alpha^2u_{k_0}'``$$
 
 ## An apparent big problem
 
@@ -76,7 +80,11 @@ $$K_1 + V_1 = 0$$
 
 so the uncomfortable term in the differential equation will disappear!
 
-You find Motion by curvature, because the Homogeneous equation is
+You **find Motion by curvature**, because:
+
+---------------
+
+The Homogeneous equation is
 
 $$u_{k_1}''+(1-3u_{k_0}^2)u_{k_1} = 0$$
 
@@ -111,10 +119,25 @@ $$\beta_1(\tau) = \frac12 C'(\tau)C^{-\frac32}$$
 
 So we are left with this ODE
 
-$$`u_{k_0} + u'_{k_0}\chi = u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}'`$$
+$$``u_{k_0} + u'_{k_0}\chi = u''_{k_1} + u_{k_1}-3u_{k_0}^2u_{k_1}'``$$
 
 ## Conclusions
 
 We found that, **up to first order** in $\epsilon$ we have
 - Motion by curvature [maybe you have corrections to the velocity at higher orders, or maybe it is right at any order **???**]
 - The **same** analytical shape of $u$ we got in **1D**, where $$x \rightarrow \xi$$
+
+## We're assuming only one spatial/temporal scale $\epsilon$
+We're assuming that all the following (short) scales (some spatial and some temporal) **are the same** (there is the **same** $\epsilon$):
+
+- [SPACE] Scale of the curvature 
+$$\kappa = \epsilon K_1$$
+- [SPACE] Wavelenght for $u$ changes moving along a fixed $\xi$ curve (assuming that the wavelenght for changes of $u$ moving along a fixed $s$ line is $W\sim 1$) 
+$$\partial_{s} = \epsilon\partial_S\qquad \partial_S\sim\partial_{\xi}$$
+- [SPACE/TIME] Velocity (normal) of the front/interface/kink
+$$v = \epsilon V_1$$
+- [TIME] Slowness for $C(t)$ changes in time
+$$C(t)=\tilde{C}(\epsilon t)\qquad \delta\tau\sim 1 \implies \delta\tilde{C}(\tau)\sim 1$$
+
+And we **never** quantified the timescale for the front/interface/kink shape changes over time (we just asked them to be slow so we can think to a propagating front).
+[Maybe we're implicitly assuming that this timescale is lower than the one of the speed (for the front of performung a movement of order 1)]
