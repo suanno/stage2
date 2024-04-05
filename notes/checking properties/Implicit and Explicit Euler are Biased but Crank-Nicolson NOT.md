@@ -75,7 +75,7 @@ $$\frac{1}{dt}(u(t+dt)-u(t)) \simeq \frac12\big( C(t+dt)u(t+dt) + C(t)u(t) \big)
 Notice that, in the previous methods, you keep just one of the two terms in the RHS average. Here you average them.
 
 It follows the Crank-Nicolson scheme
-$$u(t+dt) = u(t)\frac{(1+\frac{dt}{2}C(t))}{(1-\frac{dt}{2}C(t))}$$
+$$u(t+dt) = u(t)\frac{(1+\frac{dt}{2}C(t))}{(1-\frac{dt}{2}C(t+dt))}$$
 
 ![noexplosionCrank-Nicolson](../../Plots/no%20cubic%20term/Crank-Nicolson.png?raw=true)
 
@@ -84,7 +84,7 @@ It seems that, if you choose $\bar{C}=0$, **you can suppress** the exponential i
 
 ## Crank-Nicolson including non-linear term $-u^3$
 
-$$u(t+dt) = u(t)\frac{(1+\frac{dt}{2}C(t))}{(1-\frac{dt}{2}C(t))}-\frac{u^3dt}{(1-\frac{dt}{2}C(t))}$$
+$$u(t+dt) = u(t)\frac{(1+\frac{dt}{2}C(t))}{(1-\frac{dt}{2}C(t+dt))}-\frac{u(t)^3dt}{(1-\frac{dt}{2}C(t+dt))}$$
 
 Now we expect, for $\bar{C}=0$, to have a **power law decay** $u(t)\sim t^{-\frac12}$
 

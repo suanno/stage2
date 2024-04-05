@@ -115,33 +115,31 @@ double savetimes[8]={1,2,3,4,4000,6000,8000,10000};
 */
 
 double time;
-int loops= nloop;
 
 
 /*Read C(t) from file*/
 FILE* fileCin;
 double* C = malloc(nloop*sizeof(double));
-double Cprev;
+double Cprev;   /*Last value of C in the previous simulation*/
 double decatime = -1;
 double decainC;
 fileCin = fopen(fileCinName, "r");
-loop = 0;
 
 /*CHECK IF dt is the SAME in params.txt and in fileCin.dat*/
 fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
 fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
-if (fabs(dt - decatime) > dt/10){
+if (fabs(dt - decatime) > dt/1000){
     printf("The time step dt is different in 'fileCin.dat' (%lf) and 'params.txt' (%lf))", decatime, dt);
     return 0;
 }
+fclose(fileCin);
+fileCin = fopen(fileCinName, "r");
 
-double real_time = 0;       /*decatime is not the real time, as when fileCin finishes, then you start reading another time the file from the top, so decatime goes back to 0!!!*/
-while (real_time < tmax){
-    if (real_time > tmin){
-        C[loop] = decainC;
-        //printf("C(%lf) = %lf\n", decatime, decainC);
-        loop = loop + 1;
-    }
+/*READ C(t) from file*/
+/*CONVENTION: C[i]=C(t_i + dt)*/
+/*Bring the pointer in the fileCin file to the right row*/
+int ntmin = (int)(tmin/dt); /*How many values of C(t) in the file you have to Ignore*/
+for (int i = 0; i <= ntmin*(1-read_from_top); i++){
     /*If you reach the end of fileCin [if t_state > t_finalC]*/
     if(fscanf(fileCin, "%lf %lf \n", &decatime, &decainC) == EOF){
 		if (loop_read == 1){
@@ -154,39 +152,34 @@ while (real_time < tmax){
             return 0;
         }
 	}
-    real_time = real_time + dt;
+    Cprev = decainC;
+    loop = loop + 1;
 }
-fclose(fileCin);
-
-
-/*
-fileCin = fopen(fileCinName, "r");
-while (decatime < tmax*(1-read_from_top) + tspan*read_from_top){
-    //If you reach the end of fileCin [if t_state > t_finalC]
+printf("Reading C(t) from file. From t = %lf\n", decatime);
+/*Now read the values of C[i]=C(t_i+dt)*/
+for (int i = ntmin*(1-read_from_top); i < ntmin*(1-read_from_top) + nloop; i++){
+    /*If you reach the end of fileCin [if t_state > t_finalC]*/
     if(fscanf(fileCin, "%lf %lf \n", &decatime, &decainC) == EOF){
-		fclose(fileCin);
 		if (loop_read == 1){
-        	fileCin = fopen(fileCinName, "r");
-			fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
+            //fclose(fileCin);
+        	//fileCin = fopen(fileCinName, "r");
+			rewind(fileCin);
+            fscanf(fileCin, "%lf %lf \n", &decatime, &decainC);
         }else{
             printf("fileCin.dat is too short! Think to enable the loop reading of fileCin.dat");
             return 0;
         }
-	}else{
-        printf("t = %.20f\n",decatime);
-    }
-    if (decatime >= tmin*(1-read_from_top) + 0*read_from_top){
-        C[loop]=decainC;
-        loop = loop + 1;
-    }
+	}
+    C[i-ntmin] = decainC;
+    loop = loop + 1;
 }
+printf("Finish reading C(t) from file. Until t = %lf; tmax = %lf\n", decatime, tmax);
 fclose(fileCin);
-*/
 
 
 /*Define observables to track in time*/
 FILE *fileAveout;
-double* Ave = malloc(loops*sizeof(double)); /*Average magnetization*/
+double* Ave = malloc(nloop*sizeof(double)); /*Average magnetization*/
 
 /*-----------------------------------------------------------------------*/
 
@@ -242,7 +235,8 @@ for (i=0; i<N; i++){
 }
 
 /* EVOLUTION CODE */
-for(loop=0;loop<loops;loop++) {
+printf("Number time steps going to simulate = %d\n", nloop);
+for(loop=0;loop<nloop;loop++) {
     time = tmin + (loop+1)*dt;
     /*
     printf("\n\nTime: %.2lf\n", time-dt);
@@ -290,10 +284,11 @@ for(loop=0;loop<loops;loop++) {
     }
 
     /*C[loop] = C(t+dt) but we need even C(t)=Cprev for Cranck-Nicolson*/
-	if (loop == 0)
-		Cprev = 0;
-	else
+	if (tmin == 0)
+		Cprev = C[0];   /*There is no precedent value, so we tool C(t)=C(t+dt) for the FISRT STEP (t=0)*/
+    else if (loop > 0)
 		Cprev = C[loop-1];
+    /*If loop = 0 and tmin > 0, the value of Cprev is already set to the last of the last simulation*/
 
     /* Crank-Nicolson */
     //#pragma omp parallel for //seulement pour les grands systèmes
@@ -361,7 +356,7 @@ for (i=0; i<N; i++){
         x = i*dx;
         y = j*dx;
         z = h[i][j];
-        fprintf(filefinalstate, "%.10f %.10f %.20f\n", x, y, z);
+        fprintf(filefinalstate, "%.20f %.20f %.20f\n", x, y, z);
     }
 }
 fclose(filefinalstate);
@@ -382,12 +377,14 @@ fclose(fileCout);
 
 /*Save values of Space average in different times*/
 fileAveout = fopen("fileAveout.dat", "a");
-for (loop=0; loop<loops; loop++){
+for (loop=0; loop<nloop; loop++){
     time = tmin + (loop+1)*dt;
     decaout = Ave[loop];
     fprintf(fileAveout, "%.5f %.20f\n", time, decaout);
 }
 fclose(fileAveout);
+
+
 
 //------------------------------------------
 
