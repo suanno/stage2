@@ -2,7 +2,8 @@
 
 The initial state (circular island) is prepared like this
 
-$$u(r) = -\tanh((x-25)2^{-\frac12})$$
+$$u(r) = -\tanh((r-R_0)2^{-\frac12})$$
+$$R_0 = 25$$
 
 Where $r$ is the radius of a set of polar coordinates centered at the center of the simulation box (L/2, L/2).
 
@@ -50,5 +51,5 @@ Here you can see there is a direct proportionality _with a negative sign_ betwee
 The data of this plot is got as time passes, from smaller values of $\kappa$ to larger;
 the second plot shows how the radius decreases (and so $\kappa$ increases) as time passes.
 
-![circularislandC=1](Plots/motion_by_curvature.png?raw=true)
-![circularislandC=1radius](Plots/motion_by_curvature_radius.png?raw=true)
+![circularislandC=1](Plots/motion_by_curvature_dt=0.1.png?raw=true)
+![circularislandC=1radius](Plots/motion_by_curvature_radius_dt=0.1.png?raw=true)

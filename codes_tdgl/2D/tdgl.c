@@ -133,6 +133,7 @@ if (fabs(dt - decatime) > dt/1000){
     return 0;
 }
 fclose(fileCin);
+decatime = -1;
 fileCin = fopen(fileCinName, "r");
 
 /*READ C(t) from file*/
@@ -155,6 +156,7 @@ for (int i = 0; i <= ntmin*(1-read_from_top); i++){
     Cprev = decainC;
     loop = loop + 1;
 }
+
 printf("Reading C(t) from file. From t = %lf\n", decatime);
 /*Now read the values of C[i]=C(t_i+dt)*/
 for (int i = ntmin*(1-read_from_top); i < ntmin*(1-read_from_top) + nloop; i++){
@@ -284,9 +286,9 @@ for(loop=0;loop<nloop;loop++) {
     }
 
     /*C[loop] = C(t+dt) but we need even C(t)=Cprev for Cranck-Nicolson*/
-	if (tmin == 0)
-		Cprev = C[0];   /*There is no precedent value, so we tool C(t)=C(t+dt) for the FISRT STEP (t=0)*/
-    else if (loop > 0)
+	//if (tmin == 0)
+		//Cprev = C[0];   /*There is no precedent value, so we tool C(t)=C(t+dt) for the FISRT STEP (t=0)*/
+    if (loop > 0)
 		Cprev = C[loop-1];
     /*If loop = 0 and tmin > 0, the value of Cprev is already set to the last of the last simulation*/
 
