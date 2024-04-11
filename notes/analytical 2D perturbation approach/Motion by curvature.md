@@ -99,7 +99,17 @@ $$V_1 = -K_1$$
 So the interface (front) propagates with a speed that is $v = -\epsilon K_1$.
 
 
-# Pointing out problems (now I added answers in the text above)
+## Why there is no explicit time dependance in $u$?
+
+The reason is that we're using a coordinate system ($\xi$, $s$) where $\xi = 0$ means that we are **on** the interface, but **the interface moves in time** as there is motion by curvature!
+
+So we do not see this movement explicitly in the solution $u(\xi)$, BUT just because we're using a coordinate system **that moves with** the interface.
+
+
+--------------------------
+
+
+# [Solved] Pointing out problems (now I added answers in the text above)
 ## About requiring the curvature is slow varying in $s$
 
 The only place in the **Lecture 3** where I find this statement used, is when you calculate the laplacian in the curvilinear coordinates by starting from the **polar coordiantes** expression.
