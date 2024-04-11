@@ -70,6 +70,8 @@ But, if you look closer, you can see that the motion by curvature changes its si
 
 But maybe this is just a transient effect, we need a longer simulation.
 
+Maybe this is an effect of the correction of order $\epsilon$ that we have on the $\tanh$.
+But, at least for slow changing $C$, this correction is still an **odd function** of $C$ (see "cgecking first order correction.md" in "notes/analytical 1D perturbation approach")
 
 # Urgent to
 Make a choice of $L$, $dx$, $dt$ suitable for the problem we're facing!
