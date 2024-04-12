@@ -61,6 +61,7 @@ This means that the **period is very SMALL** $T = \epsilon=R_0^{-1}$.
 ## Results
 
 ![motionbycurv](Fast%20oscillations/motion_by_curvature.png?raw=true)
+![motionbycurv](Fast%20oscillations/motion_by_curvature_micro_dt=0.001.png?raw=true)
 ![motionbycurv](Fast%20oscillations/radius_macro_dt=0.1.png?raw=true)
 
 But, if you look closer, you can see that the motion by curvature changes its sign (the sign oscillates) as we see with a smaller $dt$

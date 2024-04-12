@@ -17,8 +17,8 @@ randU1 = randmin*(1-rand()/(double)RAND_MAX)+randmax*rand()/(double)RAND_MAX;
 return randU1;
 }
 
-double doublekink(double x, double xc, double h){
-    return tanh(x-xc+h/2)-tanh(x-xc-h/2)-1;
+double doublekink(double x, double x1, double x2){
+    return tanh(x-x1)-tanh(x-x2)-1;
 }
 
 int main(int argc, char  *argv [ ]){
@@ -43,22 +43,27 @@ if (argc > 2){
     u0=randU(1, 1)+hmoy;
 }
 
+FILE *file;
+double dx, dt, Ampl, Thalf, Cave;
+file = fopen("parameters.dat", "r");
+fscanf(file, "dx %lf\ndt %lf\nA %lf\nT %lf\nCave %lf", &dx, &dt, &Ampl, &Thalf, &Cave);
+fclose(file);
+
+double L = N*dx;
 
 
-FILE *fileinit;
-
-fileinit = fopen("fileinit.dat", "w");
-fprintf(fileinit, "%d %d\n", seed, N);
-#pragma omp parallel for
+file = fopen("fileinit.dat", "w");
+fprintf(file, "%d %d\n", seed, N);
+double x;
 for (i=0; i<N; i++){
-    fprintf(fileinit, "%.20f\n", doublekink(i, N/2, N/5));
+    x = i*dx;
+    fprintf(file, "%.20f\n", doublekink(x, L/3, L*2/3));
 }
 
-fclose(fileinit);
+fclose(file);
 
 /*Recreate fileCout of values of C(t) [Progressive
 executions of the dynamics will APPEND info]*/
-FILE *file;
 file = fopen("fileCout.dat", "w");
 fclose(file);
 file = fopen("fileAveout.dat", "w");
