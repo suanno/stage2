@@ -11,7 +11,7 @@ int main(int argc, char  *argv [ ]){
 
 double temp;
 /*Space Parameters: From previous simulation*/
-int N; double dx;
+int N; int N2; double dx;
 /*Time Parameters: From params.txt*/
 double dt, tmin, tmax, tspan;      /*   tmin: Initial time(of the initial state)
                                         tmax: Final time (of the final state)
@@ -27,6 +27,7 @@ int seed;
 fileinit = fopen("state.dat", "r");
 /*First line contains parameters*/
 fscanf(fileinit, "%d %lf %lf\n", &N, &tmin, &dx);
+N2 = N*N;
 //fclose(fileinit);                 /*NOT close, we will read the state!*/
 
 /*  Read Time parameters (only dt) from params.txt*/
@@ -182,6 +183,7 @@ fclose(fileCin);
 /*Define observables to track in time*/
 FILE *fileAveout;
 double* Ave = malloc(nloop*sizeof(double)); /*Average magnetization*/
+double tempAve = 0;
 
 /*-----------------------------------------------------------------------*/
 
@@ -196,8 +198,8 @@ fftw_init_threads();
 
 fftw_complex *in, *out;
 fftw_plan pf, pb;
-in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex)*N*N);
-out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex)*N*N);
+in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex)*N2);
+out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex)*N2);
 // create plans with threads
 fftw_plan_with_nthreads(omp_get_max_threads());
 // plan for forward transform
@@ -313,21 +315,18 @@ for(loop=0;loop<nloop;loop++) {
     #pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
         for(j=0;j<N;j++) {
-            hdt[i][j] = out[i*N+j][0]/(N*N);
+            h[i][j] = out[i*N+j][0]/(N2);
         }
     }
 
     /* Measure Observables (instantaneous value) */
-    Ave[loop] = 0;
-    //#pragma omp parallel for //seulement pour les grands systèmes
-    for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            h[i][j] = hdt[i][j];
-            Ave[loop] = Ave[loop] + h[i][j];
-            //printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);
-        }
+    tempAve = 0;
+    #pragma omp parallel for reduction(+:tempAve)
+	for(i=0; i<N2; i++)
+	{
+        tempAve = tempAve + h[i/N][i%N];
     }
-    Ave[loop] = Ave[loop]/(N*N);
+    Ave[loop] = tempAve/N2;
 
     //if(fmod(time,15.) ==0) {
     //printf("%.1f\n", time);

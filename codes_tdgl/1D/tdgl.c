@@ -150,6 +150,12 @@ if (doreadCfromfile == 1){
 		C[loop] = C(dt*loop + dt)
 		So C[0] = C(0 + dt) and so on
 	*/
+	/*Define Cprev (C(t=0))*/
+	if(Thalf > 0)
+		Cprev = Cave + Ampl*sin(pi*(tmin*notsmoothC)/Thalf);
+	else
+		Cprev = Cave;
+
 	for (loop=0;loop<nloop;loop++){
 	ttime = tmin + (loop + 1)*dt;		/*C[loop] = C(t+dt), so it's NOT C(t)*/
 	if(Thalf > 0){
@@ -251,9 +257,7 @@ for (loop=0; loop < nloop; loop++){
 	}
 
 	/*C[loop] = C(t+dt) but we need even C(t)=Cprev*/
-	if (loop == 0)
-		Cprev = 0;
-	else
+	if (loop > 0)
 		Cprev = C[loop-1];
 	
 	/*Crank-Nicolson*/
