@@ -113,10 +113,12 @@ FILE *stateeqn_result;
 FILE *fileCout;				/*C(t+dt) values*/
 FILE *fileAveout;			/*Space average of u(t) values*/
 FILE *fileCin;
+FILE *filex0;
 
 double* C = malloc(nloop*sizeof(double));				/*C(t+dt) values*/
 double Cprev;											/*Temp variable to store C(t) [because C[loop] is C(t+dt) NOT C(t)]*/
 double* uAve = malloc(nloop*sizeof(double));			/*Space average of u(t) values*/
+double* x0 = malloc(nloop*sizeof(double));	/*Interface position (where u=0)*/
 
 /*Read C(t) from file*/
 /*If the file is shorter than nloop, C(t)
@@ -280,12 +282,19 @@ for (loop=0; loop < nloop; loop++){
 	u[i]=udt[i];
 	}
 
-	/*Compute space average*/
+	/*Compute space average NEGLECTING bodrers, where there is ANOTHER interface*/
 	uAve[loop] = 0;
-	for (i = 0; i<N; i++){
+	for (i = (int)(0.25*N); i<(int)(0.75*N); i++){
 		uAve[loop] = uAve[loop] + u[i];
 	}
-	uAve[loop] = uAve[loop]/N;
+	uAve[loop] = uAve[loop]/(double)(N/2);
+
+	x0[loop] = -1;
+	/*Compute the position of the interface (u = 0)*/
+	for (i = (int)(0.25*N); i<(int)(0.75*N); i++){
+		if (u[i]/u[(int)(0.25*N)] < 0 && x0[loop] < 0)
+			x0[loop] = 0.5*(x[i]+x[i-1]);
+	}
 }
 
 /*Save the final state*/
@@ -319,6 +328,15 @@ for (loop=0; loop<nloop; loop++){
 ttime = tmin + (loop+1)*dt;
 decaoutAve = uAve[loop];
 fprintf(fileAveout, "%.5f %.20f\n", ttime, decaoutAve);
+}
+fclose(fileAveout);
+
+/*Save interface position x0 (where u=0)*/
+filex0 = fopen("filex0.dat", "a");
+for (loop=0; loop<nloop; loop++){
+ttime = tmin + (loop+1)*dt;
+decaoutAve = x0[loop];
+fprintf(filex0, "%.5f %.20f\n", ttime, decaoutAve);
 }
 fclose(fileAveout);
 

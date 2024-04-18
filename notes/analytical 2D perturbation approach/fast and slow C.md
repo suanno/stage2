@@ -1,3 +1,6 @@
+# [See "slow C.md"]
+Because there we check motion by curvature in a better way.
+By studying $R^2$ vs $t$.
 # The initial state
 The initial state is a circular island at the center of the simulation square $L=100$ with radius $R_0=25$.
 

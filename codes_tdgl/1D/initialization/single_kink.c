@@ -96,6 +96,8 @@ fprintf(file, "0 %.20f\n", C);
 fclose(file);
 file = fopen("fileAveout.dat", "w");
 fclose(file);
+file = fopen("filex0.dat", "w");
+fclose(file);
 
 
 return 0;
