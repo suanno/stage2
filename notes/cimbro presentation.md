@@ -1,11 +1,13 @@
 # Introduction
-In order to introduce **what we're trying to do** and most of all the **possible applications**, it is easier to focus on this physical system.
+Today I will introduce the **topic** we're working on, **its background** and what is **our goal**.
+Then I will briefly show what we're doing.
+
+To make things **more natural** let's consider **this** type of system. 
 
 ## Adatoms diffusion on a crystal monolayer
-Let's consider to have a 2D lattice with some adsorbed atoms.
-And let's consider that atoms **(and holes)** can diffuse on the lattice and that this diffusion is governed by an **attractive interaction** between particles **of the same kind**.
+We have a planar surface in contact with a gas of atoms that can adsorb on the surface.
 
-This setup reminds us the 2D ising model, so we can think to it.
+The dynamics is dominated by two **processes**
 
 ## Ising model: discrete to continuos
 Then, even if it is a discrete model, we can define a local magnetization by averaging its value over a sufficiently large number of neighbouring spins.

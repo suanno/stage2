@@ -1,7 +1,7 @@
 # The initial state
 The initial state is a circular island at the center of the simulation square $L=128$ with radius $R_0=50$.
 
-
+[The drawing of the circe has wrog R0 L, remake it...]
 
 ![circular](../Checking%20Crank-Nicolson%202D/Plots/circular_front%20t=0.png?raw=true)
 
