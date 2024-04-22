@@ -1,6 +1,6 @@
 # Investigating possible oscillations of kink's position (1D) when PBC boundaries are applied
 
-**Spoiler**: At least in 1D, we see oscillations whose amplitude depends on the choice of the integration step $dx$.
+**Resumee**: At least in 1D, we see oscillations of the measured kink position whose amplitude depends on the choice of the integration step $dx$.
 This means that those oscillations are **only due to** a **numerical discretization**.
 
 In addition, form our theory we do not predict **any** oscillations, at least for slow varying $C(t)$ and using PBC.
@@ -73,9 +73,10 @@ This means that eventually $l\rightarrow 0$ **without making a singke oscillatio
 - We adopt PBC boundary conditions.
 
 Then the kink position $x_0$ tends to reach $x_0 = 0$ **without making oscillations**.
-So, after applying PBC boundaries, we have less stationary state ($x_0$ is no more arbitrary).
+So, after applying PBC boundaries, we have less stationary state ($x_0$ is no more arbitrary, but can only take the value 0).
 
-So, if $x_0 = 0$ in the initial state, no oscillations are predicted!
+**No oscillations** of $x_0$ are predicted, **both if** its initial value is already zero or no, as 
+$$sign(\partial_t l) = -sign(l)$$
 
 
 # Measuring kink position's oscillation
@@ -88,8 +89,8 @@ So we're considering the stationary state _for constant_ $C=1$ as the initial st
 
 We can **monitor the position of the interface** in two ways
 - By extimating, at each time t, the $x$ value such that $u(x) = 0$.
-- Or by calculating, at each time, the quantity
-    $$A=\int_0^L \frac12(u(x,t) + 1) dx = \frac12(<u> + L)$$
+- Or by calculating, at each time, the integral
+    $$I=\int_0^L \frac12(u(x,t) + 1) dx = \frac12(<u> + L)$$
     The idea of this integral is clear if you think to integrating the initial state.
     The +1 shift the $\tanh $ such that the -1 plateau becomes a 0 plateau and so does not contribute to the integral. While the $\frac12$ makes the +1 plateau still +1 and not +2.
 
@@ -106,13 +107,24 @@ We can **monitor the position of the interface** in two ways
 
 
 ### Measuring the integral
-In those experiments **we consider** $x_0 = \frac{L}{2}$, so the kink is at the middle of the simulation lenght.
 
+#### $x_0 = L/2$
+In those experiments **we consider** $x_0 = \frac{L}{2}$, so the kink is at the middle of the simulation lenght.
 The amplitude of the oscillations depends on $dx$, so it is a **numerical problem**
 
+#### dx=0.1
 ![dx=0.1](Plots/x0_oscillations_C0=1/integral_dx=0.1.png?raw=true)
+#### dx=0.01
 ![dx=0.01](Plots/x0_oscillations_C0=1/integral_dx=0.01.png?raw=true)
 
+#### $x_0 = L/2 + \epsilon$
+
+If, instead, we do not start from $x_0 = 0$, the amplitude of the oscillation increases with the deviation $\epsilon$ from $L/2$.
+![dx=0.01](Plots/x0_oscillations_C0=1/integral_x0=51.png?raw=true)
+![dx=0.01](Plots/x0_oscillations_C0=1/integral_x0_vs_amplitude.png?raw=true)
+
 ### Measuring the position where $u=0$
+If dx is too small, then this measure does not show oscillations in dx (if the amplitude of the oscillation in smaller than the discrete step dx).
+
 ![dx=0.1](Plots/x0_oscillations_C0=1/x0_dx=0.1.png?raw=true)
 ![dx=0.01](Plots/x0_oscillations_C0=1/x0_dx=0.01.png?raw=true)
