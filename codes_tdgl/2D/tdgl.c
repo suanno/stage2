@@ -342,32 +342,31 @@ for(loop=0;loop<nloop;loop++) {
     #pragma omp parallel for //seulement pour les grands systèmes
     for(i=0;i<N;i++) {
         for(j=0;j<N;j++) {
-            hdt[i][j] = out[i*N+j][0]/(N*N);
+            h[i][j] = out[i*N+j][0]/(N*N);
         }
     }
 
-
+    
     /* Measure Observables (instantaneous value) */
     if (loop >= (nloop/num_saves)*index_saves){
-        Times[index_saves] = tmin + (loop+1)*dt;
-        /*Space Average of u(x,y) [Not parallelizable, its a sum!]*/
+        Times[index_saves] = time;
+        /*1) Space Average of u(x,y) [Not parallelizable, its a sum!]*/
         Ave[index_saves] = 0;
         for(i=0;i<N;i++) {
             for(j=0;j<N;j++) {
-                h[i][j] = hdt[i][j];
                 Ave[index_saves] = Ave[index_saves] + h[i][j];
                 //printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);
             }
         }
         Ave[index_saves] = Ave[index_saves]/(N*N);
         
-        /*Radius (of a circular island)*/
+        /*2) Radius (of a circular island)*/
         for (i=0; i<N; i++){
             for (j=0; j<N; j++){
-                qxhfr[i][j]= qfr[i]*hfi[i][j]/dx;
-                qxhfi[i][j]= -qfr[i]*hfr[i][j]/dx;
-                qyhfr[i][j]= qfr[j]*hfi[i][j]/dx;
-                qyhfi[i][j]= -qfr[j]*hfr[i][j]/dx;
+                qxhfr[i][j]= qfr[i]*hdtfi[i][j]/dx;     /*hdt and not h because we're considering time t+dt*/
+                qxhfi[i][j]= -qfr[i]*hdtfr[i][j]/dx;
+                qyhfr[i][j]= qfr[j]*hdtfi[i][j]/dx;
+                qyhfi[i][j]= -qfr[j]*hdtfr[i][j]/dx;
             }
         }
         /*INVERSE FFT for (Grad h)_x*/
@@ -382,7 +381,7 @@ for(loop=0;loop<nloop;loop++) {
         #pragma omp parallel for //seulement pour les grands systèmes
         for(i=0;i<N;i++) {
             for(j=0;j<N;j++) {
-                ghx[i][j] = out[i*N+j][0]/(N);  /*Divide by N and not N^2 because the property of Grad->q holds with the democratic normalization of FT and IFT*/
+                ghx[i][j] = out[i*N+j][0];  /*No need of normalizing as the ratio we calculate has Grad both at numerator and denominator*/
             }
         }        
         /*INVERSE FFT for (Grad h)_y*/
@@ -397,10 +396,10 @@ for(loop=0;loop<nloop;loop++) {
         #pragma omp parallel for //seulement pour les grands systèmes
         for(i=0;i<N;i++) {
             for(j=0;j<N;j++) {
-                ghy[i][j] = out[i*N+j][0]/(N);  /*Divide by N and not N^2 because the property of Grad->q holds with the democratic normalization of FT and IFT*/
+                ghy[i][j] = out[i*N+j][0];  /*No need of normalizing ...*/
             }
         }
-        /*Now compute the average of r weighted on |Grad_x|^2*/
+        /*Now compute the average of r^2 weighted on |Grad_x|^2*/
         Radi2[index_saves] = 0;
         weight_sum = 0;
         for(i=0;i<N;i++) {
@@ -432,12 +431,25 @@ for (i=0; i<N; i++){
     for (j=0; j<N; j++){
         x = i*dx;
         y = j*dx;
-        z = sqrt(ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
-        //z = h[i][j];
+        z = h[i][j];
         fprintf(filefinalstate, "%.20f %.20f %.20f\n", x, y, z);
     }
 }
 fclose(filefinalstate);
+
+/*Save the final state's sqrt of gradient squared*/
+fileAveout = fopen("state_gradient.dat", "w");
+/*Save parameters N, tmax, dx, dt, seed, Ampl, Thalf*/
+fprintf(fileAveout, "%d %lf %lf\n", N, tmax, dx);
+for (i=0; i<N; i++){
+    for (j=0; j<N; j++){
+        x = i*dx;
+        y = j*dx;
+        z = sqrt(ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
+        fprintf(fileAveout, "%.20f %.20f %.20f\n", x, y, z);
+    }
+}
+fclose(fileAveout);
 
 /*Save the values taken by C(t) in time.
   They are appendend, so you save its values from t=0

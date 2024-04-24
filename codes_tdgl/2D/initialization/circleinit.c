@@ -57,6 +57,8 @@ for (i=0; i<N; i++){
     }
 }
 fclose(fileinit);
+fileinit = fopen("state_gradient.dat", "w");
+fclose(fileinit);
 
 /*Recreate fileCout of values of C(t) [Progressive
 executions of the dynamics will APPEND info]*/
@@ -64,6 +66,8 @@ FILE *file;
 file = fopen("fileCout.dat", "w");
 fclose(file);
 file = fopen("fileAveout.dat", "w");
+fclose(file);
+file = fopen("fileRadiout.dat", "w");
 fclose(file);
 
 
