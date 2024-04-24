@@ -95,11 +95,31 @@ for(i = 0; i < N; i++)
 double** integ_coef = malloc(N*sizeof(double*));
 for(i = 0; i < N; i++)
 		integ_coef[i] = malloc(N * sizeof(double));
+/*q times F{u(x,y)}*/
+double** qxhfr = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		qxhfr[i] = malloc(N * sizeof(double));
+double** qxhfi = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		qxhfi[i] = malloc(N * sizeof(double));
+double** qyhfr = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		qyhfr[i] = malloc(N * sizeof(double));
+double** qyhfi = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		qyhfi[i] = malloc(N * sizeof(double));
+/*Gradient of u*/
+double** ghx = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		ghx[i] = malloc(N * sizeof(double));
+double** ghy = malloc(N*sizeof(double*));
+for(i = 0; i < N; i++)
+		ghy[i] = malloc(N * sizeof(double));
 
 double* ffr = malloc(N*sizeof(double));
 double* qfr = malloc(N*sizeof(double));
 double L = N*dx; // data for (x,y) is [0, L]x[0, L]
-
+//printf("L = %lf\n", L);
 
 
 double x, y, z;     /*For reading and printing the values of x,y,h*/
@@ -180,8 +200,17 @@ fclose(fileCin);
 
 
 /*Define observables to track in time*/
+int num_saves = 50; /*Save the observable only at num_saves equispaced instants*/
+int index_saves = 0;
+double* Times = malloc(num_saves*sizeof(double)); /*Times of saves*/
+//num_saves = nloop;
+/*Space average of U*/
 FILE *fileAveout;
-double* Ave = malloc(nloop*sizeof(double)); /*Average magnetization*/
+double* Ave = malloc(num_saves*sizeof(double)); /*Average magnetization*/
+/*Radius (of a circular island)*/
+FILE *fileRadiout;
+double* Radi2 = malloc(num_saves*sizeof(double)); /*Average magnetization*/
+double weight_sum = 0;  /*Sum of the weights*/
 
 /*-----------------------------------------------------------------------*/
 
@@ -317,35 +346,81 @@ for(loop=0;loop<nloop;loop++) {
         }
     }
 
+
     /* Measure Observables (instantaneous value) */
-    Ave[loop] = 0;
-    //#pragma omp parallel for //seulement pour les grands systèmes
-    for(i=0;i<N;i++) {
-        for(j=0;j<N;j++) {
-            h[i][j] = hdt[i][j];
-            Ave[loop] = Ave[loop] + h[i][j];
-            //printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);
+    if (loop >= (nloop/num_saves)*index_saves){
+        Times[index_saves] = tmin + (loop+1)*dt;
+        /*Space Average of u(x,y) [Not parallelizable, its a sum!]*/
+        Ave[index_saves] = 0;
+        for(i=0;i<N;i++) {
+            for(j=0;j<N;j++) {
+                h[i][j] = hdt[i][j];
+                Ave[index_saves] = Ave[index_saves] + h[i][j];
+                //printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);
+            }
         }
+        Ave[index_saves] = Ave[index_saves]/(N*N);
+        
+        /*Radius (of a circular island)*/
+        for (i=0; i<N; i++){
+            for (j=0; j<N; j++){
+                qxhfr[i][j]= qfr[i]*hfi[i][j]/dx;
+                qxhfi[i][j]= -qfr[i]*hfr[i][j]/dx;
+                qyhfr[i][j]= qfr[j]*hfi[i][j]/dx;
+                qyhfi[i][j]= -qfr[j]*hfr[i][j]/dx;
+            }
+        }
+        /*INVERSE FFT for (Grad h)_x*/
+        #pragma omp parallel for //seulement pour les grands systèmes
+        for(i=0;i<N;i++) {
+            for(j=0;j<N;j++) {
+                in[i*N+j][0] = qxhfr[i][j];
+                in[i*N+j][1] = qxhfi[i][j];
+            }
+        }
+        fftw_execute(pb);
+        #pragma omp parallel for //seulement pour les grands systèmes
+        for(i=0;i<N;i++) {
+            for(j=0;j<N;j++) {
+                ghx[i][j] = out[i*N+j][0]/(N);  /*Divide by N and not N^2 because the property of Grad->q holds with the democratic normalization of FT and IFT*/
+            }
+        }        
+        /*INVERSE FFT for (Grad h)_y*/
+        #pragma omp parallel for //seulement pour les grands systèmes
+        for(i=0;i<N;i++) {
+            for(j=0;j<N;j++) {
+                in[i*N+j][0] = qyhfr[i][j];
+                in[i*N+j][1] = qyhfi[i][j];
+            }
+        }
+        fftw_execute(pb);
+        #pragma omp parallel for //seulement pour les grands systèmes
+        for(i=0;i<N;i++) {
+            for(j=0;j<N;j++) {
+                ghy[i][j] = out[i*N+j][0]/(N);  /*Divide by N and not N^2 because the property of Grad->q holds with the democratic normalization of FT and IFT*/
+            }
+        }
+        /*Now compute the average of r weighted on |Grad_x|^2*/
+        Radi2[index_saves] = 0;
+        weight_sum = 0;
+        for(i=0;i<N;i++) {
+                x = dx*i-L/2;
+            for(j=0;j<N;j++) {
+                y = dx*j-L/2;
+                Radi2[index_saves] = Radi2[index_saves] + sqrt(ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]) * (x*x+y*y);
+                weight_sum = weight_sum + sqrt(ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
+            }
+        }
+        Radi2[index_saves] = Radi2[index_saves]/weight_sum;
+        
+
+        
+
+
+        index_saves = index_saves + 1;
+        //printf("%d: %d\n", loop, (nloop/num_saves)*index_saves);
     }
-    Ave[loop] = Ave[loop]/(N*N);
-
-    //if(fmod(time,15.) ==0) {
-    //printf("%.1f\n", time);
-    //}
-
-    //if(fmod(time,3000.) ==0) {
-    //sprintf( filename, "file%.0f.dat", time );  
-    //filenonconserve2dh = fopen(filename, "w");
-    //filenonconserve2dh = fopen("nonconserve2dh.dat", "w");
-    //for(i=0;i<N;i++) {
-    //for(j=0;j<N;j++) {
-    //deca=hdt[i][j];
-    //fprintf(filenonconserve2dh, "%.20f\n", deca);
-    //}
-    //}
-    //fclose(filenonconserve2dh);
-    //}
-
+    
 }
 
 /*Save the final state*/
@@ -357,7 +432,8 @@ for (i=0; i<N; i++){
     for (j=0; j<N; j++){
         x = i*dx;
         y = j*dx;
-        z = h[i][j];
+        z = sqrt(ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
+        //z = h[i][j];
         fprintf(filefinalstate, "%.20f %.20f %.20f\n", x, y, z);
     }
 }
@@ -379,12 +455,20 @@ fclose(fileCout);
 
 /*Save values of Space average in different times*/
 fileAveout = fopen("fileAveout.dat", "a");
-for (loop=0; loop<nloop; loop++){
-    time = tmin + (loop+1)*dt;
-    decaout = Ave[loop];
+for (i=0; i<num_saves; i++){
+    time = Times[i];
+    decaout = Ave[i];
     fprintf(fileAveout, "%.5f %.20f\n", time, decaout);
 }
 fclose(fileAveout);
+/*Save values of R^2 in different times*/
+fileRadiout = fopen("fileRadiout.dat", "a");
+for (i=0; i<num_saves; i++){
+    time = Times[i];
+    decaout = Radi2[i];
+    fprintf(fileAveout, "%.5f %.20f\n", time, decaout);
+}
+fclose(fileRadiout);
 
 
 

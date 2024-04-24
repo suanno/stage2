@@ -1,0 +1,5 @@
+![sqrt](sqrt_grad2.png?raw=true)
+![NOsqrt](after_time.png?raw=true)
+![NOsqrt](grad2.png?raw=true)
+![NOsqrt](C0=1A=0.1T=50.png?raw=true)
+![NOsqrt](no_motion_by_curv.png?raw=true)
