@@ -406,8 +406,9 @@ for(loop=0;loop<nloop;loop++) {
                 x = dx*i-L/2;
             for(j=0;j<N;j++) {
                 y = dx*j-L/2;
-                Radi2[index_saves] = Radi2[index_saves] + sqrt(ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]) * (x*x+y*y);
-                weight_sum = weight_sum + sqrt(ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
+                /*We DO NOT take a sqrt for better resolution of the peak position*/
+                Radi2[index_saves] = Radi2[index_saves] + (ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]) * (x*x+y*y);
+                weight_sum = weight_sum + (ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
             }
         }
         Radi2[index_saves] = Radi2[index_saves]/weight_sum;
@@ -445,7 +446,7 @@ for (i=0; i<N; i++){
     for (j=0; j<N; j++){
         x = i*dx;
         y = j*dx;
-        z = sqrt(ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
+        z = (ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
         fprintf(fileAveout, "%.20f %.20f %.20f\n", x, y, z);
     }
 }
