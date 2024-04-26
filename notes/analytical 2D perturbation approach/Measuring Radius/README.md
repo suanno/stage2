@@ -72,7 +72,17 @@ We measure **a slice of** the function $|\nabla u|$ for fixed $x=L/2$ and we qua
 
 We do that for $C=1+1\sin(2\pi t/T)$ and we study two times $t$ when $C\simeq 0$ and $C\simeq 1$.
 
-[...]
+- $C(t)\simeq 0;\quad t=19$
+
+![grad_C=0](../Measuring%20Radius/asym_grad.png?raw=true)
+![grad2_C=0](../Measuring%20Radius/asymm_grad2.png?raw=true)
+
+
+-----------------------
+
+-----------------------
+
+-----------------------
 
 ### Other experiments averaging over $|\nabla u|$
 We see that we have the highest mismatch when $C$ approaches $C=0$.
