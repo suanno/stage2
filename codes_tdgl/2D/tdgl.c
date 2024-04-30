@@ -200,7 +200,9 @@ fclose(fileCin);
 
 
 /*Define observables to track in time*/
-int num_saves = 50; /*Save the observable only at num_saves equispaced instants*/
+int num_saves = 1000; /*Save the observable only at num_saves equispaced instants*/
+if (nloop < num_saves)
+    num_saves = nloop;
 int index_saves = 0;
 double* Times = malloc(num_saves*sizeof(double)); /*Times of saves*/
 //num_saves = nloop;
