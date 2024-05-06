@@ -8,13 +8,13 @@ We monitor an initial circular island with radius $R_0 = 25$.
 C = 0.1
 
 ### Changing dt
-![constC](../Measuring%20Radius/C=0.1_dt.png?raw=true)
+![constC](C=0.1_dt.png?raw=true)
 ### Changing dx
-![constC](../Measuring%20Radius/C=0.1_dx.png?raw=true)
+![constC](C=0.1_dx.png?raw=true)
 
 ### Changing the formula for $R^2$ extimation
 
-![constC](../Measuring%20Radius/grad_grad2.png?raw=true)
+![constC](grad_grad2.png?raw=true)
 
 # Conclusions
 ### New INITIAL radius

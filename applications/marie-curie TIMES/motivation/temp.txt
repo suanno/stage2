@@ -1,0 +1,19 @@
+- I really want to do a phd because, during my internship, I'm finding the research enviroment chatting with the doctoral students in the office very stimulating and I really need this stimulations, that's the only reason why I left my university for the internship, as I realized I felt alone making myself questions and dealing with them alone.
+In my studies I came up with a lot of questions about foundations of physics (mainly statistical mechamics) to which i did not get satisfying answer from book and teachers. Now I'm exploiting the opportunity of involving other active students in those questions and I think this Is helping me getting a more solid under standing of physics in general, even if they say I'm annoying.
+- I'm really intersted in this offer, because I find very intersting investigating correlation and collective exitations in many paryicle systems.
+Them I like working in parallel in the numeric and analytical side. Currently i'm doing this in my internship, where I'm using the numerical simulations as an insight for developing the analytical theory. From the analytical side we're mainly making multiscale expansions to describe the dynamics close to many extremal regimes.
+
+
+In my master I studied condensed matter where I got introduced to the collective excitations and correlation of electron systems. In particularly 
+I studied one type of collective behaviour in matter that is superconductivity. I got both experimental and theoretical classes, focusing on the basics of superconductivity and then to applications in quantum computing.
+I also had the luck to work on a superconducting qubit during my second year of master annual laboratory.
+Currently I'm doing a theoretical research in the field of non-linear dynamics and control theory.
+Me and my supervisor Olivier PIERRE-LOUIS are invetigating on the dynamics of the Time dependent gitzburg landau equation, that
+is a partial differential equation describing an out-of equilibrium phenomena: phase separation in matter, in particulaar we are focusing on a type of phase separation that is spinoidal decomposition and in the non conservative/dissipative regime. The equation correctly gives a continuos descriptio of phase separation in the ising model when operting closw to the critical temperature.
+
+Enhance in the letter those keywords:
+out-of-equilibrium,  dissipative phenomena, excitations
+Enhance even those keywords, but they are less important than the previous ones
+excitation, correlation, and (de)coherence of electrons, spin,
+many-body physics, electronic structure methods, nonlinear dynamics, to machine learning, etc.
+stochastic methods

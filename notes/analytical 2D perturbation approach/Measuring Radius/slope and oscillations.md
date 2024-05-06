@@ -49,11 +49,6 @@ dx = 0.1
 ![dtCoscill](../Measuring%20Radius/numerical%20deviation%20motion%20by%20curvature/dt/C0=1A=1T=R0=25/amplitude.png?raw=true)
 ![dtCoscill](../Measuring%20Radius/numerical%20deviation%20motion%20by%20curvature/dt/C0=1A=1T=R0=25/slope.png?raw=true)
 
-# What we see
-There is a deviation from motion by curvature:
-- There seems to be an **effective initial radius** different from the initial radius, when $C\neq 1$ (the initial width of the interface is $W=1$);
-- The slope of $R^2(t)=-2t$ is not exactly 2;
-- We see oscillations deviating from the expected linear behaviour.
 # Conclusions
 ### Slope and oscillations' amplitude
 
