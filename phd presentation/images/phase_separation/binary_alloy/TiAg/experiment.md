@@ -1,2 +1,0 @@
-- **Concentrations**: Ti66Ag33
-- **Black** is the lower concentrated so it is the Ag.
