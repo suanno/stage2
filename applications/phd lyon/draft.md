@@ -4,19 +4,20 @@
 # Intro slide
 Systems with which we're working / we will work on
 - **Internship**: 2D Ising model, monolayer deposition (2D lattice in contact with a gas).
+![ising](images/isingBeta=4J.png?raw=true)
+![monolayer](images/monolayerDeposition.png?raw=true)
 - **PhD project**: More general nanostructures, like cristal surface with atomic steps.
+![nanoscaleSteps](images/nanoscaleSteps.png?raw=true)
 
 
 # Phase separation
-[?] The dynamics of the systems we're working on during the internship _can be described as_ a phase separation.
+""In those systems **we're studying phase separation**
+This is an **out of equilibrum** phenomena that occurs in many different systems. For example:""
 
-This phenomena occurs in many different systems, for example
+### Examples of phase separation
 
-### Polymer solution
-Here we can see an homgeneous solution with an high concentration of a polymer.
-
-Quenching at a lower temperature we see the rising of the high and poor concentrated phases.
-As time goes on, we see better a distinction between the rich (the black) and poor polymer phases.
+Here we have a polymer solution, after quenching we see a separation between the black concentrated phase and the other one.
+[Time arrow]
 
 ![poly0](images/phase_separation/polymer/initial.png?raw=true)
 ![poly0](images/phase_separation/polymer/T=90C_t=30s.png?raw=true)
@@ -24,36 +25,30 @@ As time goes on, we see better a distinction between the rich (the black) and po
 
 [Backscatter Electron microscope. (a) Initial / (b) Quenched at 90C for 30s / (c) Quenched at 90C for 60s. Black is the polymer concentrated phase]
 
-### Colloids
-Here we see a solution of colloids in a $\mu$-channel, that goes under a phase-separation process. Here the white phase has less concentration of colloids.
+Here we see a solution of colloids in a polymer, that is confined in a $\mu$-channel. After steering the solution, we see the white colloid concentrated phase separates from the other.
 ![colloids](images/phase_separation/colloid/perp_gravity.png?raw=true)
 [Confocal laser scanning microscopy (CLSM) images of an inner layer (bulk) of the channel. The channel confinement is in the gravity direction of 18 $\mu m$. The colloids R=110nm. White phase has 1kg/m3 less colloids than the black.]
 
-### Binary alloy
-Here instead we have a binary alloy CoCrCu just after casting, here the two phases differ on the concentration of the two components.
-As casting is slow, you can see there are domains of one phase trapped in the other.
 
-![CoCrCu](images/phase_separation/binary_alloy/CoCrCu/CoCrCu.png?raw=true)
-
-[Trasmission electron microscope. As-cast (fast cooled) CoCrCu binary alloy. The black phase is the CoCr rich one]
 
 # Spinoidal decomposition
 
-We focus on a particular kind of phase separation: the spinoidal decomposition.
-In particular we focus on the case when the amount of each phase is not conserved in time.
+But we focus **just on** a particular kind of phase separation: the spinoidal decomposition.
 
-This phenomena happens in the Ising model when it is quenched under the critical temperature.
+This is the kind of separation occurring in magnetic systems and in monolayer depositions.
+
+In particular we **focus on the regime** when the amount of each phase is not conserved in time.
 
 ![Ferromagnetic System]()
-
-And as a "**monolayer deposition process**" is equivalent to the 2D Ising model, we can see the domain shapes are similar in this case.
-
 ![AuOnAu](images/phase_separation/GoldOnGold.png?raw=true)
 [Au thin film, black spots indicate holes in the first layer. The surface touches an acqueos solution of Au atoms and an acid KCl. Applying a strong potential difference between the surface and the STM tip, atoms are electrochemically detached from the first layer, way faster than the surface diffusion rate.]
 
+
+
+
 # A continuos theory (TDGL)
 We have a **simple continuos** model to describe this kind of phase separation.
-It is possible to give a **continuos** description by defining a **scalar order parameter** as the **local** magnetization.
+In fact it is possible to give a **continuos** description by defining a **scalar order parameter** as the **local magnetization**.
 
 Then the dynamics of the order parameter, close to the critical temperature is
 
@@ -61,7 +56,9 @@ $$\partial u = \Delta u + Cu - u^3$$
 
 where C is a parameter that we can control by changing the Temperature $C\propto (T_c-T)$.
 
-By going from positive to negative value of C, the disordered phase goes from stable to unstable, so we have spinoidal decomposition.
+![PhaseDiagramIsingB=0](images/phase_diagram.png?raw=true)
+
+By going from positive to negative value of C, the disordered phase goes from stable to unstable, so we have the spinoidal decomposition.
 
 
 ### Universality
@@ -70,9 +67,7 @@ As that theory is accurate close to the critical point, then this equation **mus
 
 # Goal
 
-So the question that motivates our work is: can we control the properties of the domains (shape, size, density) by only changing the temperature over time close to the critical value?
-
-# Modulating the temperature
+So the question that motivates our work is: can we control the properties of the domains (shape, size, density) by only changing a **macroscopic variable** as the **temperature** (close to the critical value)?
 
 In order to understand what properties of the domains we can control, we need to understand how the dynamics of the boundaries is affected by changes of temperature over time.
 
@@ -84,7 +79,7 @@ Each point of an interface moves with a normal velocity proportional to the loca
 
 $$v = -\kappa$$
 
-![Image with some domains and arrow with lenght prop to minus the curvature](.)
+![Image with some domains and arrow with lenght prop to minus the curvature](images/arrows_motionbycurvature.png?raw=true)
 
 
 
@@ -95,11 +90,13 @@ To check if this behaviour is affected by changes in temperature over time, we *
 
 We considered a simple initial state, where the curvature is constant all over the boundary.
 
-![chaos_rightarrow_circularIsland](.)
+![chaos_rightarrow_circularIsland](images/simpler.png?raw=true)
 
-There we checked **quantitatively** motion by curvature in the simulations. Both for fixed temperature and slow and fast oscillating temperature.
+There we checked **quantitatively** motion by curvature in the simulations, for a fixed temperature.
+Then we saw that it is still present when you change temperature in time: both for slow and fast oscillating temperature. And this is in agreement with our analytical studies.
+![T(t)_graphs](.)
 
-But **we found that we cannot do much!** In fact both simulations and our analytical expansions agree that the dynamics of the interfaces is not affected by changing temperature over time!
+This means that **we cannot do much** by simply changing temperature in time.
 
 # Backup slides
 
