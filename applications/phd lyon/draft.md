@@ -94,6 +94,7 @@ We considered a simple initial state, where the curvature is constant all over t
 
 There we checked **quantitatively** motion by curvature in the simulations, for a fixed temperature.
 Then we saw that it is still present when you change temperature in time: both for slow and fast oscillating temperature. And this is in agreement with our analytical studies.
+
 ![T(t)_graphs](.)
 
 This means that **we cannot do much** by simply changing temperature in time.
