@@ -73,17 +73,19 @@ So this has been my internship work.
 
 
 ### Phd
-Now with within the Phd project we would like to extend our challenge to the control of rough morphologies and to consider more general driving forces (as an electric field that is tangential to the surface) for controlling monolayer clusters.
+Now with within the Phd project we would like to control of rough morphologies and to consider more general driving forces (as an electric field that is tangential to the surface) for controlling monolayer clusters.
+And we will consider both time and space dependent driving forces.
 
-### Phd: State of the art
-We're not the first working on this subject. In fact in the last years people have used machine learning an genetic algorithms to control crystal growth.
-For instance this is a simulation of the the cross section of a thin film of a binary alloy, that is obtained through physical vapor deposition.
-Both the deposition rate and the surface mobility are changed over time by a genetic algorithm, that managed to reach those configurations. 
+### Phd: Time
+We're not the first considering time dependent growth conditions.
+In fact here are simulations of the **cross section** of a thin film; that is obtained from deposition of a binary alloy, under different conditions.
+This group used a genetic algorithm to find how to change the deposition rate in time to reach those target states.
+But the problem of this approach is that is no theory connecting the growth conditions to the final morphology. So you don't know what you can control and what you **cannot**.
 
-Now the main problem of using those algorithm for controlling the growth, is that we find how to reach some configurations, but we do not know what configuration we can reach and what we cannot, as there is no theory linking how we modulated the growth parameters in time and the final configuration. 
+### Phd: Space
+Then we will also consider space depending driving forces. An example is a prepatterned substrate, that will force those structures to grow in particular positions.
 
-### Phd: Our goal
-The goal of the project is to understand what properties of the surface morphology we can control and what we cannot control.
-And this is not a trivial question, because during the internship we discovered there is something that we cannot do, as controlling the dynamics of monolayer clusters by changing temperature in time.
-
-The way we're goind to work, is to understand how reach a target state and how to stabilize a configuration.
+### Phd
+So the goal of the project is to write down a **general theory** that explains what we can control and what we cannot of the morphology of a surface.
+And to do that, we will use techniques from optimal control theory.
+So we will try to understand not only how to reach a target state, but even how to reach it in the smallest time.
