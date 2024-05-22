@@ -1,8 +1,8 @@
 ### Title
+I'm Rocco Suanno and I'm presenting my phd project on Optimal Nano-structure design at crystal surfaces.
 
 ### CV
-I briefly present myself.
-I'm Rocco Suanno and I'm a master degree student in Solid state physics and quantum technologies at the university of Milano Bicocca.
+I'm a master degree student in Solid state physics and quantum technologies at the university of Milano Bicocca.
 
 During my studies I had a first intership in theoretical physics, where I studied a chaotic system known as the standard map. My contribution was verifying some statistical properties numerically with codes that I developed.
 Then I had also an experience in experimental physics in a low temperature lab. I did a lot of manual work to characterize a trasmission line that served to read out the state of a superconducting quantum bit.
@@ -63,8 +63,9 @@ We find that motion by curvature is not affected by temperature changes in both 
 
 
 ### A general phenomena
-But our model is way more general, as it can be applied to describe the dynamics of a polymer solution after a quenching of the temperature. And also a colloidal solution confined in a microchannel, after being steered.
-In both cases we see coarsening dynamics.
+Let's notice that our model describes much more systems. 
+For instance this is a polymer solution after a quenching of the temperature. And this is a colloidal solution, after being steered.
+And in both cases we see coarsening dynamics.
 
 
 So this has been my internship work.
@@ -73,19 +74,20 @@ So this has been my internship work.
 
 
 ### Phd
-Now with within the Phd project we would like to focus on 3D nanostructures and to consider more general driving forces (as an electric current that generate a mass flow due to electromigration).
+Now with within the Phd project we would like to focus on 3D nanostructures.
+
+In addition we will consider more general driving forces (as electromigration, where an electric current produces a flux of mass at the surface).
 And we will consider drivings that are **inhomogeneous** both in time and in space!
 
 ### Phd: Time
-We're not the first considering time dependent growth conditions.
-In fact here are simulations of the **cross section** of a thin film; that is obtained from deposition of a binary alloy, under different conditions.
+We're not the first considering time dependent driving forces.
+In fact here are simulations of the **cross section** of a thin film; that is obtained from deposition of a binary alloy, under two different conditions.
 This group used a genetic algorithm to find how to change the deposition rate in time to reach those target states.
-But the problem of this approach is that is no theory connecting the growth conditions to the final morphology. So you don't know what you can control and what you **cannot**.
+But the problem of this approach is that you get a solution to the particular problem, but you cannot explain **how** the driving policies reaches the target morphology. So you don't know what target configurations you can reach.
 
 ### Phd: Space
-Then we will also consider space depending driving forces. An example is a prepatterned substrate, that will force those structures to grow in particular positions.
+We will also consider space depending driving forces. An example is a prepatterned substrate, that will force those structures to grow in particular positions.
 
 ### Phd
-So the goal of the project is to write down a **general theory** that explains what we can control and what we cannot of the morphology of a surface.
-And to do that, we will use techniques from optimal control theory.
-So we will try to understand not only how to reach a target state, but even how to reach it in the smallest time.
+So the goal of the project is to find a general policy for modulating the driving forces, both in time and in space, to reach any arbitrary configuration.
+To do that, we will use techniques from optimal control theory and even from machine learning to have a comparison.
