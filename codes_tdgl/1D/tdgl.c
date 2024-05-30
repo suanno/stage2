@@ -112,13 +112,17 @@ double* integ_coef = malloc(N*sizeof(double));
 FILE *stateeqn_result;
 FILE *fileCout;				/*C(t+dt) values*/
 FILE *fileAveout;			/*Space average of u(t) values*/
+FILE *fileq2Aveout;			/*Space average of u(t) values*/
 FILE *fileCin;
 FILE *filex0;
+FILE *fileumax;
 
 double* C = malloc(nloop*sizeof(double));				/*C(t+dt) values*/
 double Cprev;											/*Temp variable to store C(t) [because C[loop] is C(t+dt) NOT C(t)]*/
 double* uAve = malloc(nloop*sizeof(double));			/*Space average of u(t) values*/
-double* x0 = malloc(nloop*sizeof(double));	/*Interface position (where u=0)*/
+double* q2Ave = malloc(nloop*sizeof(double));
+//double* x0 = malloc(nloop*sizeof(double));	/*Interface position (where u=0)*/
+double* umax = malloc(nloop*sizeof(double));
 
 /*Read C(t) from file*/
 /*If the file is shorter than nloop, C(t)
@@ -282,19 +286,40 @@ for (loop=0; loop < nloop; loop++){
 	u[i]=udt[i];
 	}
 
-	/*Compute space average NEGLECTING bodrers, where there is ANOTHER interface*/
+	/*Compute space average*/
 	uAve[loop] = 0;
-	for (i = (int)(0.25*N); i<(int)(0.75*N); i++){
+	//for (i = (int)(0.25*N); i<(int)(0.75*N); i++){
+	for (i = 0; i<N; i++){
 		uAve[loop] = uAve[loop] + u[i];
 	}
-	uAve[loop] = uAve[loop]/(double)(N/2);
+	uAve[loop] = uAve[loop]/(double)(N);
 
+	q2Ave[loop] = 0;
+	/*Compute q2 average*/
+	for (i = 0; i<N; i++){
+		q2Ave[loop] = q2Ave[loop] + qfr[i]*qfr[i]*(udtfi[i]*udtfi[i]+udtfr[i]*udtfr[i]);
+	}
+	q2Ave[loop] = q2Ave[loop]/(double)(N);
+
+	/*Compute the maximum of |u(x)|*/
+	umax[loop] = 0;
+	for (i = 0; i<N; i++){
+		if (u[i] > umax[loop] || u[i] < -umax[loop])
+			if (u[i] > 0)
+				umax[loop] = u[i];
+			else
+				umax[loop] = -u[i];
+	}
+
+/*
 	x0[loop] = -1;
-	/*Compute the position of the interface (u = 0)*/
+	/*Compute the position of the interface (u = 0)
 	for (i = (int)(0.25*N); i<(int)(0.75*N); i++){
 		if (u[i]/u[(int)(0.25*N)] < 0 && x0[loop] < 0)
 			x0[loop] = 0.5*(x[i]+x[i-1]);
 	}
+*/
+
 }
 
 /*Save the final state*/
@@ -331,7 +356,25 @@ fprintf(fileAveout, "%.5f %.20f\n", ttime, decaoutAve);
 }
 fclose(fileAveout);
 
-/*Save interface position x0 (where u=0)*/
+fileq2Aveout = fopen("fileq2Aveout.dat", "a");
+for (loop=0; loop<nloop; loop++){
+ttime = tmin + (loop+1)*dt;
+decaoutAve = q2Ave[loop];
+fprintf(fileq2Aveout, "%.5f %.20f\n", ttime, decaoutAve);
+}
+fclose(fileq2Aveout);
+
+fileumax = fopen("fileumax.dat", "a");
+for (loop=0; loop<nloop; loop++){
+ttime = tmin + (loop+1)*dt;
+decaoutAve = umax[loop];
+fprintf(fileumax, "%.5f %.20f\n", ttime, decaoutAve);
+}
+fclose(fileumax);
+
+
+
+/*Save interface position x0 (where u=0)
 filex0 = fopen("filex0.dat", "a");
 for (loop=0; loop<nloop; loop++){
 ttime = tmin + (loop+1)*dt;
@@ -339,6 +382,8 @@ decaoutAve = x0[loop];
 fprintf(filex0, "%.5f %.20f\n", ttime, decaoutAve);
 }
 fclose(fileAveout);
+*/
+
 
 fftw_destroy_plan(pf);
 fftw_destroy_plan(pb);

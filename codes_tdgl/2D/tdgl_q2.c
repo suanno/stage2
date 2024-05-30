@@ -208,10 +208,10 @@ double* Times = malloc(num_saves*sizeof(double)); /*Times of saves*/
 //num_saves = nloop;
 /*Space average of U*/
 FILE *fileAveout;
-double* Ave = malloc(num_saves*sizeof(double)); /*Average magnetization*/
+double* q2Ave = malloc(num_saves*sizeof(double)); /*Average magnetization*/
 /*Radius (of a circular island)*/
 FILE *fileRadiout;
-double* Radi2 = malloc(num_saves*sizeof(double)); /*Average magnetization*/
+double* grad2 = malloc(num_saves*sizeof(double)); /*Average magnetization*/
 double weight_sum = 0;  /*Sum of the weights*/
 
 
@@ -353,17 +353,20 @@ for(loop=0;loop<nloop;loop++) {
     /* Measure Observables (instantaneous value) */
     if (loop >= (nloop/num_saves)*index_saves){
         Times[index_saves] = time;
-        /*1) Space Average of u(x,y) [Not parallelizable, its a sum!]*/
-        Ave[index_saves] = 0;
+        /*1) q2 average*/
+        q2Ave[index_saves] = 0;
+        weight_sum = 0;
         for(i=0;i<N;i++) {
             for(j=0;j<N;j++) {
-                Ave[index_saves] = Ave[index_saves] + h[i][j];
+                /*Minus sign because teh variable q2 is the observable -q2*/
+                q2Ave[index_saves] = q2Ave[index_saves] - q2[i][j]*(hfr[i][j]*hfr[i][j] + hfi[i][j]*hfi[i][j]);
+                weight_sum = weight_sum + (hfr[i][j]*hfr[i][j] + hfi[i][j]*hfi[i][j]);
                 //printf("u[%d][%d] = %.2lf\n", i, j, h[i][j]);
             }
         }
-        Ave[index_saves] = Ave[index_saves]/(N*N);
+        q2Ave[index_saves] = q2Ave[index_saves]/weight_sum;
         
-        /*2) Radius (of a circular island)*/
+        /*2) integral of grad2*/
         for (i=0; i<N; i++){
             for (j=0; j<N; j++){
                 qxhfr[i][j]= qfr[i]*hdtfi[i][j]/dx;     /*hdt and not h because we're considering time t+dt*/
@@ -402,19 +405,17 @@ for(loop=0;loop<nloop;loop++) {
                 ghy[i][j] = out[i*N+j][0];  /*No need of normalizing ...*/
             }
         }
-        /*Now compute the average of r^2 weighted on |Grad_x|^2*/
-        Radi2[index_saves] = 0;
-        weight_sum = 0;
+        /*Now compute the integral of |Grad_x|^2*/
+        grad2[index_saves] = 0;
         for(i=0;i<N;i++) {
                 x = dx*i-L/2;
             for(j=0;j<N;j++) {
                 y = dx*j-L/2;
                 /*We DO NOT take a sqrt for better resolution of the peak position*/
-                Radi2[index_saves] = Radi2[index_saves] + (ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]) * (x*x+y*y);
-                weight_sum = weight_sum + (ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
+                grad2[index_saves] = grad2[index_saves] + (ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
             }
         }
-        Radi2[index_saves] = Radi2[index_saves]/weight_sum;
+        grad2[index_saves] = grad2[index_saves]/(L*L);
         
 
         
@@ -470,18 +471,18 @@ for (loop=0; loop<nloop; loop++){
 fclose(fileCout);
 
 /*Save values of Space average in different times*/
-fileAveout = fopen("fileAveout.dat", "a");
+fileAveout = fopen("fileQ2.dat", "a");
 for (i=0; i<num_saves; i++){
     time = Times[i];
-    decaout = Ave[i];
+    decaout = q2Ave[i];
     fprintf(fileAveout, "%.5f %.20f\n", time, decaout);
 }
 fclose(fileAveout);
 /*Save values of R^2 in different times*/
-fileRadiout = fopen("fileRadiout.dat", "a");
+fileRadiout = fopen("fileGrad2.dat", "a");
 for (i=0; i<num_saves; i++){
     time = Times[i];
-    decaout = Radi2[i];
+    decaout = grad2[i];
     fprintf(fileAveout, "%.5f %.20f\n", time, decaout);
 }
 fclose(fileRadiout);

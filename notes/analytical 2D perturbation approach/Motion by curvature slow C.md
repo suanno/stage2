@@ -6,7 +6,7 @@ Here we **mix**
 
 ## Assumptions
 Here we make the **same assumptions** we made to find "Motion by curvature".
-Then we ask _additionally_ $C(t)$ to be slowly varying (to be fair we did that also before, but now we _quantify_ the slowness).
+Then we ask _additionally_ $C(t)$ to be slowly varying (to be fair we did that also before, but now we **quantify** the slowness).
 
 ## Difference with the approach used to find "Motion by curvature"
 

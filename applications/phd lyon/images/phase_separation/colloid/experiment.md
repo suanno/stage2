@@ -10,3 +10,5 @@ The images we have are of the central layer (so it is a bulk layer)
 - **2D**: We have a 2D image because we're looking at a section. But the domains we see are the sections of cylinders bridging the plates of the tube.
 One of the two phases completely wets the plates.
 [https://en.wikipedia.org/wiki/Optical_sectioning]
+- **Capillarity**: From the experimental images in vertical direction, you see that the gas phase (poor of colloids) completely wets the plates. This means that there is no flow due to capillarity, because the walls are already wet.
+- **Microscopic dynamics**: The walls are wet and the bulk is steered with a vortex. At the beginning we've coarsening (in 3D), then the liquid (rich of colloids) hit the walls. Now the liquid domains bridge between the two plates (but the density of colloids falls sharply at the extrema of the bridges, because the wetting layer is gasseous). Those bridges take and give matter to the wetting layers, but this behaviour is not relevant for talking about spinodal decomposition.

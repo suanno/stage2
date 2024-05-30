@@ -35,7 +35,7 @@ Those quantities have the **same order**
 
 This means that
 - $\kappa = \epsilon K_1$, with $K_1\sim 1$
-- If you define $S=\epsilon$ then it holds **both**
+- If you define $S=\epsilon s$ then it holds **both**
     $$ \quad \delta S\sim 1 \implies \delta u \sim 1\\
     \quad \delta \xi\sim 1 \implies \delta u \sim 1$$
     So it follows that

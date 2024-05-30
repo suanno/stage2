@@ -134,7 +134,7 @@ Here we see that, in the times $t$ when $C\rightarrow 0$, the expected value dev
 
 
 # Fast oscillating $C(t)$
-Here, instead, we're always in the adiabatic regime.
+Here, instead, we're far from the adiabatic regime.
 
 $$C(t) = C_0 + D_0(t_{-1})$$
 $$t = \epsilon t_{-1}$$
