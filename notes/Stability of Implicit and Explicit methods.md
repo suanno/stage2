@@ -85,3 +85,7 @@ $$NO(h^n) = \frac{L}{h}O(h^n) = LO(h^{n-1})$$
 so the error is 1 order of magnitude smaller.
 
 Note that it makes sense to use this criteria only if the algorithm is stable (at least for the chosen value of $h$).
+
+
+Hey Gianfraco it's Rocco. I will miss bothering you everyday in the office, I'm not sure I will find a new victim.
+Do you remember when we met with a clementine? I bet you would have never imagined how crazy the following months would have been. 

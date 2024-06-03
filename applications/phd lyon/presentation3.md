@@ -46,7 +46,7 @@ This means we can describe the state of the surface with a scalar field, that te
 
 ### Spinodal decomposition
 This system is interesting because it undergoes spinodal decomposition.
-In fact there is a critical temperature, that is represented in the left diagram by the bifurcation point.
+In fact you can proove that this system is equivalent to the Ising model, so there is a critical temperature, here represented by the point of the bifurcation.
 This diagram illustrates what people usually do in experiments, that is a rapid quench of the temperature. This leads to the phenomena on the right, where domains of the occupied and unoccupied phases emerge from a disordered configuration. This phenomena is known as spinodal decomposition and we can see it both in a simulation and a real experiment.
 
 In this simulation we see the dynamics after the temperature quench. After the domains appeare, they evolve with coarsening dynamics, meaning their lenghtscale increases as a power law _of time_.
@@ -61,15 +61,15 @@ In my internship we studied the dynamics under **arbitrary** variation of temper
 In particular we wanted to "understand if it's possible to control the position and the shape of the domains by changing temperature over time".
 
 ### Motion by curvature
-From our model, follows that at fixed temperature, that means constant C, the interfaces between domains **move** with a velocity that is normal to the interface and proportional to the local curvature. This dynamics is known as motion by curvature.
+From our model, follows that at fixed temperature, that means constant C, the dynamics is dominated by motion by curvature. This means that the interface between two domains **moves** with a velocity that is normal to the interface and proportional to the local curvature.
 
-What we discovered, is that it doesn't matter how you change temperature over time, the dynamics of the interfaces **will not** be affected by the changes.
+Before my internship we didn't know anything about the dynamics under time dependent C. And what we discovered, is that it doesn't matter how you change the parameter over time, the dynamics of the interfaces **will not** be affected by the changes.
 This means that **it's not possible** to control the shape of domains by changing temperature in time.
 
 ### Quantitative checks
 We checked this quantitatively with simulations. In fact we developed a code, starting from an existing one and changing the integration algorithm to reach better accuracy at large times.
 Then we made some analytical calculations, exploiting that in our system there are two timescales: the one of the interface motion and the one of the variations of C.
-In the limit of slow and fast oscillating C, we could define a small parameter and expand the terms of the equation in this parameter. And we found that the motion by curvature is still present. 
+So in the limit of slow and fast oscillating C, we could define a small parameter and expand the terms of the equation in this parameter. And we proved that, at leading order, we have still motion by curvature. 
 
 
 ### A general phenomena
@@ -92,20 +92,21 @@ Actually we're not the first considering time dependent driving forces.
 In fact here are **simulations** of the **cross section** of a thin film; that is obtained from deposition of a binary alloy, under two different conditions.
 This group used a genetic algorithm to find how to change the deposition rate in time to reach those target states.
 But the problem of this approach is that the genetic algorithm is a **black box** so it doesn't provide **theoretical** understanding of the underlying physics.
-This means that we cannot generalize this method, in the sense we cannot formulate an universal strategy for reaching an arbitrary target
+And we don't like this, because we want to develop an analytical theory that will help finding an universal strategy to reach any target. 
 
 ### Phd: Space
 We will also consider space depending driving forces.
 For example a prepatterned substrate will force the structures to grow in particular positions.
-We want to invert this relation so, starting from a desired spatial configuration of the nanostructures, we want to **prepare** the substrate in such a way that it leads to that configuration.
+We want to invert this relation so, starting from a desired spatial configuration of the nanostructures, we want to find the substrate morphology that determines it.
 
-To achieve this, we have to
-- make the target configuration a stationary state of the system (this means solving an inverse problem)
-- and then, if the stationary state is unstable, we will use techniques from optimal control theory to stabilize it.
+And then, we will need to find a way to make this morphology stable.
+This means:
+- solving an inverse problem, where you require the morphology to be stationary
+- and then, if this stationary state is unstable, we will use techniques from optimal control theory to stabilize it.
 
 ### Phd
 
-We can use optimal control also to find the best policy to change the driving forces in time to reach the target state. 
+We can use optimal control also to find the best way to change the driving forces in time to reach the target state. 
 
 In addition, we will use Reinforcement learning, that is a very powerfull machine learning scheme that will give us insights about what properties of the system can be controlled.
 
