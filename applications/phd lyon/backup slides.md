@@ -1,3 +1,7 @@
-Quench
-How concretely we do simulations
-Analytical approach motion by curvature slow and fast
+- Analytical approach motion by curvature slow and fast
+
+- MBE
+
+- Chan Hilliard an Chan Hallen
+
+- MBC implies coarsening so unique lenghtscale

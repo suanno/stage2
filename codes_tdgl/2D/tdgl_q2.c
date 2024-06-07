@@ -208,6 +208,7 @@ double* Times = malloc(num_saves*sizeof(double)); /*Times of saves*/
 //num_saves = nloop;
 /*Space average of U*/
 FILE *fileAveout;
+double* Ave = malloc(num_saves*sizeof(double)); /*Average magnetization*/
 double* q2Ave = malloc(num_saves*sizeof(double)); /*Average magnetization*/
 /*Radius (of a circular island)*/
 FILE *fileRadiout;
@@ -272,6 +273,7 @@ for (i=0; i<N; i++){
 printf("Number time steps going to simulate = %d\n", nloop);
 for(loop=0;loop<nloop;loop++) {
     time = tmin + (loop+1)*dt;
+    //printf("T = %lf\n", time);
     /*
     printf("\n\nTime: %.2lf\n", time-dt);
     printf("h[%d][%d]*dt = %.2lf\n", i, j, h[i][j]);
@@ -349,10 +351,20 @@ for(loop=0;loop<nloop;loop++) {
         }
     }
 
+    //printf("T = %lf\n", time);
+
     
     /* Measure Observables (instantaneous value) */
     if (loop >= (nloop/num_saves)*index_saves){
         Times[index_saves] = time;
+        /*u space average*/
+        Ave[index_saves] = 0;
+        for(i=0; i<N; i++){
+            for(j=0; j<N; j++){
+                Ave[index_saves] = Ave[index_saves] + h[i][j];
+            }
+        }
+        Ave[index_saves] = Ave[index_saves]/(N*N);
         /*1) q2 average*/
         q2Ave[index_saves] = 0;
         weight_sum = 0;
@@ -408,9 +420,7 @@ for(loop=0;loop<nloop;loop++) {
         /*Now compute the integral of |Grad_x|^2*/
         grad2[index_saves] = 0;
         for(i=0;i<N;i++) {
-                x = dx*i-L/2;
             for(j=0;j<N;j++) {
-                y = dx*j-L/2;
                 /*We DO NOT take a sqrt for better resolution of the peak position*/
                 grad2[index_saves] = grad2[index_saves] + (ghx[i][j]*ghx[i][j] + ghy[i][j]*ghy[i][j]);
             }
@@ -469,8 +479,15 @@ for (loop=0; loop<nloop; loop++){
     fprintf(fileCout, "%.5f %.20f\n", ttime, decaout);
 }
 fclose(fileCout);
-
-/*Save values of Space average in different times*/
+/*Save values of u space average in different times*/
+fileAveout = fopen("fileAveout.dat", "a");
+for (i=0; i<num_saves; i++){
+    time = Times[i];
+    decaout = Ave[i];
+    fprintf(fileAveout, "%.5f %.20f\n", time, decaout);
+}
+fclose(fileAveout);
+/*Save values of q2 average in different times*/
 fileAveout = fopen("fileQ2.dat", "a");
 for (i=0; i<num_saves; i++){
     time = Times[i];

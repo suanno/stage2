@@ -11,13 +11,10 @@ ok Capillarity (if a channel is all wet, there is no capillarity)
 + Genetic algorithm
 - ML, Reinforcement learning
 - Bio-imaging
-- Single electron transistor (charge island)
++ Single electron transistor (charge island)
 - Gas-Lattice model (about the equivalence with the ising model)
 + Electromigration (electron wind-force)
 - Optimal control theory
-- Lyapunov exponents
-- Poincarè sections and recurrence
-- Strange attractors
 - Growth is just one non-eq condition ($\Delta\mu\neq 0$). What are the other possible conditions?
 - TDGL equation: Derivation, interpretation of terms both on the stationary states and physical interpretation
 + Crys growth techniques: PVD, MBE

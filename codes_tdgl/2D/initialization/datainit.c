@@ -63,4 +63,14 @@ for (i=0; i<N; i++){
 }
 fclose(fileinit);
 
+
+fileinit = fopen("fileQ2.dat", "w");
+fclose(fileinit);
+fileinit = fopen("fileGrad2.dat", "w");
+fclose(fileinit);
+fileinit = fopen("fileCout.dat", "w");
+fclose(fileinit);
+fileinit = fopen("fileAveout.dat", "w");
+fclose(fileinit);
+
 }
