@@ -9,62 +9,59 @@ Then I had also an experience in experimental physics in a low temperature lab, 
 And recently, after the suggestion of a professor, I've decided to move here and to do my **FINAL** internship at the Institut Lumiere Matiere, where I would like to extend my permanence as a phd student.
 
 [Slowly]
-I will start presenting the work of my internship and then I will focus on my phd project.
+I will start presenting the work of my internship and then I will move to the phd project.
 
 ### Project 1
-So, let's consider a crystal surface. Under non-equilibrium conditions, like **growth conditions**, non-trivial nano-strucure emerge at the surface.
-_Here we have_ two experimental pictures, on the left we have nanostructures of **atomic thickness**, so they are **2D monolayer islands**. While on the right we have more complex **3D nano-structures**.
+So, let's consider a crystal surface. Under non-equilibrium conditions, like **crystal growth conditions**, some non-trivial nano-strucure emerge at the surface.
+_Here we have_ two experimental pictures, on the left the nanostructures have **atomic thickness**, so they are **2D monolayer islands**. While on the right we have more complex **3D nano-structures**.
 
-_To reach_ those configuration, all the variables that we can control during the growth (like temperature and flow of particles) are kept **fixed**. And this is the **usual** way of doing crystal growth.
+_To reach_ those configuration, all the variables that we can control during the growth process (like temperature and flux of particles at the surface) were kept **fixed**. And this is the **usual** way of doing crystal growth.
 
-In our project, we want to actively control the surface morphology at nano-scale. This means for example controlling position and shape of these monolayer islands.
-And we propose a **new approach** to achieve this control, that is varying the physical parameters both in time and in space, so they are not kept fixed.
+**Instead**, in our project we want to actively control the surface morphology. This means for example controlling position and shape of these monolayer islands.
+And tp achieve this control, we propose a **new approach** that is varying the physical parameters both in time and in space, instead of keeping them fixed.
 
 ### What inspires us
 
 This work is inspired by some technological challenges.
 In fact, we are interested in controlling shape and size of the nanostructures at the surface and this could be relevant for designing quantum dots, that are nano-scale systems very used in micro-electronics and photonics.
 
-But to achieve this control of the surface morphology, we need to understand **what are** the basic mechanisms that determine how matter organizes in the presence of external forces.
+But to achieve this control, we need to understand **what are** the basic mechanisms that determine how matter organizes under the presence of external forces.
 And as those mechanisms **limit** our control on the system, we want to understand
 - what are the properties of the morphology we can **and cannot** control
 - and then how we can control them
 
 -----------------------
 
-Now I will present my internship work.
-
 ### Internship
-
-Where we foucsed on controlling 2D monolayer islands.
+Now I will present the work of my internship work, where we foucsed on controlling 2D monolayer islands.
 
 ### Monolayer
-This is a schematic for the dynamics of a monolayer.
+This is a schematic for the dynamic of a monolayer.
 The atoms of a gas can adsorb and desorb, leading to these white structures, that have really atomic thickness. So they are really **two dimensional** objects.
 
 This means we can describe the state of the surface with a scalar field, that tells wether a region is occupied or not. So we have the white occupied phase and the black un-occupied phase.
 
 ### Spinodal decomposition
 This system is interesting because it undergoes spinodal decomposition.
-In fact you can proove that this system is equivalent to the Ising model, so there is a critical temperature, represented by the point of the bifurcation in this diagram.
-This diagram illustrates what people usually do in experiments, that is a **rapid cooling of the system**, so the temperature is brought under the critical value quickly. This leads to the phenomena on the right, where domains of the occupied and unoccupied phases emerge from a disordered configuration. This phenomena is known as spinodal decomposition and we can see it both in a simulation and a real experiment.
+In fact you can prove that this system is equivalent to the Ising model, so there is a critical temperature, _here_ represented by the point of the bifurcation in this diagram.
+_And_ this diagram illustrates what people usually do in experiments, that is a **rapid cooling of the system**, so the temperature is brought under the critical value quickly. This leads to the phenomena on the right, where domains of the occupied and unoccupied phases emerge from a disordered configuration. This phenomena is known as spinodal decomposition and we can see it both in a simulation and a real experiment.
 
-In this simulation, we can see what happens **after** the spinodal decomposition.
+This simulation shows what happens **after** the spinodal decomposition.
 Once the domains appear, they evolve with coarsening dynamics, so their _average size_ increases as a power law _of time_.
 
 ### Model
 The model we use for describing spinodal decomposition, is the TDGL equation.
-This equation contains a parameter C that depends on temperature and to understand the physical meaning of C, here we have the **same** diagram shown before, where we see that a positive C corresponds to a lower temperature and a negative C to an higher temperature.
+This equation contains a parameter C that depends on temperature and to understand its physical meaning of C, here we have the **same** diagram shown before, where we see that a positive C corresponds to a lower temperature and a negative C to an higher temperature.
 
 -------------
-This equation has been studied only when the parameter C is **constant** in time, that means at **fixed** temperature.
-Instead, we studied the dynamics under **arbitrary** variation of C in time, that means arbitrary variations of the temperature. And this is way more general than considering a rapid cooling.
+This equation has been studied **only** when the parameter C is **constant** in time, that means at **fixed** temperature.
+Instead, we studied how the dynamics is affected by **arbitrary** variation of C in time, that means arbitrary variations of the temperature. And this is way more general than considering a rapid cooling.
 ------------
 
 In particular we wanted to "understand if it's possible to control the position and the shape of the domains by changing temperature over time".
 
 ### Motion by curvature
-From our model follows that, at fixed temperature, that means constant C, the dynamics is governed by motion by curvature. This means that the interface between two domains **moves** with a velocity that is normal to the interface and proportional to the local curvature.
+From the model follows that, at fixed temperature, that means constant C, the dynamics is governed by motion by curvature. This means that the interface between two domains **moves** with a velocity that is normal to the interface and proportional to the local curvature.
 
 Before my internship we didn't know **anything** about the dynamics under time dependent C. And what we discovered, is that **it doesn't matter** how you vary the parameter over time, the motion by curvature will **still** be present.
 This means that **it's not possible** to control the shape of domains by varying the temperature in time.

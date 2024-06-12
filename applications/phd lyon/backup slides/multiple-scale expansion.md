@@ -1,6 +1,6 @@
-I explain what i mean by multiscale expansion in my problem. 
+So, what I mean by multiple scale expansion?
 
-The solution of the equation is a function of x and t. But as in principle different phenomenas occurr at different time-scales (some are faster than others), so we define **new time variables** to describe each phenomena, where $\epsilon$ is a small parameter. Then, we look for solution that are function not only of x and t, but of all those new variables and we expand in powers of $\epsilon$.
+We look for a solution of the equation that is a function of x and t. But as in principle different phenomenas occurr at different time-scales (some are faster than others), we define **new time variables** to describe each phenomena, where $\epsilon$ is a small parameter. Then, we look for solution that are function not only of x and t, but of all those new variables and we expand in powers of $\epsilon$.
 By equating each order, we find new equations to solve to get the terms of the expansion.
 
 ### What is $\epsilon$

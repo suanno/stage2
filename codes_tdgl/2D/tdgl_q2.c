@@ -269,6 +269,9 @@ for (i=0; i<N; i++){
     }
 }
 
+
+printf("\n Starting evolution...\n");
+
 /* EVOLUTION CODE */
 printf("Number time steps going to simulate = %d\n", nloop);
 for(loop=0;loop<nloop;loop++) {
@@ -437,6 +440,8 @@ for(loop=0;loop<nloop;loop++) {
     
 }
 
+printf("\n Saving...\n");
+
 /*Save the final state*/
 FILE* filefinalstate;
 filefinalstate = fopen("state.dat", "w");
@@ -503,7 +508,34 @@ for (i=0; i<num_saves; i++){
     fprintf(fileAveout, "%.5f %.20f\n", time, decaout);
 }
 fclose(fileRadiout);
-
+/*Save FFT of the state*/
+#pragma omp parallel for //seulement pour les grands systèmes
+for(i=0;i<N;i++) {
+    for(j=0;j<N;j++) {
+        in[i*N+j][0] = h[i][j];
+        in[i*N+j][1] = 0.0;
+    }
+}
+fftw_execute(pf);
+#pragma omp parallel for //seulement pour les grands systèmes
+for(i=0;i<N;i++) {
+    for(j=0;j<N;j++) {
+        hfr[i][j] = out[i*N+j][0];
+        hfi[i][j] = out[i*N+j][1];
+    }
+}
+filefinalstate = fopen("stateFFT.dat", "w");
+/*Save parameters N, tmax, dx, dt, seed, Ampl, Thalf*/
+fprintf(filefinalstate, "%d %lf %lf\n", N, tmax, dx);
+for (i=0; i<N; i++){
+    for (j=0; j<N; j++){
+        x = qfr[i]/dx;
+        y = qfr[j]/dx;
+        z = sqrt(hfr[i][j]*hfr[i][j] + hfi[i][j]*hfi[i][j]);
+        fprintf(filefinalstate, "%.20f %.20f %.20f\n", x, y, z);
+    }
+}
+fclose(filefinalstate);
 
 
 //------------------------------------------

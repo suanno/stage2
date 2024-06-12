@@ -427,6 +427,7 @@ for(loop=0;loop<nloop;loop++) {
 }
 
 /*Save the final state*/
+
 FILE* filefinalstate;
 filefinalstate = fopen("state.dat", "w");
 /*Save parameters N, tmax, dx, dt, seed, Ampl, Thalf*/

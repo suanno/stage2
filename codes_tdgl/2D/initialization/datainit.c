@@ -72,5 +72,7 @@ fileinit = fopen("fileCout.dat", "w");
 fclose(fileinit);
 fileinit = fopen("fileAveout.dat", "w");
 fclose(fileinit);
+fileinit = fopen("stateFFT.dat", "w");
+fclose(fileinit);
 
 }
