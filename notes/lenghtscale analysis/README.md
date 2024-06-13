@@ -12,7 +12,7 @@ In fact $<q^2> = \frac{2\pi}{\lambda}$ and this (**in the below figure**) is the
 
 ![linearTDGLq2](linear_regime_q2.png?raw=true)
 
-Where on the x axis there is time $t$ and each colored curve corresponds to a different value of $q^2_{min} = 10^{-2}, 10^{-1}, 1, 10, 10^2$ (from bottom to top) is the maximum value of $q_x$ or $q_y$. As we work on a lattice, waves can have only a discrete set of momentums, and the bigger value of $q_x$ or $q_y$ is
+Where on the x axis there is time $t$ and each colored curve corresponds to a different value of $q_{min} = 10^{-2}, 10^{-1}, 1, 10, 10^2$ (from bottom to top) is the maximum value of $q_x$ or $q_y$. As we work on a lattice, waves can have only a discrete set of momentums, and the bigger value of $q_x$ or $q_y$ is
 $$q_{min} = \frac{2\pi}{L}k_{max}\quad k_{max} = N/2$$
 $$q_{min} = \frac{\pi}{dx}$$
 
