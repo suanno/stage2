@@ -42,7 +42,7 @@ The coarsening exponent is close to the expected value 0.5 in all the 3 cases. T
 - Monitor the width oscillation of a 1D profile under the same C(t) and multiply lambda by this width. It is more accurate than assume adiabaticity.
 - A longer simulation with C=1 could make possible to make a better fit. As now the fitted curve's slope seems to depend much on the interval of the fit.
 
-## Monitoring $`<q^2>`$ at long times
+## Monitoring <$q^2$> at long times
 
 ### The need of introducing a cutoff wave-lenght $\lambda_{cutoff}$
 We do not want to take into account modes $q$ with short wave-lenght $\lambda \sim 1/q$. That's because the scaling hypotesis looks to be valid only for large wavelenght features. In fact, while the size of domains grows in time, the width of interfaces is constant at constant C, or just fluctuates if C has a time dependance.
