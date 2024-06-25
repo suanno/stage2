@@ -42,11 +42,11 @@ The coarsening exponent is close to the expected value 0.5 in all the 3 cases. T
 - Monitor the width oscillation of a 1D profile under the same C(t) and multiply lambda by this width. It is more accurate than assume adiabaticity.
 - A longer simulation with C=1 could make possible to make a better fit. As now the fitted curve's slope seems to depend much on the interval of the fit.
 
-## Monitoring <$q^2$> at long times
+## Monitoring $\braket{q^2}$ at long times
 
 ### The need of introducing a cutoff wave-lenght $\lambda_{cutoff}$
 We do not want to take into account modes $q$ with short wave-lenght $\lambda \sim 1/q$. That's because the scaling hypotesis looks to be valid only for large wavelenght features. In fact, while the size of domains grows in time, the width of interfaces is constant at constant C, or just fluctuates if C has a time dependance.
-So to monitor the evolution of the unique wavelenght $\lambda(t)$, by considering $`<q^2>`$, we have to put a CUTOFF to exclude from the average the modes that are responsible for the interfaces, so the short wave-lenght ones.
+So to monitor the evolution of the unique wavelenght $\lambda(t)$, by considering $\braket{q^2}$, we have to put a CUTOFF to exclude from the average the modes that are responsible for the interfaces, so the short wave-lenght ones.
 
 This is how the POWER is distributed among modes with different $\lambda$ in the initial (random) state and after $t=11$, when domains emerged.
 ![C=1L=512q2](power%20spectrum/q2/L=512/t=0.png?raw=true)

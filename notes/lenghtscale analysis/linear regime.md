@@ -3,8 +3,8 @@
 
 ## What we expect
 $$<q^2> = \frac{\int q^2|U(q)|^2dq}{D\int |U(q)|^2dq}$$
-$$\lambda = \frac{2\pi}{`<q^2>`} \simeq 4\pi t^{\frac12}$$
-Notice that $`<q^2>`$ is, already in the definition, normalized by the dimension $D$, so $\lambda$ does not depend on $D$.
+$$\lambda = \frac{2\pi}{\braket{q^2}} \simeq 4\pi t^{\frac12}$$
+Notice that $\braket{q^2}$ is, already in the definition, normalized by the dimension $D$, so $\lambda$ does not depend on $D$.
 
 
 At times sufficiently small that you can adopt the **linear approximation** of the TDGL equation.
