@@ -46,8 +46,9 @@ $$\int_{-\infty}^{+\infty} (\partial_x u)^2 dx = \frac{2\sqrt2}{3}C^{\frac32}$$
 ### Resumee
 So an intensive quantity, that is not dependent on the short-scale features is
 
-$$\lambda = \frac{L^2}{\int |\nabla u|^2 dxdy}\frac{2\sqrt2}{3}C^{\frac32}$$
-
+$$\lambda = \frac{L^2}{\int |\nabla u|^2 dxdy}W$$
+where, if $C$ is constant in time
+$$W = \frac{2\sqrt2}{3}C^{\frac32}$$
 As we expect the denominator to decrease, we expect $\lambda$ to increase in time. And, according to coarsening, we expect
 $$\lambda \sim t^{\frac12}$$
 at long times (once the domain have formed and have become big).
