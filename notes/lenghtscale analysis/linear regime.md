@@ -2,7 +2,7 @@
 
 
 ## What we expect
-$$<q^2> = \frac{\int q^2|U(q)|^2dq}{D\int |U(q)|^2dq}$$
+$$\braket{q^2} = \frac{\int q^2|U(q)|^2dq}{D\int |U(q)|^2dq}$$
 $$\lambda = \frac{2\pi}{\braket{q^2}} \simeq 4\pi t^{\frac12}$$
 Notice that $\braket{q^2}$ is, already in the definition, normalized by the dimension $D$, so $\lambda$ does not depend on $D$.
 
@@ -11,7 +11,7 @@ At times sufficiently small that you can adopt the **linear approximation** of t
 And this we expect **independently** on the shape of $C(t)$, if the initial state is random (all fourier components weight almost the same).
 
 More precisely, we expect this behaviour at times not so small.
-In fact $`<q^2>` = \frac{2\pi}{\lambda}$ and this (**in the below figure**) is the expected behaviour of $<q^2>$ in the linear approximation of the TDGL (so at small times, before the term $u^3$ becomes relevant).
+In fact $\braket{q^2} = \frac{2\pi}{\lambda}$ and this (**in the below figure**) is the expected behaviour of $\braket{q^2}$ in the linear approximation of the TDGL (so at small times, before the term $u^3$ becomes relevant).
 
 ![linearTDGLq2](linear_regime_q2.png?raw=true)
 
