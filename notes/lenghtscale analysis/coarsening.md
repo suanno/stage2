@@ -15,11 +15,9 @@ The simulations ran with two different time steps $dt$.
 Here the width of an interface can be calculated analitically, by integrating the 1D stationary state's $|\nabla u|^2$ in the whole $R$. $$W=\frac{2\sqrt2}{3}C^{\frac32}$$
 ![C=1L=512grad2](grad2/C=1/21_06.png?raw=true)
 
-The black line indicates the time $t=11$ when the $dt$ was increased. It looks like this change affects the measure, but that is the time when domains emerge.
-This other plot could support this hypotesis, that the change of slope is due to the emergence of domains and not to the change of $dt$.
-As you can see, there is a change of slope BEFORE the change of $dt$.
-The change of slope represents that when domains emerge you are no more in the linear regime, where you expect a power-law growth of 1/<q^2>.
-![C=1L=512q2](q2/C=1/21_06.png?raw=true)
+The black line indicates the time $t=11$ when the $dt$ was increased. It looks like this change affects the measure, but that happens because around $t\simeq 11$ the domains emerge.
+This hypotesis is supported by the following simulation, where the timestep was changed at $t=20$ just to see how the change of dt influences the results.
+![dt=20](grad2/C=1/25_06_change_dt_t=20.png?raw=true)
 
 #### $C=1+0.5\sin(2\pi t/T)$ T=2.5
 ![](grad2/oscillatory%20C0=1/T=2.5/21_06.png?raw=true)
@@ -38,7 +36,6 @@ notice that we get an exponent closer to the expected one ($\frac12$) and a pref
 The coarsening exponent is close to the expected value 0.5 in all the 3 cases. The prefactor seems to be $1\pi$ for all cases.
 
 - Run another simulation with a _different initial state_ and check if the prefactor is still $\pi$.
-- Check if the instant when the change of $dt$ happens influences the results. In particular try with an istant that is bigger than t=11 that is the time when we expect domains to emerge. 
 - Monitor the width oscillation of a 1D profile under the same C(t) and multiply lambda by this width. It is more accurate than assume adiabaticity.
 - A longer simulation with C=1 could make possible to make a better fit. As now the fitted curve's slope seems to depend much on the interval of the fit.
 
