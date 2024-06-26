@@ -35,7 +35,6 @@ notice that we get an exponent closer to the expected one ($\frac12$) and a pref
 #### Comments
 The coarsening exponent is close to the expected value 0.5 in all the 3 cases. The prefactor seems to be $1\pi$ for all cases.
 
-- Run another simulation with a _different initial state_ and check if the prefactor is still $\pi$.
 - Monitor the width oscillation of a 1D profile under the same C(t) and multiply lambda by this width. It is more accurate than assume adiabaticity.
 - A longer simulation with C=1 could make possible to make a better fit. As now the fitted curve's slope seems to depend much on the interval of the fit.
 
@@ -63,3 +62,19 @@ While the prefactor is $5\pi$ instead of $4\pi$.
 ![C=1L=512grad2](q2/oscillatory%20C0=1/T=2.5/21_06.png?raw=true)
 #### $C=1+0.5\sin(2\pi t/T)$ T=25
 ![C=1L=512grad2](q2/oscillatory%20C0=1/T=25/21_06.png?raw=true)
+
+## Do the exponents/prefactor depend on the **initial state**?
+We ran simulations with **another** (a different one) random initial state
+**Data**: "/.saves/25_06_(A,B)"
+![q2newseed](q2/C=1/different_init/25_06.png?raw=true)
+![q2newseed](grad2/C=1/different_init/25_06.png?raw=true)
+It looks like the results we found do not depend on the (random) initial state.
+
+## Results
+Starting from random initial conditions (_datainit.c_).
+At **long times** (coarsening)
+- $\lambda = \frac{A_{system}}{\int |\nabla u|^2 dxdy}W\simeq 1\pi t^{\frac12}$.
+- $\lambda = 2\pi/\sqrt{\braket{q^2}} \simeq 5\pi t^{\frac14}$, where $\lambda_{cutoff} = 5$.
+
+    While in the linear regime (short times) we have $\lambda = 4\pi t^{\frac12}$.
+Independently on the seed used for generating the initial state.
