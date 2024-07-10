@@ -20,11 +20,12 @@ In particular "after the domains visually emerged":
 $$\lambda \simeq 5\pi t^{\frac14}$$
 $$\lambda_{DW} \simeq \pi t^{\frac12}$$
 
+
 the exponent $\frac12$ is the one we find after making the **scaling hypotesis**, but we cannot yet justify the values of the prefactors.
 
 Anyway we showed that those two wavelenghts are related, in the regime where domains clearly emerged, and so you can integrate the functions $|\nabla u|^2$ and $1-u^2$ in the whole space to measure the interface lenght $\mathcal{L}$, so those are **good approximations**
-$$\int |\nabla u|^2 d^Dx = \mathcal{L}*I_1$$
-$$\int 1-u^2 d^Dx = \mathcal{L}*I_2$$
+$$\int |\nabla u|^2 d^Dx = \mathcal{L}*I_1\quad\quad I_1 = \int d{\xi} (\partial_{\xi}u_{1D})^2 = \frac{2\sqrt{2}}{\sqrt{3}}C^{\frac32}$$
+$$\int (C-u^2) d^Dx = \mathcal{L}*I_2\quad\quad  I_2 = \int d{\xi} (C-u_{1D}^2) = \frac{2\sqrt{2}}{\sqrt{3}}C^{\frac12}$$
 
 and visually, the interfaces have the 1D stationary shape when the asymptotic behaviour starts.
 The second integrand is a function peaked at the interface, because evaluating $u$ on a line orthogonal to an interface, in the asymptotical regime (domains visually formed) you get $u_{1D} = \sqrt{C}tanh(x/W\sqrt{C/2})$.
