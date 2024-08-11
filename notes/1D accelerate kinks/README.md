@@ -1,42 +1,54 @@
 Data: ".saves/twokinks/"
 
-Those numerical results show that **it's possible** to accelerate the annhilation of two neighboring kinks, by oscillating $C(t)$ in such a way that
+# Accelerating the kink's annhilation with non-strictly positive $C(t)$ 
+
+Those numerical results show that **it's possible** to **accelerate** the annhilation of two neighboring kinks, by oscillating $C(t)$ in such a way that
 $$\braket{C} > 0 \qquad C(t) < 0 \quad \text{for some t}$$
 
-I will show before that you can accelerate the process with which the kinks get closer, then I will show that you can use this to select the distance between the two kinks.
+You can then exploit this effect to select the distance between the two kinks.
 
-# Initial state
-It was prepared with _twokinks.c_ ($dx = 0.1$).
+# Initial state$
+It was prepared with _twokinks.c_.
 $$u(x, t=0) = \tanh (x)-\tanh(x-d_0) + 1$$
 
-This is a state with a kink and and antikink at a distance $d_0$. For $d_0 = 10$
+This is a state with a kink and and antikink at a distance $d_0$. 
+
+For $d_0 = 10$, the initial state is
 ![d0=10_init](d0=10/initial.png?raw=true)
+
+# Non-strictly positive C(t)
+During the following simulations, we adopted
+$$C(t) = 0.5 + \sin(2\pi t/T)$$
+for different values of $T$.
+And we monitored the distance of the kink/anti-kink pair as a function of time $d(t)$.
 
 # Measuring the kinks position
 If we consider the initial state, it has an interesting propery: it changes curvature at the kinks' positions, so $u_xx = 0$ at a kink.
 
-Following this idea and assuming that, as time passes, the two kinks get closer (so d=d(t)) BUT their shape does not change, we can MEASURE the kinks' positions at each time by calculating the second space derivative of the state $u_xx$ and looking for its two zeros.
+Then, if they are sufficiently far so they do not overlap, their distance changes in time $d=d(t)$. BUT their analytical shape doesn't change! So the above property is preserved in time, and can be exploited to measure $d(t)$ as a function of time,
 
-This is a good way of measuring the distance **when the distance of the kink is much greater than their width (OVERLAP)**. Otherwise what happens is that, if you consider the initial state's shape, if $d_0$ is not much greater than the kinks width (that in the initial state is 1), then the zeros of $u_xx$ are not spaced anymore by a distance $d_0$.
+The measure of $d(t)$ is performed, at each time step
+- calculating the second space derivative of the state $u_xx$;
+- looking for its two zeros and measuring their distance $d(t)$.
 
-So when we read the data, we should take into account that the distance between the zeros of $u_xx$ that we measure is not always a good measure of the distance between kinks.
 
 # Accelerating the annhilation
-**Notice:** From now on, in the reported plots, some data of the measured distance is not represented. We represent only data when the condition
-$$2\sqrt{C/2} < d$$
+**Notice:** From now on, in the reported plots, some data of the measured distance is not represented. We represent only data measured at time $t$ such that
+$$2\sqrt{C(t)/2} < d(t)$$
+where $d(t)$ is the measured value of the distance.
+This is a naive condition to **exclude measures** where the kink and the anti-kink **overlap**, so our method to measure $d(t)$ doesn't work.
 
-Where the LH side is twice the width of a kink if you keep $C>0$ costant for a long time $\Delta t >> \frac1C$. So this is a naive condition to state "when the kinks do not overlap".
 
-- $d_0 = 10$
+- **Simulation** for an initial distance $d_0 = 10$
+$$C(t) = 0.5 + \sin(2\pi t/T)\quad \forall t$$
 
 ![d0=10_acceleration](d0=10/distance.png?raw=true)
 
-# Controlling the distance (between neighbouring kinks)
+- **Simulation** for an initial distance $d_0 = 20$
+$$C(t) = 0.5 + \sin(2\pi t/T)\qquad\text{Until $t\simeq 800$}$$
+$$C = 1 \quad\text{fixed}\qquad\text{After $t\simeq 800$}$$
 
-- $d_0 = 20$
-
-We oscillated $C(t)$ to accelerate the closening of the kinks and then I put $C=1$ constant in order to **relax** the shape of the kinks towoards the one of the stationary state associated to $C=1$ constant.
-You can see that the value of the distance **is kept** after we switch to constant C.
+You can see that the value of the distance at the end of the $C(t)$'s oscillation, **is kept** after we switch to constant C.
 
 ![d0=20_distance_control](d0=20/distance.png?raw=true)
 
