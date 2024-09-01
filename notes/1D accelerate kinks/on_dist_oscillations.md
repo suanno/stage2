@@ -41,3 +41,7 @@ $$L=40;\quad d_0=20$$
 But it is sufficient for the initial state to be **slightly asymmetric** to see an annhilation eventually. As you can see in the following simulation, where
 $$L=45;\quad d_0=20$$
 ![L=45](d0=20/varying_L/L=45_d=20.gif?raw=true)
+
+## What if $C<0$ constant?
+In the following simulation we kept $C=-0.5$ constant, where $0.5$ is the minimum value that $C$ takes in the previous simulations.
+![C=-0.5](d0=20/varying_L/C=-0.5.gif?raw=true)
