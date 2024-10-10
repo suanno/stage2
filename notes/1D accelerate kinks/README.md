@@ -50,8 +50,8 @@ $$C = 1 \quad\text{fixed}\qquad\text{After $t\simeq 800$}$$
 
 You can see that the value of the distance at the end of the $C(t)$'s oscillation, **is kept** after we switch to constant C.
 
-![d0=20_distance_control](d0=20/distance.png?raw=true)
+![d0=20_distance_control](d0=20/.old/distance.png?raw=true)
 
 The final state is
 
-![d0=20_final](d0=20/final_state.png?raw=true)
+![d0=20_final](d0=20/.old/final_state.png?raw=true)
