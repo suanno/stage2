@@ -15,6 +15,7 @@ Despite on short time-scales, comparable to the period $T$, the curve look diffe
 ## Changing $dt$
 $$L=128; dx=0.1$$
 $$C(t)=\bar{C}+A\sin(2\pi t/T)$$
+
 ![](d0=20/numerical_consistence/dx=0.1_L=128_vary_dt.png?raw=true)
 
 ### Short time-scale
